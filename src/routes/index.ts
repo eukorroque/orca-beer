@@ -1,5 +1,5 @@
 import express, { Application } from 'express'
-import Lojista from './lojista.routes'
+import Usuario from './usuario.routes'
 import errorInterceptor from '../middlewares/errors.midleware'
 
 const routes = (app: Application) => {
@@ -10,7 +10,7 @@ const routes = (app: Application) => {
 
   app.use(
     express.json(),
-    Lojista
+    Usuario
   )
 
   app.use(errorInterceptor)

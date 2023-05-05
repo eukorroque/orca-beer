@@ -10,43 +10,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Lojista {
-  id              Int      @id @default(autoincrement())
-  cnpj            String   @unique
-  nomeFantasia    String
-  razaoSocial     String
-  email           String   @unique /// o e-mail é único entre os lojistas. Porém pode haver um Fornecedor com o mesmo e-mail
-  cpfResponsavel  String
-  nomeResponsavel String
-  senha           String
-  telefone        String
-  avaliacao       Int      @default(0)
-  creditos        Float    @default(0)
-  status          Status   @relation(fields: [statusId], references: [id])
-  statusId        Int
-  criadoEm        DateTime @default(now())
-  atualizadoEm    DateTime @updatedAt
-}
-
-model Fornecedor {
-  id               Int      @id @default(autoincrement())
-  cnpj             String   @unique
-  nomeFantasia     String
-  razaoSocial      String
-  email            String   @unique /// o e-mail é único entre os Fornecedores. Porém pode haver um logista com o mesmo e-mail
-  cpfResponsavel   String
-  nomeResponsavel  String
-  senha            String
-  telefone         String
-  avaliacao        Int      @default(0)
-  creditos         Float    @default(0)
-  radioAtendimento Int
-  vezesIndicou     Int      @default(0) /// Quantas vezes o fornecedor indicou outros fornecedores e eles criaram conta na plataforma
-  codigoConvite   String   @unique
-  status           Status   @relation(fields: [statusId], references: [id])
-  statusId         Int
-  criadoEm         DateTime @default(now())
-  atualizadoEm     DateTime @updatedAt
+model Usuario {
+  id                  Int        @id @default(autoincrement())
+  cnpj                String     @unique
+  nomeFantasia        String
+  razaoSocial         String
+  email               String     @unique /// o e-mail é único entre os usuários.
+  cpfResponsavel      String
+  nomeResponsavel     String
+  senha               String
+  telefone            String
+  avaliacao           Int        @default(0)
+  creditos            Float      @default(0)
+  radioAtendimento    Int?
+  vezesIndicou        Int?       @default(0) /// Quantas vezes o fornecedor indicou outros fornecedores e os mesmos criaram conta na plataforma
+  qtdPedidosRestantes Int?       @default(1)
+  codigoConvite       String?    @unique
+  status              Status     @relation(fields: [statusId], references: [id])
+  statusId            Int
+  Conta               tpContas   @relation(fields: [tpConta], references: [id])
+  tpConta             Int
+  Endereco            Endereco[]
+  criadoEm            DateTime   @default(now())
+  atualizadoEm        DateTime   @updatedAt
 }
 
 // Ver situação do responsavelId
@@ -60,6 +46,7 @@ model Endereco {
   cidade        String
   estado        String // @db.VarChar(255)
   tpEndereco    Int
+  responsavel   Usuario  @relation(fields: [responsavelId], references: [id])
   responsavelId Int
   criadoEm      DateTime @default(now())
   atualizadoEm  DateTime @updatedAt
@@ -67,11 +54,16 @@ model Endereco {
   // label String?
 }
 
+model tpContas {
+  id      Int       @id @default(autoincrement())
+  tipo    String    @unique
+  Usuario Usuario[]
+}
+
 model Status {
-  id         Int          @id @default(autoincrement())
-  status     String       @unique
-  Fornecedor Fornecedor[]
-  Lojista    Lojista[]
+  id      Int       @id @default(autoincrement())
+  status  String    @unique
+  Usuario Usuario[]
 }
 
 model Produto {
