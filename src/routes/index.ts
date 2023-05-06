@@ -12,7 +12,7 @@ const routes = (app: Application) => {
     express.json(),
     Usuario
   )
-
+  
   app.use(errorInterceptor)
 }
 

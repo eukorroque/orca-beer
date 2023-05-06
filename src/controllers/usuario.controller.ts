@@ -22,9 +22,14 @@ export default class UsuarioController {
         return next('Informe o tipo de usuário que deseja ver')
       }
 
+      const newType = parseInt(type)
+
       const usuarios = await this._usuarioModel.getAll({
         where: {
-          tpConta: Number(type)
+          tpConta: newType
+        },
+        include: {
+          Endereco: true
         }
       })
 
@@ -46,17 +51,19 @@ export default class UsuarioController {
     try {
 
       const { type } = req.params
-      const { usuario } = req.body
+      const { usuario, endereco } = req.body
 
       if (!type || !Number.isInteger(parseInt(type))) {
         return next('Informe o tipo de usuário que deseja criar')
       }
 
-      if (!usuario) {
+      const newType = parseInt(type)
+
+      if (!usuario || !endereco) {
         return next('Não foram passados todos os dados necessários para o cadastro do Lojista')
       }
 
-      switch (Number(type)) {
+      switch (newType) {
         case 1:
           // pendente
           usuario.statusId = 1
@@ -75,9 +82,18 @@ export default class UsuarioController {
           break
       }
 
+      // TODO: Validar endereco e dados do usuario
+
       const idUsuario = await this._usuarioModel.create({
         ...usuario,
-        tpConta: Number(type)
+        tpConta: newType,
+        ...newType !== 3 && {
+          Endereco: {
+            create: {
+              ...endereco
+            }
+          }
+        }
       })
 
       res.status(HttpStatus.CREATED).json({

@@ -1,11 +1,13 @@
 interface Error {
   code: string
+  message: string
   meta: {
     target: string[]
   }
 }
 
-const prismaErrors = (error: Error): string => {
+const prismaErros = (error: Error): string => {
+
   switch (error.code) {
     case 'P1000':
       return 'Não foi possível conectar ao banco de dados.'
@@ -56,4 +58,4 @@ const prismaErrors = (error: Error): string => {
   }
 }
 
-export default prismaErrors
+export default prismaErros

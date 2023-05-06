@@ -10,12 +10,13 @@ export default class UsuarioModel {
     cursor?: Prisma.UsuarioWhereUniqueInput
     where?: Prisma.UsuarioWhereInput
     orderBy?: Prisma.UsuarioOrderByWithRelationInput
+    include?: Prisma.UsuarioInclude
   }
   ): Promise<Usuario[]> {
     try {
 
       const usuarios = await prisma.usuario.findMany({
-        ...params
+        ...params,
       })
 
       return usuarios

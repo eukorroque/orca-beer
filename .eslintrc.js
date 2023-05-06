@@ -26,7 +26,8 @@ module.exports = {
     '@typescript-eslint',
     'import'
   ],
-  rules:{
-
+  rules: {
+    'no-case-declarations': 'off',
+    '@typescript-eslint/no-explicit-any': 'off'
   }
 }

@@ -1,11 +1,13 @@
 {
-  "name": "backend",
+  "name": "backend-orcabeer",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
     "watch": "tsc --watch",
     "start": "nodemon ./dist/index.js",
+    "studio": "prisma studio",
+    "lint": "eslint . --ext .ts",
     "start:dev": "npm-run-all --parallel watch start"
   },
   "author": "",

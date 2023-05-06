@@ -5,6 +5,8 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// TODO: por o mysql aqui.
+
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
