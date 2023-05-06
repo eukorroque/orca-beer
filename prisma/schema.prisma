@@ -1,0 +1,114 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// TODO: por o mysql aqui.
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id                  Int        @id @default(autoincrement())
+  cnpj                String     @unique
+  nomeFantasia        String
+  razaoSocial         String
+  email               String     @unique /// o e-mail é único entre os usuários.
+  cpfResponsavel      String
+  nomeResponsavel     String
+  senha               String
+  telefone            String
+  avaliacao           Int        @default(0)
+  creditos            Float      @default(0)
+  radioAtendimento    Int?
+  vezesIndicou        Int?       @default(0) /// Quantas vezes o fornecedor indicou outros fornecedores e os mesmos criaram conta na plataforma
+  qtdPedidosRestantes Int?       @default(1)
+  codigoConvite       String?    @unique
+  status              Status     @relation(fields: [statusId], references: [id])
+  statusId            Int
+  Conta               tpContas   @relation(fields: [tpConta], references: [id])
+  tpConta             Int
+  Endereco            Endereco[]
+  criadoEm            DateTime   @default(now())
+  atualizadoEm        DateTime   @updatedAt
+}
+
+// Ver situação do responsavelId
+model Endereco {
+  id            Int      @id @default(autoincrement())
+  numero        Int?
+  cep           String
+  rua           String
+  complemento   String?
+  bairro        String
+  cidade        String
+  estado        String // @db.VarChar(255)
+  tpEndereco    Int
+  responsavel   Usuario  @relation(fields: [responsavelId], references: [id])
+  responsavelId Int
+  criadoEm      DateTime @default(now())
+  atualizadoEm  DateTime @updatedAt
+
+  // label String?
+}
+
+model tpContas {
+  id      Int       @id @default(autoincrement())
+  tipo    String    @unique
+  Usuario Usuario[]
+}
+
+model Status {
+  id      Int       @id @default(autoincrement())
+  status  String    @unique
+  Usuario Usuario[]
+}
+
+model Produto {
+  id          Int              @id @default(autoincrement())
+  categoria   categoriaProduto @relation(fields: [categoriaId], references: [id])
+  categoriaId Int
+  unidade     unidadeProduto   @relation(fields: [unidadeId], references: [id])
+  unidadeId   Int
+  nome        String
+  quantidade  Int
+  // preco - talvez tenha o preco aqui.
+  // ranking - posição no ranking de produtos.
+}
+
+model ProdutoTemp {
+  id          Int              @id @default(autoincrement())
+  categoria   categoriaProduto @relation(fields: [categoriaId], references: [id])
+  categoriaId Int
+  unidade     unidadeProduto   @relation(fields: [unidadeId], references: [id])
+  unidadeId   Int
+  nome        String
+  quantidade  Int
+  qtdInclusao Int
+  // preco - talvez tenha o preco aqui.
+  // ranking - posição no ranking de produtos.
+}
+
+model categoriaProduto {
+  id          Int           @id @default(autoincrement())
+  categoria   String        @unique
+  Produto     Produto[]
+  ProdutoTemp ProdutoTemp[]
+}
+
+model unidadeProduto {
+  id          Int           @id @default(autoincrement())
+  unidade     String        @unique
+  Produto     Produto[]
+  ProdutoTemp ProdutoTemp[]
+}
+
+// testar usando mysql: e passar tbm o varchar.
+// enum tpEndereco {
+//   LOJISTA
+//   FORNECEDOR
+// }
