@@ -3,10 +3,14 @@ interface Error {
   message: string
   meta: {
     target: string[]
+    field_name: string
+    column_name: string
   }
 }
 
 const prismaErros = (error: Error): string => {
+
+  console.log(error)
 
   switch (error.code) {
     case 'P1000':
@@ -19,15 +23,19 @@ const prismaErros = (error: Error): string => {
       return 'Não foi possível autenticar com o banco de dados.'
 
     case 'P2000':
-      return 'A consulta ao banco de dados falhou.'
-
+      const fieldName = error.meta.column_name
+      return `O valor fornecido para o campo ${fieldName} é inválido.`
     case 'P2001':
       return 'A consulta ao banco de dados retornou um resultado vazio.'
 
     case 'P2002':
-      const fieldName = error.meta.target[0]
-      return `O valor fornecido para o campo ${fieldName} viola a restrição de unicidade na coluna especificada.`
+      const fieldName1 = error.meta.target
+      return `O valor fornecido para o campo ${fieldName1} viola a restrição de unicidade na coluna especificada.`
       
+    case 'P2003':
+      const fieldName2 = error.meta.field_name
+      return `O valor fornecido para o campo ${fieldName2} apresenta um erro de validação de chave estrangeira.`
+    
     case 'P2010':
       return 'O registro que você está tentando modificar não existe.'
 
