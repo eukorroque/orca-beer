@@ -6,8 +6,10 @@
   "scripts": {
     "watch": "tsc --watch",
     "start": "nodemon ./dist/index.js",
-    "studio": "prisma studio",
     "lint": "eslint . --ext .ts",
+    "prisma:generate": "prisma generate",
+    "prisma:db-push": "prisma db push --preview-feature",
+    "prisma:studio": "prisma studio",
     "start:dev": "npm-run-all --parallel watch start"
   },
   "author": "",

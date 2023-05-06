@@ -49,7 +49,6 @@ export default class UsuarioController {
 
   async create(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-
       const { type } = req.params
       const { usuario, endereco } = req.body
 
@@ -86,7 +85,7 @@ export default class UsuarioController {
 
       const idUsuario = await this._usuarioModel.create({
         ...usuario,
-        tpConta: newType,
+        tpConta: 5,
         ...newType !== 3 && {
           Endereco: {
             create: {

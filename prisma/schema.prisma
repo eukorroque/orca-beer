@@ -5,29 +5,27 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// TODO: por o mysql aqui.
-
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model Usuario {
   id                  Int        @id @default(autoincrement())
-  cnpj                String     @unique
-  nomeFantasia        String
-  razaoSocial         String
-  email               String     @unique /// o e-mail é único entre os usuários.
-  cpfResponsavel      String
-  nomeResponsavel     String
-  senha               String
-  telefone            String
+  cnpj                String     @unique @db.VarChar(14)
+  nomeFantasia        String     @db.VarChar(255)
+  razaoSocial         String     @db.VarChar(255)
+  email               String     @unique @db.VarChar(50) /// o e-mail é único entre os usuários.
+  cpfResponsavel      String     @db.VarChar(11)
+  nomeResponsavel     String     @db.VarChar(255)
+  senha               String     @db.VarChar(255)
+  telefone            String     @db.VarChar(15)
   avaliacao           Int        @default(0)
   creditos            Float      @default(0)
-  radioAtendimento    Int?
+  radioAtendimento    Int?       @db.Int
   vezesIndicou        Int?       @default(0) /// Quantas vezes o fornecedor indicou outros fornecedores e os mesmos criaram conta na plataforma
   qtdPedidosRestantes Int?       @default(1)
-  codigoConvite       String?    @unique
+  codigoConvite       String?    @unique @db.VarChar(6)
   status              Status     @relation(fields: [statusId], references: [id])
   statusId            Int
   Conta               tpContas   @relation(fields: [tpConta], references: [id])
@@ -40,14 +38,13 @@ model Usuario {
 // Ver situação do responsavelId
 model Endereco {
   id            Int      @id @default(autoincrement())
-  numero        Int?
-  cep           String
-  rua           String
-  complemento   String?
-  bairro        String
-  cidade        String
-  estado        String // @db.VarChar(255)
-  tpEndereco    Int
+  numero        Int?     @db.SmallInt
+  cep           String   @db.VarChar(8)
+  rua           String   @db.VarChar(255)
+  complemento   String?  @db.VarChar(255)
+  bairro        String   @db.VarChar(255)
+  cidade        String   @db.VarChar(255)
+  estado        String   @db.VarChar(2)
   responsavel   Usuario  @relation(fields: [responsavelId], references: [id])
   responsavelId Int
   criadoEm      DateTime @default(now())
@@ -56,26 +53,14 @@ model Endereco {
   // label String?
 }
 
-model tpContas {
-  id      Int       @id @default(autoincrement())
-  tipo    String    @unique
-  Usuario Usuario[]
-}
-
-model Status {
-  id      Int       @id @default(autoincrement())
-  status  String    @unique
-  Usuario Usuario[]
-}
-
 model Produto {
   id          Int              @id @default(autoincrement())
   categoria   categoriaProduto @relation(fields: [categoriaId], references: [id])
   categoriaId Int
   unidade     unidadeProduto   @relation(fields: [unidadeId], references: [id])
   unidadeId   Int
-  nome        String
-  quantidade  Int
+  nome        String           @db.VarChar(255)
+  quantidade  Int              @db.SmallInt
   // preco - talvez tenha o preco aqui.
   // ranking - posição no ranking de produtos.
 }
@@ -86,29 +71,41 @@ model ProdutoTemp {
   categoriaId Int
   unidade     unidadeProduto   @relation(fields: [unidadeId], references: [id])
   unidadeId   Int
-  nome        String
-  quantidade  Int
-  qtdInclusao Int
+  nome        String           @db.VarChar(255)
+  quantidade  Int              @db.SmallInt
+  qtdInclusao Int              @db.SmallInt
   // preco - talvez tenha o preco aqui.
   // ranking - posição no ranking de produtos.
 }
 
 model categoriaProduto {
   id          Int           @id @default(autoincrement())
-  categoria   String        @unique
+  categoria   String        @unique @db.VarChar(255)
   Produto     Produto[]
   ProdutoTemp ProdutoTemp[]
 }
 
 model unidadeProduto {
   id          Int           @id @default(autoincrement())
-  unidade     String        @unique
+  unidade     String        @unique @db.VarChar(255)
   Produto     Produto[]
   ProdutoTemp ProdutoTemp[]
 }
 
-// testar usando mysql: e passar tbm o varchar.
-// enum tpEndereco {
-//   LOJISTA
-//   FORNECEDOR
-// }
+model Status {
+  id      Int       @id @default(autoincrement())
+  status  String    @unique @db.VarChar(255)
+  Usuario Usuario[]
+}
+
+model tpContas {
+  id      Int          @id @default(autoincrement())
+  tipo    tdContasEnum @unique
+  Usuario Usuario[]
+}
+
+enum tdContasEnum {
+  FORNECEDOR
+  LOJISTA
+  ADMIN
+}
