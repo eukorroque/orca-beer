@@ -10,6 +10,7 @@ export default class UnidadeProdutoModel {
     cursor?: Prisma.unidadeProdutoWhereUniqueInput
     where?: Prisma.unidadeProdutoWhereInput
     orderBy?: Prisma.unidadeProdutoOrderByWithRelationInput
+    include?: Prisma.unidadeProdutoInclude
   }
   ): Promise<unidadeProduto[]> {
     try {
