@@ -8,7 +8,7 @@
     "start": "nodemon ./dist/index.js",
     "lint": "eslint . --ext .ts",
     "prisma:generate": "prisma generate",
-    "prisma:db-push": "prisma db push --preview-feature",
+    "prisma:db-push": "prisma db push",
     "prisma:studio": "prisma studio",
     "start:dev": "npm-run-all --parallel watch start"
   },

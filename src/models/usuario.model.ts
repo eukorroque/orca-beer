@@ -1,72 +1,81 @@
-import { Usuario, Prisma } from "@prisma/client";
-import prisma from "../config/prisma";
-import prismaErros from "../utils/prismaErros.util";
-import { IsNumber, IsNotEmpty, Length, IsString, IsEmail } from "class-validator";
+import { Usuario, Prisma } from "@prisma/client"
+import prisma from "../config/prisma"
+import prismaErros from "../utils/prismaErros.util"
+import { IsNumber, IsNotEmpty, Length, IsString, IsEmail, Min } from "class-validator"
 
 export default class UsuarioModel implements Usuario {
 
-  /**
-   * A ideia do class validator aqui é que alguns campos possuam suas validações basicas.
-   * 
-   * Ainda irei testar isso pois campos como "codigoConvite" aqui nn estou validando pois ele n é criado na hora do post de createUser. Porém
-   * ele eventualmente terá que ser validado. Logo ainda nn sei se vou utilizar essa abordagem.
-   */
+  id!: number
 
-  id!: number;
+  @IsNotEmpty({ message: 'O CNPJ deve ser informado' })
+  @Length(14, 14, { message: 'O CNPJ deve conter 14 dígitos' })
+  cnpj!: string
 
-  @IsNotEmpty()
-  @Length(14)
-  cnpj!: string;
+  @IsNotEmpty({ message: 'O nome fantasia deve ser informado' })
+  @IsString({ message: 'O nome fantasia está em um formato incorreto' })
+  @Length(3, 255, { message: 'O nome fantasia deve conter entre 3 e 255 caracteres' })
+  nomeFantasia!: string
 
-  @IsNotEmpty()
-  @IsString()
-  nomeFantasia!: string;
+  @IsNotEmpty({ message: 'A razão social deve ser informada' })
+  @IsString({ message: 'A razão social está em um formato incorreto' })
+  @Length(3, 255, { message: 'A razão social deve conter entre 3 e 255 caracteres' })
+  razaoSocial!: string
 
-  @IsNotEmpty()
-  @IsString()
-  razaoSocial!: string;
+  @IsNotEmpty({ message: 'O e-mail deve ser informado' })
+  @IsEmail({}, { message: 'O e-mail informado é inválido' })
+  @Length(10, 100, { message: 'O e-mail deve conter entre 10 e 255 caracteres' })
+  email!: string
 
-  @IsNotEmpty()
-  @IsEmail({}, { message: 'Email inválido' })
-  email!: string;
+  @IsNotEmpty({ message: 'O CPF do responsável deve ser informado' })
+  @Length(11, 11, { message: 'O CPF do responsável deve conter 11 dígitos' })
+  cpfResponsavel!: string
 
-  @IsNotEmpty()
-  @Length(11)
-  cpfResponsavel!: string;
+  @IsNotEmpty({ message: 'O nome do responsável deve ser informado' })
+  @IsString({ message: 'O nome do responsável está em um formato incorreto' })
+  @Length(3, 255, { message: 'O nome do responsável deve conter entre 3 e 255 caracteres' })
+  nomeResponsavel!: string
 
-  @IsNotEmpty()
-  @IsString()
-  nomeResponsavel!: string;
+  @IsNotEmpty({ message: 'A senha deve ser informada' })
+  senha!: string
 
-  @IsNotEmpty()
-  senha!: string;
+  @IsNotEmpty({ message: 'O telefone deve ser informado' })
+  @Length(11, 11, { message: 'O telefone deve conter 11 dígitos' })
+  telefone!: string
 
-  @IsNotEmpty()
-  @Length(10, 11)
-  telefone!: string;
+  @IsNotEmpty({ message: 'A avaliação deve ser informada' })
+  @IsNumber({}, { message: 'A avaliação deve ser um número' })
+  @Min(0, { message: 'A avaliação deve ser maior ou igual a 0' })
+  avaliacao = 0
 
-  avaliacao!: number;
+  @IsNotEmpty({ message: 'Os créditos devem ser informados' })
+  @IsNumber({}, { message: 'Os créditos devem ser um número' })
+  @Min(0, { message: 'Os créditos devem ser maior ou igual a 0' })
+  cashback = 0
 
-  creditos!: number;
+  @IsNumber({}, { message: 'O rádio de atendimento deve ser um número' })
+  @Min(0, { message: 'O rádio de atendimento deve ser maior ou igual a 0' })
+  radioAtendimento = 0
 
-  @IsNumber()
-  radioAtendimento!: number;
+  @IsNumber({}, { message: 'A quantidade de vezes indicadas deve ser um número' })
+  @Min(0, { message: 'A quantidade de vezes indicadas deve ser maior ou igual a 0' })
+  vezesIndicou = 0
 
-  vezesIndicou!: number;
+  @IsNumber({}, { message: 'A quantidade de pedidos restantes deve ser um número' })
+  @Min(0, { message: 'A quantidade de pedidos restantes deve ser maior ou igual a 0' })
+  qtdPedidosRestantes = 1
 
-  qtdPedidosRestantes!: number;
+  @IsString({ message: 'O código de convite está em um formato incorreto' })
+  codigoConvite = ''
 
-  codigoConvite!: string;
+  @IsNumber({}, { message: 'O ID de status deve ser um número' })
+  statusId!: number
 
-  @IsNumber()
-  statusId!: number;
+  @IsNumber({}, { message: 'O tipo de conta deve ser um número' })
+  tpConta!: number
 
-  @IsNumber()
-  tpConta!: number;
+  criadoEm!: Date
 
-  criadoEm!: Date;
-
-  atualizadoEm!: Date;
+  atualizadoEm!: Date
 
 
   async getAll(params?: {

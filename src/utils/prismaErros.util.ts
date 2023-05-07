@@ -10,7 +10,7 @@ interface Error {
 
 const prismaErros = (error: Error): string => {
 
-  console.log(error)
+  console.log(error.message)
 
   switch (error.code) {
     case 'P1000':

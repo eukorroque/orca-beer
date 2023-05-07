@@ -2,6 +2,7 @@ import { validate } from "class-validator";
 import { HttpStatus } from "../enums/httpStatus.enum";
 import UsuarioModel from "../models/usuario.model";
 import { NextFunction, Request, Response } from 'express'
+import classValidatorErros from "../utils/classValidatorErros.util";
 
 export default class UsuarioController {
 
@@ -52,6 +53,8 @@ export default class UsuarioController {
     try {
       const { type } = req.params
       const { usuario, endereco } = req.body
+      let msgResponse = ''
+
 
       if (!type || !Number.isInteger(parseInt(type))) {
         return next('Informe o tipo de usuário que deseja criar')
@@ -60,27 +63,36 @@ export default class UsuarioController {
       const newType = parseInt(type)
 
       if (!usuario || !endereco) {
-        return next('Não foram passados todos os dados necessários para o cadastro do Lojista')
+        return next('Não foram passados todos os dados necessários para o cadastro')
       }
 
-      // 1: fornecedor, 2: lojista, 3: admin
       switch (newType) {
+
+        // 1: fornecedor
         case 1:
           // pendente
           usuario.statusId = 1
+          msgResponse = 'Fornecedor adicionado com sucesso. Agora só aguardar nosso time validar seus dados :)'
 
           break
+
+        // 2: lojista
         case 2:
           //aprovado
           usuario.statusId = 8
+          msgResponse = 'Lojista adicionado com sucesso. Aproveite nossos serviços :)'
 
           break
+
+        // 3: admin
         case 3:
           // a principio será o id do admin
 
+          // aprovado
+          usuario.statusId = 8
+          msgResponse = 'Admin adicionado com sucesso. Bom trabalho :D'
           break
         default:
-
           return next('Tipo de usuário inválido')
       }
 
@@ -88,13 +100,24 @@ export default class UsuarioController {
       const errors = await validate(Object.assign(new UsuarioModel(), usuario))
 
       if (errors.length > 0) {
-        return next(errors.map(error=>{
-          delete error.target
-          return error
-        }))
-      }
+        const newError = classValidatorErros(errors)
 
-      // TODO: Validar endereco e dados do usuario
+        if (newType !== 3) {
+          return next(newError)
+        }
+
+        // só passar aqui nesse if os campos que não serão necessários para cadastrar um admin
+        if (
+          !newError.cnpj &&
+          !newError.nomeFantasia &&
+          !newError.razaoSocial
+        ) {
+          return next(newError)
+        }
+
+
+
+      }
 
       const idUsuario = await this._usuarioModel.create({
         ...usuario,
@@ -109,7 +132,7 @@ export default class UsuarioController {
 
       res.status(HttpStatus.CREATED).json({
         ok: true,
-        msg: 'Usuario adicionado com sucesso. Agora só aguardar nosso time validar seus dados :)',
+        msg: msgResponse,
         id: idUsuario
       })
 
