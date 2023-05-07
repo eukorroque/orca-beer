@@ -1,3 +1,4 @@
+import { validate } from "class-validator";
 import { HttpStatus } from "../enums/httpStatus.enum";
 import UsuarioModel from "../models/usuario.model";
 import { NextFunction, Request, Response } from 'express'
@@ -62,6 +63,7 @@ export default class UsuarioController {
         return next('Não foram passados todos os dados necessários para o cadastro do Lojista')
       }
 
+      // 1: fornecedor, 2: lojista, 3: admin
       switch (newType) {
         case 1:
           // pendente
@@ -78,14 +80,24 @@ export default class UsuarioController {
 
           break
         default:
-          break
+
+          return next('Tipo de usuário inválido')
+      }
+
+      usuario.tpConta = newType
+      const errors = await validate(Object.assign(new UsuarioModel(), usuario))
+
+      if (errors.length > 0) {
+        return next(errors.map(error=>{
+          delete error.target
+          return error
+        }))
       }
 
       // TODO: Validar endereco e dados do usuario
 
       const idUsuario = await this._usuarioModel.create({
         ...usuario,
-        tpConta: 5,
         ...newType !== 3 && {
           Endereco: {
             create: {
