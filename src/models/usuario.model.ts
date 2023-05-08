@@ -85,12 +85,13 @@ export default class UsuarioModel implements Usuario {
     where?: Prisma.UsuarioWhereInput
     orderBy?: Prisma.UsuarioOrderByWithRelationInput
     include?: Prisma.UsuarioInclude
+    select?: Prisma.UsuarioSelect
   }
   ): Promise<Usuario[]> {
     try {
 
       const usuarios = await prisma.usuario.findMany({
-        ...params,
+        ...params
       })
 
       return usuarios
@@ -100,6 +101,25 @@ export default class UsuarioModel implements Usuario {
 
     }
   }
+
+  async getOne(params: {
+    where: Prisma.UsuarioWhereUniqueInput
+    include?: Prisma.UsuarioInclude
+  }): Promise<Usuario | null> {
+    try {
+
+      const usuario = await prisma.usuario.findUnique({
+        ...params
+      })
+
+      return usuario
+
+    } catch (error: any) {
+      throw new Error(prismaErros(error))
+
+    }
+  }
+
 
   async create(
     usuarioData: Prisma.UsuarioCreateInput,
@@ -131,15 +151,13 @@ export default class UsuarioModel implements Usuario {
   async update(params: {
     where: Prisma.UsuarioWhereUniqueInput
     data: Prisma.UsuarioUpdateInput
-  }): Promise<boolean> {
+  }): Promise<Usuario | null> {
     try {
       const usuario = await prisma.usuario.update({
         ...params
       })
 
-      if (usuario) return true
-
-      return false
+      return usuario
 
     } catch (error: any) {
 
