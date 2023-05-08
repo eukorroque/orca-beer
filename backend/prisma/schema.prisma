@@ -1,0 +1,110 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id                  Int        @id @default(autoincrement())
+  cnpj                String?    @unique @db.VarChar(14)
+  nomeFantasia        String?    @db.VarChar(255)
+  razaoSocial         String?    @db.VarChar(255)
+  email               String     @unique @db.VarChar(50) /// o e-mail é único entre os usuários.
+  cpfResponsavel      String     @db.VarChar(11)
+  nomeResponsavel     String     @db.VarChar(255)
+  senha               String     @db.VarChar(255)
+  telefone            String     @db.VarChar(15)
+  avaliacao           Int        @default(0)
+  cashback            Float      @default(0) /// 0.4% de cashback em cada orcamento feito pelo fornecedor finalizado.
+  radioAtendimento    Int?       @db.Int
+  vezesIndicou        Int?       @default(0) /// Quantas vezes o fornecedor indicou outros fornecedores e os mesmos criaram conta na plataforma
+  qtdPedidosRestantes Int?       @default(1)
+  codigoConvite       String?    @unique @db.VarChar(6)
+  status              Status     @relation(fields: [statusId], references: [id])
+  statusId            Int
+  Conta               tpContas   @relation(fields: [tpConta], references: [id])
+  tpConta             Int
+  Endereco            Endereco[]
+  criadoEm            DateTime   @default(now())
+  atualizadoEm        DateTime   @updatedAt
+}
+
+model Endereco {
+  id            Int      @id @default(autoincrement())
+  numero        Int?     @db.SmallInt
+  cep           String   @db.VarChar(8)
+  rua           String   @db.VarChar(255)
+  complemento   String?  @db.VarChar(255)
+  bairro        String   @db.VarChar(255)
+  cidade        String   @db.VarChar(255)
+  estado        String   @db.VarChar(2)
+  responsavel   Usuario  @relation(fields: [responsavelId], references: [id])
+  responsavelId Int
+  criadoEm      DateTime @default(now())
+  atualizadoEm  DateTime @updatedAt
+
+  // label String?
+}
+
+model Produto {
+  id          Int              @id @default(autoincrement())
+  categoria   categoriaProduto @relation(fields: [categoriaId], references: [id])
+  categoriaId Int
+  unidade     unidadeProduto   @relation(fields: [unidadeId], references: [id])
+  unidadeId   Int
+  nome        String           @db.VarChar(255)
+  quantidade  Int              @db.SmallInt
+  // preco - talvez tenha o preco aqui.
+  // ranking - posição no ranking de produtos.
+}
+
+model ProdutoTemp {
+  id          Int              @id @default(autoincrement())
+  categoria   categoriaProduto @relation(fields: [categoriaId], references: [id])
+  categoriaId Int
+  unidade     unidadeProduto   @relation(fields: [unidadeId], references: [id])
+  unidadeId   Int
+  nome        String           @db.VarChar(255)
+  quantidade  Int              @db.SmallInt
+  qtdInclusao Int              @db.SmallInt
+  // preco - talvez tenha o preco aqui.
+  // ranking - posição no ranking de produtos.
+}
+
+model categoriaProduto {
+  id          Int           @id @default(autoincrement())
+  categoria   String        @unique @db.VarChar(255)
+  Produto     Produto[]
+  ProdutoTemp ProdutoTemp[]
+}
+
+model unidadeProduto {
+  id          Int           @id @default(autoincrement())
+  unidade     String        @unique @db.VarChar(255)
+  Produto     Produto[]
+  ProdutoTemp ProdutoTemp[]
+}
+
+model Status {
+  id      Int       @id @default(autoincrement())
+  status  String    @unique @db.VarChar(255)
+  Usuario Usuario[]
+}
+
+model tpContas {
+  id      Int          @id @default(autoincrement())
+  tipo    tdContasEnum @unique
+  Usuario Usuario[]
+}
+
+enum tdContasEnum {
+  FORNECEDOR
+  LOJISTA
+  ADMIN
+}
