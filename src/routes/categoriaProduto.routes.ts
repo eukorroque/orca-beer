@@ -8,6 +8,6 @@ const Controller = new CategoriaProdutoController(Model)
 const router = Router()
 
 router
-  .get('/categorias', Controller.getAll.bind(Controller))
+  .get('/categorias/produtos', Controller.getAll.bind(Controller))
 
 export default router

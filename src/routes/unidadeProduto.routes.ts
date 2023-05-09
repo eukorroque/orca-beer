@@ -8,6 +8,6 @@ const Controller = new UnidadeProdutoController(Model)
 const router = Router()
 
 router
-  .get('/unidades', Controller.getAll.bind(Controller))
+  .get('/unidades/produtos', Controller.getAll.bind(Controller))
 
 export default router
