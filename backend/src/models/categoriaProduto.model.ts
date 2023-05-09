@@ -10,6 +10,7 @@ export default class CategoriaProdutoModel {
     cursor?: Prisma.categoriaProdutoWhereUniqueInput
     where?: Prisma.categoriaProdutoWhereInput
     orderBy?: Prisma.categoriaProdutoOrderByWithRelationInput
+    include?: Prisma.categoriaProdutoInclude
   }
   ): Promise<categoriaProduto[]> {
     try {
