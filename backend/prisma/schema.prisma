@@ -22,7 +22,7 @@ model Usuario {
   telefone            String     @db.VarChar(15)
   avaliacao           Int        @default(0)
   cashback            Float      @default(0) /// 0.4% de cashback em cada orcamento feito pelo fornecedor finalizado.
-  radioAtendimento    Int?       @db.Int
+  alcance             Int?       @db.Int
   vezesIndicou        Int?       @default(0) /// Quantas vezes o fornecedor indicou outros fornecedores e os mesmos criaram conta na plataforma
   qtdPedidosRestantes Int?       @default(1)
   codigoConvite       String?    @unique @db.VarChar(6)

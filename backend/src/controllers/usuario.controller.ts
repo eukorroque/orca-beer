@@ -192,7 +192,7 @@ export default class UsuarioController {
 
       res.status(HttpStatus.OK).json({
         ok: true,
-        msg: 'O status do usuário foi atualizado com sucesso.',
+        msg: `Status do usuário '${newUser.nomeResponsavel}' atualizado com sucesso.`
       })
 
     } catch (error: any) {
