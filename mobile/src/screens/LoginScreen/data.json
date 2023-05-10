@@ -1,0 +1,13 @@
+{
+  "title": "Informe o perfil desejado",
+  "boxs": [
+    {
+      "title": "Sou lojista",
+      "mensagem": "Gostaria de realizar orçamentos dos produtos para repor o estoque de minha loja e melhor atender meus clientes."
+    },
+    {
+      "title": "Sou fornecedor",
+      "mensagem": "Gostaria de atender meus clientes, com os melhores preços, condições de negociação e prazo de entrega, superando suas expectativas."
+    }
+  ]
+}
