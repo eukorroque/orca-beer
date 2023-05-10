@@ -4,6 +4,8 @@ import UsuarioModel from "../models/usuario.model"
 import { NextFunction, Request, Response } from 'express'
 import classValidatorErros from "../utils/classValidatorErros.util"
 import StatusUsuarioModel from "../models/statusUsuario.model"
+import { Prisma } from "@prisma/client"
+// import createToken from "../utils/createToken"
 
 export default class UsuarioController {
 
@@ -165,6 +167,11 @@ export default class UsuarioController {
       }
 
       const newStatus = parseInt(status)
+
+      if (newStatus === 1) {
+        return next('Não é possível atualizar o status para pendente.')
+      }
+
       const statusExists = await this.statusModel.getOne({ where: { id: newStatus } })
 
       if (!statusExists) {
@@ -172,13 +179,11 @@ export default class UsuarioController {
       }
 
 
-
-
       const newUser = await this.usuarioModel.update({
         where: { id: newIdUser },
         data: {
           status: {
-            update: {
+            connect: {
               id: newStatus
             }
           }
@@ -193,6 +198,93 @@ export default class UsuarioController {
       res.status(HttpStatus.OK).json({
         ok: true,
         msg: `Status do usuário '${newUser.nomeResponsavel}' atualizado com sucesso.`
+      })
+
+    } catch (error: any) {
+      return next(error.message)
+    }
+  }
+
+  async login(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { cpfOrCnpj, senha } = req.body
+
+      if (!cpfOrCnpj || !senha) {
+        return next('Informe o cpf/Cnpj e a senha para realizar o login.')
+      }
+
+      if (cpfOrCnpj.length < 11 || cpfOrCnpj.length > 14) {
+        return next('O cpf/Cnpj informado é inválido.')
+      }
+
+      const isCnpj = cpfOrCnpj.length === 14 ? true : false
+
+      const select: Prisma.UsuarioSelect = {
+        id: true,
+        statusId: true,
+        tpConta: true,
+        senha: true,
+        ...isCnpj ?
+          { nomeFantasia: true } :
+          { nomeResponsavel: true }
+      }
+
+      let user = isCnpj ?
+        await this.usuarioModel.getOne({
+          where: { cnpj: cpfOrCnpj },
+          select
+        }) :
+        await this.usuarioModel.getAll({
+          where: {
+            cpfResponsavel: cpfOrCnpj,
+            AND: [
+              { tpConta: { not: 1 } },
+              { statusId: { not: 7 } }
+            ]
+
+          },
+          select
+        })
+
+      // TODO: Perguntar referente a se o usuário vai ter q ter uma senha diferente para cada tipo de conta ou não.
+      if (Array.isArray(user)) user = user[0]
+
+      if (!user || user.statusId === 7) {
+        return next('Usuário não encontrado.')
+      }
+
+
+      switch (user.statusId) {
+        case 1:
+          return next('Sua conta ja foi criada com sucesso. Porém, nosso time ainda está validando seus dados. Ja já você poderá acessar nossa plataforma :)')
+
+        case 2:
+          return next('já iniciamos a analise dos seus dados. Em breve você poderá acessar nossa plataforma :)')
+
+        case 3:
+          return next('Seus dados foram reprovados. Entre em contato com nosso time para mais informações.')
+
+        case 4:
+          return next('Sua conta foi banida. Entre em contato com nosso time para mais informações.')
+
+        case 5:
+          return next('Sua conta foi bloqueada. Entre em contato com nosso time para mais informações.')
+
+        default:
+          break
+      }
+
+      //todo: validar se a senha bate.
+
+
+      // const token = createToken(user[0])
+
+      // salvando token
+
+      res.status(HttpStatus.OK).json({
+        ok: true,
+        // token,
+        data: user
       })
 
     } catch (error: any) {

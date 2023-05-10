@@ -10,6 +10,7 @@ const Controller = new UsuarioController(Usuario, Status)
 const router = Router()
 
 router
+  .post('/usuario/login', Controller.login.bind(Controller))
   .get('/usuarios/:type', Controller.getAll.bind(Controller))
   .post('/usuario/:type', Controller.create.bind(Controller))
   .put('/usuario/:id/alterar-status/:status', Controller.updateStatus.bind(Controller))

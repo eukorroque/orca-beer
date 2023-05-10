@@ -121,6 +121,7 @@ export default class UsuarioModel implements Usuario {
   async getOne(params: {
     where: Prisma.UsuarioWhereUniqueInput
     include?: Prisma.UsuarioInclude
+    select?: Prisma.UsuarioSelect
   }): Promise<Usuario | null> {
     try {
 
