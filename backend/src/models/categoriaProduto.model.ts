@@ -27,4 +27,22 @@ export default class CategoriaProdutoModel {
     }
   }
 
+  async create(
+    categoriaData: Prisma.categoriaProdutoCreateInput
+  ): Promise<number> {
+    try {
+      const categoria = await prisma.categoriaProduto.create({
+        data: {
+          ...categoriaData,
+        }
+      })
+      
+      return categoria.id
+
+    } catch (error: any) {
+
+      throw new Error(prismaErros(error))
+    }
+  }
+
 }

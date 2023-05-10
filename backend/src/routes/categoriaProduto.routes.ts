@@ -9,5 +9,6 @@ const router = Router()
 
 router
   .get('/categorias/produtos', Controller.getAll.bind(Controller))
+  .post('/categorias/produtos', Controller.create.bind(Controller))
 
 export default router
