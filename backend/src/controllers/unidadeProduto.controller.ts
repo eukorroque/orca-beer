@@ -51,4 +51,48 @@ export default class UnidadeProdutoController {
     }
 
   }
+
+  async update(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { id, unidade } = req.params
+
+      if (!id || !Number.isInteger(parseInt(id))) {
+        return next('Informe o id da unidade que deseja atualizar no sistema.')
+      }
+
+      const idUnidade = parseInt(id)
+      const existsUnidade = await this.unidadeProdutoModel.getAll({ where: { id: idUnidade } })
+
+      if (!existsUnidade) {
+        return next('A unidade informado não existe.')
+      }
+
+      if (!unidade) {
+        return next('Informe a nova unidade.')
+      }
+
+      const newUnidade = unidade.toString()
+      const updatedUnidade = await this.unidadeProdutoModel.update({
+        where: { id: idUnidade },
+        data: {
+          unidade: {
+              set: newUnidade
+          }
+        }
+      })
+
+      if (!updatedUnidade) {
+        return next('Não foi possível atualizar a unidade. Tente novamente mais tarde.')
+      }
+
+      res.status(HttpStatus.OK).json({
+        ok: true,
+        msg: 'A unidade foi atualizada com sucesso.',
+      })
+
+    } catch (error: any) {
+      return next(error.message)
+    }
+  } 
+
 }

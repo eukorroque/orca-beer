@@ -45,4 +45,21 @@ export default class CategoriaProdutoModel {
     }
   }
 
+  async update(params: {
+    where: Prisma.categoriaProdutoWhereUniqueInput
+    data: Prisma.categoriaProdutoUpdateInput
+  }): Promise<categoriaProduto | null> {
+    try {
+      const categoria = await prisma.categoriaProduto.update({
+        ...params
+      })
+
+      return categoria
+
+    } catch (error: any) {
+
+      throw new Error(prismaErros(error))
+    }
+  }
+
 }

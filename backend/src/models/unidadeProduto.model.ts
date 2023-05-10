@@ -45,4 +45,21 @@ export default class UnidadeProdutoModel {
     }
   }
 
+  async update(params: {
+    where: Prisma.unidadeProdutoWhereUniqueInput
+    data: Prisma.unidadeProdutoUpdateInput
+  }): Promise<unidadeProduto | null> {
+    try {
+      const unidade = await prisma.unidadeProduto.update({
+        ...params
+      })
+
+      return unidade
+
+    } catch (error: any) {
+
+      throw new Error(prismaErros(error))
+    }
+  }
+
 }

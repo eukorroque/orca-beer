@@ -50,6 +50,48 @@ export default class CategoriaProdutoController {
     } catch (error: any) {
       return next(error.message)
     }
-
   }
+
+  async update(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { id, categoria } = req.params
+
+      if (!id || !Number.isInteger(parseInt(id))) {
+        return next('Informe o id da categoria que deseja atualizar no sistema.')
+      }
+
+      const idCategoria = parseInt(id)
+      const existsCategoria = await this.categoriaProdutoModel.getAll({ where: { id: idCategoria } })
+
+      if (!existsCategoria) {
+        return next('A categoria informada não existe.')
+      }
+
+      if (!categoria) {
+        return next('Informe a nova categoria.')
+      }
+
+      const newCategoria = categoria.toString()
+      const updatedCategoria = await this.categoriaProdutoModel.update({
+        where: { id: idCategoria },
+        data: {
+          categoria: {
+              set: newCategoria
+          }
+        }
+      })
+
+      if (!updatedCategoria) {
+        return next('Não foi possível atualizar a unidade. Tente novamente mais tarde.')
+      }
+
+      res.status(HttpStatus.OK).json({
+        ok: true,
+        msg: 'A unidade foi atualizada com sucesso.',
+      })
+
+    } catch (error: any) {
+      return next(error.message)
+    }
+  } 
 }
