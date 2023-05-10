@@ -7,15 +7,30 @@ import theme from "../../config/theme"
 interface Props {
   children: string
   fontSize?: number
+  color?: string
+  marginHorizontal?: number
+  marginVertical?: number
+  bold?: boolean
 }
 
 const TextDefault: ElementType<Props> = ({
   children,
-  fontSize = theme.fontSizes.body.p3
+  fontSize = theme.fontSizes.body.p3,
+  marginHorizontal,
+  marginVertical,
+  bold,
+  color,
+  ...props
 }: Props) => {
 
   return (
-    <S.Text fontSize={fontSize} >
+    <S.Text
+      fontSize={fontSize}
+      color={color}
+      bold={bold}
+      style={{ marginHorizontal, marginVertical }}
+      {...props}
+    >
       {children}
     </S.Text>
   )

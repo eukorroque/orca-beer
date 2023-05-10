@@ -5,7 +5,8 @@ export default {
     mainText: '#000000',
     secondaryText: '#9FA5C0',
     outline: '#D0DBEA',
-    form: '#F4F5F7'
+    form: '#F4F5F7',
+    background: '#FFFFFF'
   },
   fontSizes: {
     header: {
@@ -20,23 +21,34 @@ export default {
     }
   },
   fonts: {
-    regular: 'Inter_500Medium',
-    bold: 'Inter_700Bold'
+    regular: 'GemunuLibre_500Medium',
+    bold: 'GemunuLibre_700Bold'
   },
 }
 
-/**
- *
- * import { useFonts, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter'
- let [fontsLoaded] = useFonts({
-    Inter_500Medium,
-    Inter_700Bold
-  })
-
-  if (!fontsLoaded) {
-    return null
-  }
- */
-
 
 // https://www.figma.com/file/hoxmmVgmaKTgaigdnk3hHA/App?type=design&node-id=73-3290&t=sVJOxqP0SNeuB2jg-0
+
+
+/**
+ * Frameworks front-end:
+ * 
+ * // parece ser bom nn testei
+ * 1: https://reactnativepaper.com/
+ * 
+ * // não gostei muito do estilo
+ * 2: https://wix.github.io/react-native-ui-lib/
+ * 
+ * // é bem simples e antigo. ultimo update a 4 anos atrás
+ * 3: https://github.com/xotahal/react-native-material-ui
+ * 
+ * // parece ser bem completo. Porém aparenta ser dificil de usar (não testei)
+ * 4: https://akveo.github.io/react-native-ui-kitten/
+ * 
+ * // Achei bom. Porém nn sei se é muito otimizado.
+ * 5: https://reactnativeelements.com/
+ * 
+ * // Na minha opinião é o melhor. Porém ainda nn testei então não sei sobre desenpenho e nem sobre a facilidade de uso.
+ * 6: https://nativebase.io/
+ * 
+ */

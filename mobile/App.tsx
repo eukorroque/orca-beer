@@ -1,9 +1,12 @@
+import 'react-native-gesture-handler'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
-import { useFonts, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter'
+import { useFonts, GemunuLibre_500Medium, GemunuLibre_700Bold } from '@expo-google-fonts/gemunu-libre'
 import LoginScreen from './src/screens/LoginScreen'
 import * as SplashScreen from 'expo-splash-screen'
 import { useCallback } from 'react'
+import theme from './src/config/theme'
+import WelcomeScreen from './src/screens/WelcomeScreen'
 
 const Stack = createStackNavigator()
 
@@ -13,8 +16,8 @@ SplashScreen.preventAutoHideAsync()
 const App = () => {
 
   let [fontsLoaded] = useFonts({
-    Inter_500Medium,
-    Inter_700Bold
+    GemunuLibre_500Medium,
+    GemunuLibre_700Bold
   })
 
 
@@ -33,16 +36,23 @@ const App = () => {
   return (
     <NavigationContainer onReady={onLayoutRootView}>
       <Stack.Navigator
-        initialRouteName="Login"
+        initialRouteName="Welcome"
         screenOptions={{
           cardStyle: {
-            backgroundColor: '#fff'
+            backgroundColor: theme.colors.background
           }
         }}
       >
         <Stack.Screen
           name="Login"
           component={LoginScreen}
+          options={{
+            headerTitle: ''
+          }}
+        />
+        <Stack.Screen
+          name="Welcome"
+          component={WelcomeScreen}
           options={{
             headerShown: false
           }}
