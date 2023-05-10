@@ -27,4 +27,22 @@ export default class UnidadeProdutoModel {
     }
   }
 
+  async create(
+    unidadeData: Prisma.unidadeProdutoCreateInput
+  ): Promise<number> {
+    try {
+      const unidade = await prisma.unidadeProduto.create({
+        data: {
+          ...unidadeData
+        }
+      })
+
+      return unidade.id
+
+    } catch (error: any) {
+      
+      throw new Error(prismaErros(error))
+    }
+  }
+
 }
