@@ -5,6 +5,7 @@ import StatusUsuarioModel from '../models/statusUsuario.model'
 
 const Usuario = new UsuarioModel
 const Status = new StatusUsuarioModel
+
 const Controller = new UsuarioController(Usuario, Status)
 
 const router = Router()

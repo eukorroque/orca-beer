@@ -37,7 +37,7 @@ export default class UsuarioModel implements Usuario {
 
   @IsNotEmpty({ message: 'O CPF do responsável deve ser informado' })
   @Length(11, 11, { message: 'O CPF do responsável deve conter 11 dígitos' })
-  @Matches(NUMBER_REGEX, { message: 'O CNPJ deve conter apenas números' })
+  @Matches(NUMBER_REGEX, { message: 'O CPF do responsável deve conter apenas números' })
   cpfResponsavel!: string
 
 
@@ -58,23 +58,31 @@ export default class UsuarioModel implements Usuario {
   telefone!: string
 
 
+  ultimaValidacaoTelefone!: Date
+
+
+
   @IsNotEmpty({ message: 'A avaliação deve ser informada' })
   @IsNumber({}, { message: 'A avaliação deve ser um número' })
   @Min(0, { message: 'A avaliação deve ser maior ou igual a 0' })
   avaliacao = 0
+
 
   @IsNotEmpty({ message: 'O valor de cashback devem ser informados' })
   @IsNumber({}, { message: 'O valor de cashback devem ser um número' })
   @Min(0, { message: 'O valor de cashback deve ser maior ou igual a 0' })
   cashback = 0
 
+
   @IsNumber({}, { message: 'O rádio de atendimento deve ser um número' })
   @Min(0, { message: 'O rádio de atendimento deve ser maior ou igual a 0' })
   alcance = 0
 
+
   @IsNumber({}, { message: 'A quantidade de vezes indicadas deve ser um número' })
   @Min(0, { message: 'A quantidade de vezes indicadas deve ser maior ou igual a 0' })
   vezesIndicou = 0
+
 
   @IsNumber({}, { message: 'A quantidade de pedidos restantes deve ser um número' })
   @Min(0, { message: 'A quantidade de pedidos restantes deve ser maior ou igual a 0' })
@@ -88,6 +96,8 @@ export default class UsuarioModel implements Usuario {
 
   @IsNumber({}, { message: 'O tipo de conta deve ser um número' })
   tpConta!: number
+
+  ultimoLogin!: Date
 
   criadoEm!: Date
 

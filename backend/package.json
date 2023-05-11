@@ -5,12 +5,13 @@
   "main": "dist/index.js",
   "scripts": {
     "watch": "tsc --watch",
-    "start": "nodemon ./dist/index.js",
+    "nodemon": "nodemon ./dist/index.js",
     "lint": "eslint . --ext .ts",
     "prisma:generate": "prisma generate",
     "prisma:db-push": "prisma db push",
     "prisma:studio": "prisma studio",
-    "start:dev": "npm-run-all --parallel watch start"
+    "prisma:db-migrate": "prisma migrate dev",
+    "start": "npm-run-all --parallel watch nodemon"
   },
   "author": "",
   "license": "ISC",
