@@ -27,6 +27,24 @@ export default class CategoriaProdutoModel {
     }
   }
 
+  async getOne(params: {
+    where: Prisma.categoriaProdutoWhereUniqueInput
+    include?: Prisma.categoriaProdutoInclude
+  }): Promise<categoriaProduto | null> {
+    try {
+
+      const categoriaProduto = await prisma.categoriaProduto.findUnique({
+        ...params
+      })
+
+      return categoriaProduto
+
+    } catch (error: any) {
+      throw new Error(prismaErros(error))
+
+    }
+  }
+
   async create(
     categoriaData: Prisma.categoriaProdutoCreateInput
   ): Promise<number> {

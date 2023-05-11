@@ -27,6 +27,25 @@ export default class UnidadeProdutoModel {
     }
   }
 
+  async getOne(params: {
+    where: Prisma.unidadeProdutoWhereUniqueInput
+    include?: Prisma.unidadeProdutoInclude
+  }): Promise<unidadeProduto | null> {
+    try {
+
+      const unidadeProduto = await prisma.unidadeProduto.findUnique({
+        ...params
+      })
+
+      return unidadeProduto
+
+    } catch (error: any) {
+      throw new Error(prismaErros(error))
+
+    }
+  }
+
+
   async create(
     unidadeData: Prisma.unidadeProdutoCreateInput
   ): Promise<number> {

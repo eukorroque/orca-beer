@@ -61,7 +61,7 @@ export default class UnidadeProdutoController {
       }
 
       const idUnidade = parseInt(id)
-      const existsUnidade = await this.unidadeProdutoModel.getAll({ where: { id: idUnidade } })
+      const existsUnidade = await this.unidadeProdutoModel.getOne({ where: { id: idUnidade } })
 
       if (!existsUnidade) {
         return next('A unidade informado não existe.')

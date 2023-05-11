@@ -61,7 +61,7 @@ export default class CategoriaProdutoController {
       }
 
       const idCategoria = parseInt(id)
-      const existsCategoria = await this.categoriaProdutoModel.getAll({ where: { id: idCategoria } })
+      const existsCategoria = await this.categoriaProdutoModel.getOne({ where: { id: idCategoria } })
 
       if (!existsCategoria) {
         return next('A categoria informada não existe.')
