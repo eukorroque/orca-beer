@@ -1,4 +1,4 @@
-import { TouchableOpacityProps, TextProps } from 'react-native'
+import { TouchableOpacityProps } from 'react-native'
 import styled from 'styled-components/native'
 import theme from '../../config/theme'
 

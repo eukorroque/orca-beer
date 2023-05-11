@@ -1,14 +1,14 @@
 // Arquivo criado: 09/05/2023 às 19:52
 
-import { ElementType, ReactNode } from "react"
+import React from "react"
 import * as S from './styles'
 import { StatusBar } from "expo-status-bar"
 
 interface Props {
-  children: ReactNode
+  children: React.ReactNode
 }
 
-const ContainerDefault: ElementType<Props> = ({ children }: Props) => {
+const ContainerDefault: React.ElementType<Props> = ({ children }: Props) => {
 
   return (
     <S.Container>

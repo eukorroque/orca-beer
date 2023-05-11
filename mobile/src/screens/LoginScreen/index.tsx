@@ -7,16 +7,12 @@ import ContainerDefault from '../../components/ContainerDefault'
 import TextDefault from '../../components/TextDefault'
 import ButtonDefault from '../../components/ButtonDefault'
 import TittleDefault from '../../components/TittleDefault'
-import theme from '../../config/theme'
 
-interface Props {
-  navigation: any
-}
 
 const logo = require('../../../assets/logo_vertical_fundo_branco.png')
 
 
-const LoginScreen = ({ navigation }: Props) => {
+const LoginScreen = () => {
 
   return (
     <ContainerDefault>
@@ -27,6 +23,7 @@ const LoginScreen = ({ navigation }: Props) => {
         <S.FormContainer>
           {/* inputs provisórios enquanto ainda nn tem framework */}
           <TextDefault>Entre com seu CPF ou CNPJ</TextDefault>
+          {/* eslint-disable-next-line react-native/no-inline-styles */}
           <TextInput placeholder="Email" style={{ marginBottom: 25 }} />
 
           {/* inputs provisórios enquanto ainda nn tem framework */}
@@ -37,7 +34,7 @@ const LoginScreen = ({ navigation }: Props) => {
         <S.ContainerForgotPassword>
           <TextDefault bold >Esqueceu a senha? </TextDefault>
           <TouchableOpacity>
-            <TextDefault bold color='#0046CF' style={{ textDecorationLine: 'underline' }}>Redefina aqui</TextDefault>
+            <TextDefault bold linkStyle>Redefina aqui</TextDefault>
           </TouchableOpacity>
         </S.ContainerForgotPassword>
 
@@ -48,7 +45,7 @@ const LoginScreen = ({ navigation }: Props) => {
         <TextDefault bold marginVertical={24}>Ainda não tem uma conta?</TextDefault>
 
         <TouchableOpacity>
-          <TextDefault bold color='#0046CF' style={{ textDecorationLine: 'underline' }}>Cadastre-se aqui!</TextDefault>
+          <TextDefault bold linkStyle>Cadastre-se aqui!</TextDefault>
         </TouchableOpacity>
 
       </S.Container>

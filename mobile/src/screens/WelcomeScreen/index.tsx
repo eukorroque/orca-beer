@@ -2,7 +2,6 @@
 import React from 'react'
 import * as S from './styles'
 import data from './data.json'
-import { Text } from 'react-native'
 import TextDefault from '../../components/TextDefault'
 import TittleDefault from '../../components/TittleDefault'
 import ContainerDefault from '../../components/ContainerDefault'
@@ -26,8 +25,8 @@ const WelcomeScreen = ({ navigation }: Props) => {
           {
             data.boxs.map((box, index) => (
               <S.BoxOptions key={index} onPress={() => box.navigation && navigation.navigate(box.navigation)}>
-                <TittleDefault style={{ marginBottom: 10 }} fontSize={20}>{box.title}</TittleDefault>
-                <TextDefault>{box.mensagem}</TextDefault>
+                <TittleDefault marginVertical={5} fontSize={20}>{box.title}</TittleDefault>
+                <TextDefault marginVertical={5}>{box.mensagem}</TextDefault>
               </S.BoxOptions>
             ))
           }

@@ -25,8 +25,9 @@ export const BoxOptionsContainer = styled.View`
 export const BoxOptions = styled.TouchableOpacity`
   background-color: ${theme.colors.primary};
   width: 80%;
-  padding: 30px 20px;
+  padding: 25px 20px;
   align-items: center;
   margin-bottom: 25px;
   border-radius: 24px;
+
 `

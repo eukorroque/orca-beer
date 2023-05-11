@@ -1,4 +1,5 @@
 import 'react-native-gesture-handler'
+import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 import { useFonts, GemunuLibre_500Medium, GemunuLibre_700Bold } from '@expo-google-fonts/gemunu-libre'
@@ -15,6 +16,8 @@ SplashScreen.preventAutoHideAsync()
 
 const App = () => {
 
+  // como na documentação oficial estava carregando as fontes como um let. Optei por deixar esse padrão.
+  // eslint-disable-next-line prefer-const 
   let [fontsLoaded] = useFonts({
     GemunuLibre_500Medium,
     GemunuLibre_700Bold
