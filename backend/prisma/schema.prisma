@@ -21,12 +21,12 @@ model Usuario {
   senha                   String        @db.VarChar(255)
   telefone                String        @db.VarChar(15)
   ultimaValidacaoTelefone DateTime      @default(now()) /// data da ultima validação que foi feita para verificar o telefone do usuario. 
-  avaliacao               Int           @default(0)
-  cashback                Float?        @default(0) /// 0.4% de cashback em cada orcamento feito pelo fornecedor finalizado.
-  alcance                 Int?          @db.Int
-  vezesIndicou            Int?          @default(0)
-  qtdPedidosRestantes     Int?          @default(1)
-  codigoConvite           String?       @unique @db.VarChar(6)
+  avaliacao               Int?          @db.SmallInt /// avaliação do usuario, Se null, ele ainda não foi avaliado.
+  cashback                Float?        @db.Float /// cashback acumulado pelo usuario. Se null, ele ainda não tem cashback acumulado.
+  alcance                 Int?          @db.Int /// alcance do usuario. Se null, ele ainda não tem alcance definido.
+  vezesIndicou            Int           @default(0) /// vezes que o usuario indicou o app para alguem. (Apenas para lojistas)
+  qtdPedidosRestantes     Int?          @db.SmallInt /// se null, a conta é nova ou ele não é lojista
+  codigoConvite           String?       @unique @db.VarChar(6) /// se null, ele não é lojista
   status                  StatusUsuario @relation(fields: [statusId], references: [id])
   statusId                Int
   Conta                   tpContas      @relation(fields: [tpConta], references: [id])

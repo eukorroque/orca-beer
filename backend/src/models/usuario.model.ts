@@ -2,8 +2,8 @@ import { Usuario, Prisma } from "@prisma/client"
 import prisma from "../config/prisma"
 import prismaErros from "../utils/prismaErros.util"
 import { IsNumber, IsNotEmpty, Length, IsString, IsEmail, Min, Matches, IsOptional } from "class-validator"
-import NAME_REGEX from "../utils/nameRegex"
-import NUMBER_REGEX from "../utils/numberRegex"
+import NAME_REGEX from "../utils/regex/nameRegex"
+import NUMBER_REGEX from "../utils/regex/numberRegex"
 
 export default class UsuarioModel implements Usuario {
 

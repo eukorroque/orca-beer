@@ -1,17 +1,15 @@
-import { validate } from "class-validator"
 import { HttpStatus } from "../enums/httpStatus.enum"
 import UsuarioModel from "../models/usuario.model"
 import { NextFunction, Request, Response } from 'express'
-import classValidatorErros from "../utils/classValidatorErros.util"
-import StatusUsuarioModel from "../models/statusUsuario.model"
 import { Prisma } from "@prisma/client"
-// import createToken from "../utils/createToken"
+import createToken from "../utils/createToken"
+import UsuarioService from "../services/usuario.service"
 
 export default class UsuarioController {
 
   constructor (
     private usuarioModel: UsuarioModel,
-    private statusModel: StatusUsuarioModel
+    private usuarioService: UsuarioService
   ) {
   }
 
@@ -53,8 +51,6 @@ export default class UsuarioController {
     try {
       const { type } = req.params
       const { usuario, endereco } = req.body
-      let msgResponse = ''
-
 
       if (!type || !Number.isInteger(parseInt(type))) {
         return next('Informe o tipo de usuário que deseja criar')
@@ -66,72 +62,14 @@ export default class UsuarioController {
         return next('Não foram passados todos os dados necessários para o cadastro')
       }
 
-      switch (newType) {
-
-        // 1: fornecedor
-        case 1:
-          // pendente
-          usuario.statusId = 1
-          msgResponse = 'Fornecedor adicionado com sucesso. Agora só aguardar nosso time validar seus dados :)'
-
-          break
-
-        // 2: lojista
-        case 2:
-          //aprovado
-          usuario.statusId = 8
-          usuario.codigoConvite = await this.GenerateUniqueInviteCode()
-          msgResponse = 'Lojista adicionado com sucesso. Aproveite nossos serviços :)'
-
-          break
-
-        // 3: admin
-        case 3:
-          // a principio será o id do admin
-
-          // aprovado
-          usuario.statusId = 8
-          msgResponse = 'Admin adicionado com sucesso. Bom trabalho :D'
-          break
-        default:
-          return next('Tipo de usuário inválido')
-      }
-
       usuario.tpConta = newType
-      const errors = await validate(Object.assign(new UsuarioModel(), usuario))
-
-      if (errors.length > 0) {
-        const newError = classValidatorErros(errors)
-
-        if (newType !== 3) {
-          return next(newError)
-        }
-
-        // só passar aqui nesse if os campos que não serão necessários para cadastrar um admin
-        if (
-          !newError.cnpj &&
-          !newError.nomeFantasia &&
-          !newError.razaoSocial
-        ) {
-          return next(newError)
-        }
-
-
-
-      }
-
-      const idUsuario = await this.usuarioModel.create({
-        ...usuario,
-        Endereco: {
-          create: {
-            ...endereco
-          }
-        }
-      })
+      const idUsuario = await this.usuarioService.createUsuarioComEndereco(usuario, endereco)
 
       res.status(HttpStatus.CREATED).json({
         ok: true,
-        msg: msgResponse,
+        msg: newType === 1 ?
+          'Fornecedor adicionado com sucesso. Agora só aguardar nosso time validar seus dados :)' :
+          'Lojista adicionado com sucesso. Aproveite nossos serviços :)',
         id: idUsuario
       })
 
@@ -147,48 +85,21 @@ export default class UsuarioController {
       const { id, status } = req.params
 
 
-
       if (!id || !Number.isInteger(parseInt(id))) {
         return next('Informe o id do usuario que deseja atualizar o status.')
       }
-
-      const newIdUser = parseInt(id)
-      const existsUser = await this.usuarioModel.getOne({ where: { id: newIdUser } })
-
-      if (!existsUser) {
-        return next('O usuário informado não existe.')
-      }
-
-
-
 
       if (!status || !Number.isInteger(parseInt(status))) {
         return next('Informe o status que deseja atualizar o usuário.')
       }
 
+
+      const newIdUser = parseInt(id)
       const newStatus = parseInt(status)
 
-      if (newStatus === 1) {
-        return next('Não é possível atualizar o status para pendente.')
-      }
 
-      const statusExists = await this.statusModel.getOne({ where: { id: newStatus } })
+      const newUser = await this.usuarioService.updateStatusUsuario(newIdUser, newStatus)
 
-      if (!statusExists) {
-        return next('O status informado não existe.')
-      }
-
-
-      const newUser = await this.usuarioModel.update({
-        where: { id: newIdUser },
-        data: {
-          status: {
-            connect: {
-              id: newStatus
-            }
-          }
-        }
-      })
 
       if (!newUser) {
         return next('Não foi possível atualizar o status do usuário. Tente novamente mais tarde.')
@@ -229,15 +140,19 @@ export default class UsuarioController {
           { nomeResponsavel: true }
       }
 
+      // se for cpf, é necessário buscar pelo cpf do responsável.
       let user = isCnpj ?
+
         await this.usuarioModel.getOne({
           where: { cnpj: cpfOrCnpj },
           select
         }) :
+
         await this.usuarioModel.getAll({
           where: {
             cpfResponsavel: cpfOrCnpj,
             AND: [
+              // o tipo de conta não pode ser 1 pois pode ocorrer algum caso de algum fornecedor ter o mesmo cpf do responsável.
               { tpConta: { not: 1 } },
               { statusId: { not: 7 } }
             ]
@@ -246,7 +161,6 @@ export default class UsuarioController {
           select
         })
 
-      // TODO: Perguntar referente a se o usuário vai ter q ter uma senha diferente para cada tipo de conta ou não.
       if (Array.isArray(user)) user = user[0]
 
       if (!user || user.statusId === 7) {
@@ -274,17 +188,29 @@ export default class UsuarioController {
           break
       }
 
-      //todo: validar se a senha bate.
+      //TODO: validar se a senha bate. quando tiver o bcrypt
+      if (user.senha !== senha) {
+        return next('Senha incorreta.')
+      }
+
+      // dados necessários para fazer o token:
+      const token = createToken({
+        id: user.id,
+        statusId: user.statusId,
+        tpConta: user.tpConta,
+        nome: user.nomeFantasia || user.nomeResponsavel
+      })
 
 
-      // const token = createToken(user[0])
-
-      // salvando token
+      // criando cookie e salvando no navegador do usuário:
+      res.setHeader('Set-Cookie', `token=${token}; path=/; HttpOnly; SameSite=Strict;`)
 
       res.status(HttpStatus.OK).json({
         ok: true,
-        // token,
-        data: user
+        data: {
+          id: user.id,
+          nome: user.nomeFantasia || user.nomeResponsavel
+        }
       })
 
     } catch (error: any) {
@@ -292,21 +218,6 @@ export default class UsuarioController {
     }
   }
 
-  async GenerateUniqueInviteCode(): Promise<string> {
 
-    // Considerando que o código deve ter 6 caracteres.
-    // Gera um total de  36^6 = 2.176.782.336 possibilidades unicas.
-
-    const qtdCaracteres = 6
-    const code = Math.random().toString(36).substring(2, qtdCaracteres + 2)
-
-    const alreadyExists = await this.usuarioModel.getOne({ where: { codigoConvite: code } })
-
-    if (alreadyExists) {
-      return this.GenerateUniqueInviteCode()
-    }
-
-    return code
-  }
 
 }
