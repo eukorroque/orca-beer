@@ -1,95 +1,108 @@
 import { Usuario, Prisma } from "@prisma/client"
 import prisma from "../config/prisma"
 import prismaErros from "../utils/prismaErros.util"
-import { IsNumber, IsNotEmpty, Length, IsString, IsEmail, Min, Matches } from "class-validator"
+import { IsNumber, IsNotEmpty, Length, IsString, IsEmail, Min, Matches, IsOptional } from "class-validator"
 import NAME_REGEX from "../utils/nameRegex"
 import NUMBER_REGEX from "../utils/numberRegex"
 
 export default class UsuarioModel implements Usuario {
 
+  // 1: Fornecedor
+  // 2: Lojista
+
   id!: number
 
-  @IsNotEmpty({ message: 'O CNPJ deve ser informado' })
-  @Length(14, 14, { message: 'O CNPJ deve conter 14 dígitos' })
-  @Matches(NUMBER_REGEX, { message: 'O CNPJ deve conter apenas números' })
-  cnpj!: string
+  @IsOptional({ groups: ['2'] })
+  @IsNotEmpty({ message: 'O CNPJ deve ser informado', groups: ['1'] })
+  @Length(14, 14, { message: 'O CNPJ deve conter 14 dígitos', groups: ['1', '2'] })
+  @Matches(NUMBER_REGEX, { message: 'O CNPJ deve conter apenas números', groups: ['1', '2'] })
+  cnpj = null
 
 
-  @IsNotEmpty({ message: 'O nome fantasia deve ser informado' })
-  @IsString({ message: 'O nome fantasia deve ser uma string' })
-  @Length(3, 255, { message: 'O nome fantasia deve conter entre 3 e 255 caracteres' })
-  @Matches(NAME_REGEX, { message: 'O nome fantasia deve conter apenas caracteres alfanuméricos' })
+  @IsNotEmpty({ message: 'O nome fantasia deve ser informado', groups: ['1', '2'] })
+  @IsString({ message: 'O nome fantasia deve ser uma string', groups: ['1', '2'] })
+  @Length(3, 255, { message: 'O nome fantasia deve conter entre 3 e 255 caracteres', groups: ['1', '2'] })
+  @Matches(NAME_REGEX, { message: 'O nome fantasia deve conter apenas caracteres alfanuméricos', groups: ['1', '2'] })
   nomeFantasia!: string
 
 
-  @IsNotEmpty({ message: 'A razão social deve ser informada' })
-  @IsString({ message: 'A razão social deve ser uma string' })
-  @Length(3, 255, { message: 'A razão social deve conter entre 3 e 255 caracteres' })
-  @Matches(NAME_REGEX, { message: 'O nome fantasia deve conter apenas caracteres alfanuméricos' })
+  @IsNotEmpty({ message: 'A razão social deve ser informada', groups: ['1', '2'] })
+  @IsString({ message: 'A razão social deve ser uma string', groups: ['1', '2'] })
+  @Length(3, 255, { message: 'A razão social deve conter entre 3 e 255 caracteres', groups: ['1', '2'] })
+  @Matches(NAME_REGEX, { message: 'O nome fantasia deve conter apenas caracteres alfanuméricos', groups: ['1', '2'] })
   razaoSocial!: string
 
 
-  @IsNotEmpty({ message: 'O e-mail deve ser informado' })
-  @IsEmail({}, { message: 'O e-mail informado é inválido' })
-  @Length(10, 100, { message: 'O e-mail deve conter entre 10 e 255 caracteres' })
+  @IsNotEmpty({ message: 'O e-mail deve ser informado', groups: ['1', '2'] })
+  @IsEmail({}, { message: 'O e-mail informado é inválido', groups: ['1', '2'] })
+  @Length(10, 100, { message: 'O e-mail deve conter entre 10 e 255 caracteres', groups: ['1', '2'] })
   email!: string
 
 
-  @IsNotEmpty({ message: 'O CPF do responsável deve ser informado' })
-  @Length(11, 11, { message: 'O CPF do responsável deve conter 11 dígitos' })
-  @Matches(NUMBER_REGEX, { message: 'O CPF do responsável deve conter apenas números' })
+  @IsNotEmpty({ message: 'O CPF do responsável deve ser informado', groups: ['1', '2'] })
+  @Length(11, 11, { message: 'O CPF do responsável deve conter 11 dígitos', groups: ['1', '2'] })
+  @Matches(NUMBER_REGEX, { message: 'O CPF do responsável deve conter apenas números', groups: ['1', '2'] })
   cpfResponsavel!: string
 
 
-  @IsNotEmpty({ message: 'O nome do responsável deve ser informado' })
-  @IsString({ message: 'O nome do responsável deve ser uma string' })
-  @Length(3, 255, { message: 'O nome do responsável deve conter entre 3 e 255 caracteres' })
-  @Matches(NAME_REGEX, { message: 'O nome fantasia deve conter apenas caracteres alfanuméricos' })
+  @IsNotEmpty({ message: 'O nome do responsável deve ser informado', groups: ['1', '2'] })
+  @IsString({ message: 'O nome do responsável deve ser uma string', groups: ['1', '2'] })
+  @Length(3, 255, { message: 'O nome do responsável deve conter entre 3 e 255 caracteres', groups: ['1', '2'] })
+  @Matches(NAME_REGEX, { message: 'O nome fantasia deve conter apenas caracteres alfanuméricos', groups: ['1', '2'] })
   nomeResponsavel!: string
 
 
-  @IsNotEmpty({ message: 'A senha deve ser informada' })
+  @IsNotEmpty({ message: 'A senha deve ser informada', groups: ['1', '2'] })
   senha!: string
 
 
-  @IsNotEmpty({ message: 'O telefone deve ser informado' })
-  @Length(11, 11, { message: 'O telefone deve conter entre 11 e 11 dígitos' })
-  @Matches(NUMBER_REGEX, { message: 'O telefone deve conter apenas números' })
+  @IsNotEmpty({ message: 'O telefone deve ser informado', groups: ['1', '2'] })
+  @Length(11, 11, { message: 'O telefone deve conter entre 11 e 11 dígitos', groups: ['1', '2'] })
+  @Matches(NUMBER_REGEX, { message: 'O telefone deve conter apenas números', groups: ['1', '2'] })
   telefone!: string
 
 
   ultimaValidacaoTelefone!: Date
 
 
-
-  @IsNotEmpty({ message: 'A avaliação deve ser informada' })
-  @IsNumber({}, { message: 'A avaliação deve ser um número' })
-  @Min(0, { message: 'A avaliação deve ser maior ou igual a 0' })
+  @IsOptional({ groups: ['1', '2'] })
+  @IsNumber({}, { message: 'A avaliação deve ser um número', groups: ['1', '2'] })
+  @Min(0, { message: 'A avaliação deve ser maior ou igual a 0', groups: ['1', '2'] })
   avaliacao = 0
 
 
-  @IsNotEmpty({ message: 'O valor de cashback devem ser informados' })
-  @IsNumber({}, { message: 'O valor de cashback devem ser um número' })
-  @Min(0, { message: 'O valor de cashback deve ser maior ou igual a 0' })
-  cashback = 0
+  @IsOptional({ groups: ['1', '2'] })
+  @IsNumber({}, { message: 'O valor de cashback devem ser um número', groups: ['1', '2'] })
+  @Min(0, { message: 'O valor de cashback deve ser maior ou igual a 0', groups: ['1', '2'] })
+  cashback!: number | null
 
 
-  @IsNumber({}, { message: 'O rádio de atendimento deve ser um número' })
-  @Min(0, { message: 'O rádio de atendimento deve ser maior ou igual a 0' })
-  alcance = 0
+
+  @IsOptional({ groups: ['1'] })
+  @IsNumber({}, { message: 'O rádio de atendimento deve ser um número', groups: ['1'] })
+  @Min(0, { message: 'O rádio de atendimento deve ser maior ou igual a 0', groups: ['1'] })
+  alcance!: number | null
 
 
-  @IsNumber({}, { message: 'A quantidade de vezes indicadas deve ser um número' })
-  @Min(0, { message: 'A quantidade de vezes indicadas deve ser maior ou igual a 0' })
-  vezesIndicou = 0
+
+  @IsOptional({ groups: ['2'] })
+  @IsNumber({}, { message: 'A quantidade de vezes indicadas deve ser um número', groups: ['2'] })
+  @Min(0, { message: 'A quantidade de vezes indicadas deve ser maior ou igual a 0', groups: ['2'] })
+  vezesIndicou!: number /// o proprio banco vai setar como default esse valor como 0
 
 
-  @IsNumber({}, { message: 'A quantidade de pedidos restantes deve ser um número' })
-  @Min(0, { message: 'A quantidade de pedidos restantes deve ser maior ou igual a 0' })
-  qtdPedidosRestantes = 1
+  @IsOptional({ groups: ['2'] })
+  @IsNumber({}, { message: 'A quantidade de pedidos restantes deve ser um número', groups: ['2'] })
+  @Min(0, { message: 'A quantidade de pedidos restantes deve ser maior ou igual a 0', groups: ['2'] })
+  qtdPedidosRestantes!: number | null
 
-  @IsString({ message: 'O código de convite deve ser uma string' })
-  codigoConvite = ''
+
+  @IsOptional({ groups: ['2'] })
+  @IsString({ message: 'O código de convite deve ser uma string', groups: ['2'] })
+  @Length(6, 6, { message: 'O código de convite deve conter 6 caracteres', groups: ['2'] })
+  codigoConvite!: string | null
+
+
 
   @IsNumber({}, { message: 'O ID de status deve ser um número' })
   statusId!: number
