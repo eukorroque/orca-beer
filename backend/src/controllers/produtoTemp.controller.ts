@@ -19,7 +19,7 @@ export default class ProdutoTempController {
       const produtosTemp = await this.produtoTempModel.getAll()
 
       if (produtosTemp.length <= 0) {
-        return next('Ainda não foram cadastrados produtos pelos lojistas')
+        return next('Não há produtos para validação')
       }
 
       res.status(HttpStatus.OK).json({
@@ -28,7 +28,7 @@ export default class ProdutoTempController {
       })
 
     } catch (error) {
-      return next('Ocorreu um erro ao tentar listar os produtos selecionados')
+      return next('Ocorreu um erro ao tentar listar os produtos.')
     }
   }
 
@@ -50,11 +50,12 @@ export default class ProdutoTempController {
       }
 
       const existsCategoria = await this.categoriaProdutoModel.getAll({ where: { id: produtoTemp.categoriaId } })
-      const existsNome = await this.produtoTempModel.getOne({ where: { nome: `${produtoTemp.nome}` } })
       
       if (!existsCategoria) {
         return next('A categoria informada não existe.')
       } 
+    
+    const existsNome = await this.produtoTempModel.getOne({ where: { nome: `${produtoTemp.nome}` } })
       
       if (existsNome) {
 
@@ -66,6 +67,10 @@ export default class ProdutoTempController {
             }
           }
         })
+    
+    if(!updateProdutoTemp){
+       return next('Ocorreu um erro ao tentar adicionar o produto em nossa base de dados.')
+    }
         
         res.status(HttpStatus.OK).json({
           ok: true,
