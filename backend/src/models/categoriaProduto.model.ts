@@ -1,8 +1,17 @@
 import { categoriaProduto, Prisma } from "@prisma/client";
 import prisma from "../config/prisma";
 import prismaErros from "../utils/prismaErros.util";
+import { IsNotEmpty, Length, IsString } from "class-validator"
 
 export default class CategoriaProdutoModel {
+
+  id!: number
+
+  @IsNotEmpty({ message: 'A categoria deve ser informada' })
+  @IsString({ message: 'A categoria está em um formato incorreto' })
+  @Length(3, 255, { message: 'A categoria deve conter entre 3 e 255 caracteres' })
+  categoria!: string
+
 
   async getAll(params?: {
     skip?: number
@@ -68,11 +77,11 @@ export default class CategoriaProdutoModel {
     data: Prisma.categoriaProdutoUpdateInput
   }): Promise<categoriaProduto | null> {
     try {
-      const categoria = await prisma.categoriaProduto.update({
+      const nomeCategoria = await prisma.categoriaProduto.update({
         ...params
       })
 
-      return categoria
+      return nomeCategoria
 
     } catch (error: any) {
 

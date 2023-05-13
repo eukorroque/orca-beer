@@ -10,6 +10,6 @@ const router = Router()
 router
   .get('/categorias/produtos', Controller.getAll.bind(Controller))
   .post('/categorias/produtos', Controller.create.bind(Controller))
-  .put('/categorias/:id/atualizar-categoria/:categoria', Controller.update.bind(Controller))
+  .put('/categorias/:id', Controller.update.bind(Controller))
 
 export default router

@@ -1,17 +1,15 @@
 import { HttpStatus } from "../enums/httpStatus.enum"
 import ProdutoTempModel from "../models/produtoTemp.model"
 import { NextFunction, Request, Response } from 'express'
-import ProdutoModel from "../models/produto.model"
 import CategoriaProdutoModel from "../models/categoriaProduto.model"
-import UnidadeProdutoModel from "../models/unidadeProduto.model"
+import { validate } from "class-validator"
+import classValidatorErros from "../utils/classValidatorErros.util"
 
 export default class ProdutoTempController {
 
   constructor (
     private produtoTempModel: ProdutoTempModel,
-    private produtoModel: ProdutoModel,
-    private categoriaProdutoModel: CategoriaProdutoModel,
-    private unidadeProdutoModel: UnidadeProdutoModel
+    private categoriaProdutoModel: CategoriaProdutoModel
   ) {
   }
 
@@ -40,36 +38,44 @@ export default class ProdutoTempController {
       const { produtoTemp } = req.body
       const msgResponse = 'Produto incluído com sucesso!'
 
-      if (!produtoTemp.nome || !produtoTemp.categoriaId || !produtoTemp.unidadeId) {
-        return next('Não foram passados todos os dados necessários para o cadastro do produto')
+      if (!produtoTemp) {
+        return next('Informe o produto que deseja incluir em seu orçamento')
       }
 
-      const newCategoriaId = parseInt(produtoTemp.categoriaId)
-      const newUnidadeId = parseInt(produtoTemp.unidadeId)
-      const newNome = produtoTemp.nome.toString()
+      const errors = await validate(Object.assign(new ProdutoTempModel(), produtoTemp))
 
-      const existsCategoria = await this.categoriaProdutoModel.getAll({ where: { id: newCategoriaId } })
-      const existsUnidade = await this.unidadeProdutoModel.getAll({ where: { id: newUnidadeId } })
-      const existsQtd = await this.produtoTempModel.count({ where: { nome: {contains: newNome } } })
-      const existsNome = await this.produtoModel.getAll({ where: { nome: {contains: newNome } } })
+      if (errors.length > 0) {
+        const newError = classValidatorErros(errors)        
+          return next(newError)
+      }
 
+      const existsCategoria = await this.categoriaProdutoModel.getAll({ where: { id: produtoTemp.categoriaId } })
+      const existsNome = await this.produtoTempModel.getOne({ where: { nome: `${produtoTemp.nome}` } })
+      
       if (!existsCategoria) {
         return next('A categoria informada não existe.')
       } 
+      
+      if (existsNome) {
 
-      if (!existsUnidade) {
-        return next('A unidade informada não existe.')
+        const updateProdutoTemp = await this.produtoTempModel.update({
+          where: { nome: `${produtoTemp.nome}` },
+          data: {
+            qtdInclusao: {
+                increment: 1
+            }
+          }
+        })
+        
+        res.status(HttpStatus.OK).json({
+          ok: true,
+          msg: msgResponse,
+          id: updateProdutoTemp
+        })
+        return
       }
 
-      if (existsNome.length > 0) {
-        return next('Esse produto já está cadastrado no sistema.')
-      }
-
-      if (existsQtd > 0) {
-        produtoTemp.qtdInclusao = existsQtd + 1
-      } else {
-        produtoTemp.qtdInclusao = 1
-      }
+      produtoTemp.qtdInclusao = 1
 
       const idProdutoTemp = await this.produtoTempModel.create({
         ...produtoTemp

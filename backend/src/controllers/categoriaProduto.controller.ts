@@ -1,9 +1,12 @@
 import { HttpStatus } from "../enums/httpStatus.enum";
 import CategoriaProdutoModel from "../models/categoriaProduto.model";
-import { NextFunction, Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express';
+import { validate } from "class-validator";
+import classValidatorErros from "../utils/classValidatorErros.util"
+
 
 export default class CategoriaProdutoController {
-
+ 
   constructor(
     private categoriaProdutoModel: CategoriaProdutoModel
     ) { 
@@ -34,9 +37,15 @@ export default class CategoriaProdutoController {
       const { categoria } = req.body
 
       if (!categoria) {
-        return next('Não foram passados todos os dados necessários para o cadastro')
+        return next('Informe a categoria que deseja criar')
       }
 
+      const errors = await validate(Object.assign(new CategoriaProdutoModel(), categoria))
+
+      if (errors.length > 0) {
+        const newError = classValidatorErros(errors)        
+          return next(newError)
+      }
       
       const idCategoria = await this.categoriaProdutoModel.create({
         ...categoria
@@ -54,10 +63,16 @@ export default class CategoriaProdutoController {
 
   async update(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { id, categoria } = req.params
+      
+      const { id } = req.params
+      const { categoria } = req.body
 
       if (!id || !Number.isInteger(parseInt(id))) {
-        return next('Informe o id da categoria que deseja atualizar no sistema.')
+        return next('Informe o id da categoria que deseja atualizar.')
+      }
+
+      if (!categoria) {
+        return next('Informe a nova categoria.')
       }
 
       const idCategoria = parseInt(id)
@@ -65,10 +80,6 @@ export default class CategoriaProdutoController {
 
       if (!existsCategoria) {
         return next('A categoria informada não existe.')
-      }
-
-      if (!categoria) {
-        return next('Informe a nova categoria.')
       }
 
       const newCategoria = categoria.toString()
@@ -82,12 +93,12 @@ export default class CategoriaProdutoController {
       })
 
       if (!updatedCategoria) {
-        return next('Não foi possível atualizar a unidade. Tente novamente mais tarde.')
+        return next('Não foi possível atualizar a categoria. Tente novamente mais tarde.')
       }
 
       res.status(HttpStatus.OK).json({
         ok: true,
-        msg: 'A unidade foi atualizada com sucesso.',
+        msg: 'A categoria foi atualizada com sucesso.',
       })
 
     } catch (error: any) {

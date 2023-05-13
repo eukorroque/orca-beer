@@ -68,10 +68,7 @@ model ProdutoTemp {
   id          Int              @id @default(autoincrement())
   categoria   categoriaProduto @relation(fields: [categoriaId], references: [id])
   categoriaId Int
-  unidade     unidadeProduto   @relation(fields: [unidadeId], references: [id])
-  unidadeId   Int
-  nome        String           @db.VarChar(255)
-  quantidade  Int              @db.SmallInt
+  nome        String           @unique @db.VarChar(255)
   qtdInclusao Int              @db.SmallInt
   // preco - talvez tenha o preco aqui.
   // ranking - posição no ranking de produtos.
@@ -88,7 +85,6 @@ model unidadeProduto {
   id          Int           @id @default(autoincrement())
   unidade     String        @unique @db.VarChar(255)
   Produto     Produto[]
-  ProdutoTemp ProdutoTemp[]
 }
 
 model Status {

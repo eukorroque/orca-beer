@@ -1,8 +1,16 @@
 import { unidadeProduto, Prisma } from "@prisma/client";
 import prisma from "../config/prisma";
 import prismaErros from "../utils/prismaErros.util";
+import { IsNotEmpty, Length, IsString } from "class-validator"
 
 export default class UnidadeProdutoModel {
+
+  id!: number
+
+  @IsNotEmpty({ message: 'A unidade deve ser informada' })
+  @IsString({ message: 'A unidade está em um formato incorreto' })
+  @Length(3, 255, { message: 'A unidade deve conter entre 3 e 255 caracteres' })
+  unidade!: string
 
   async getAll(params?: {
     skip?: number
@@ -69,11 +77,11 @@ export default class UnidadeProdutoModel {
     data: Prisma.unidadeProdutoUpdateInput
   }): Promise<unidadeProduto | null> {
     try {
-      const unidade = await prisma.unidadeProduto.update({
+      const nomeUnidade = await prisma.unidadeProduto.update({
         ...params
       })
 
-      return unidade
+      return nomeUnidade
 
     } catch (error: any) {
 

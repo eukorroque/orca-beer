@@ -1,6 +1,8 @@
 import { HttpStatus } from "../enums/httpStatus.enum";
 import UnidadeProdutoModel from "../models/unidadeProduto.model";
-import { NextFunction, Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express';
+import { validate } from "class-validator";
+import classValidatorErros from "../utils/classValidatorErros.util"
 
 export default class UnidadeProdutoController {
 
@@ -34,9 +36,16 @@ export default class UnidadeProdutoController {
       const { unidade } = req.body
 
       if (!unidade) {
-        return next('Não foram passados todos os dados necessários para o cadastro')
+        return next('Informe a unidade que deseja criar')
       }
-      
+
+      const errors = await validate(Object.assign(new UnidadeProdutoModel(), unidade))
+
+      if (errors.length > 0) {
+        const newError = classValidatorErros(errors)        
+          return next(newError)
+      }
+
       const idUnidade = await this.unidadeProdutoModel.create({
         ...unidade
       })
@@ -54,10 +63,16 @@ export default class UnidadeProdutoController {
 
   async update(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { id, unidade } = req.params
+      
+      const { id } = req.params
+      const { unidade } = req.body
 
       if (!id || !Number.isInteger(parseInt(id))) {
         return next('Informe o id da unidade que deseja atualizar no sistema.')
+      }
+
+      if (!unidade) {
+        return next('Informe a nova unidade.')
       }
 
       const idUnidade = parseInt(id)
@@ -65,10 +80,6 @@ export default class UnidadeProdutoController {
 
       if (!existsUnidade) {
         return next('A unidade informado não existe.')
-      }
-
-      if (!unidade) {
-        return next('Informe a nova unidade.')
       }
 
       const newUnidade = unidade.toString()
