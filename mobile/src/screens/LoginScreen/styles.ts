@@ -1,34 +1,31 @@
 import styled from "styled-components/native"
-import theme from "../../config/theme"
 
 export const Container = styled.View`
   flex: 1;
+  align-items: center;
   justify-content: center;
-  align-items: center;
-
-  
+  margin-bottom: 100px;
 `
 
+const imageSize = 170
 export const Logo = styled.Image`
-  align-self: center;
-  width: 200px;
-  height: 200px;
-  margin-bottom: 60px;
+  width: ${imageSize}px;
+  height: ${imageSize}px;
+  margin-bottom: 40px;
 
 `
 
-export const BoxOptionsContainer = styled.View`
+export const FormContainer = styled.View`
+  width: 60%;
   margin-top: 30px;
-  width: 100%;
-  padding: 0 20px;
-  align-items: center;
 `
 
-export const BoxOptions = styled.TouchableOpacity`
-  background-color: ${theme.colors.primary};
-  width: 80%;
-  padding: 30px 20px;
-  align-items: center;
-  margin-bottom: 25px;
-  border-radius: 10px;
+export const ContainerForgotPassword = styled.View`
+  flex-direction: row;
+  margin-top: 20px;
+`
+
+export const ButtonLoginContainer = styled.View`
+  margin-top: 20px;
+  width: 60%;
 `

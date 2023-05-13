@@ -4,6 +4,5 @@
  */
 export enum tpConta {
   FORNECEDOR = 1,
-  LOJISTA = 2,
-  ADMIN = 3
+  LOJISTA = 2
 }
