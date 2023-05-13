@@ -1,44 +1,56 @@
 import { Prisma, Endereco } from "@prisma/client"
 import prisma from "../config/prisma"
 import prismaErros from "../utils/prismaErros.util"
-import { IsNumber, IsNotEmpty, Length, IsString } from "class-validator"
+import { IsNumber, IsNotEmpty, Length, IsString, IsOptional, Matches } from "class-validator"
+import NUMBER_REGEX from "../utils/regex/numberRegex"
 
+/**
+ * Se passar o grupo 1, o responsavelId é obrigatório. Se passar o grupo 2, o responsavelId é opcional.
+ */
 export default class EnderecoUsuarioModel implements Endereco {
   id!: number
 
-  @IsNumber({}, { message: 'O número deve conter apenas caracteres numéricos' })
+  @IsOptional({ groups: ['1', '2'] })
+  @IsNumber({}, { message: 'O número deve conter apenas caracteres numéricos', groups: ['1', '2'] })
   numero!: number | null
 
-  @IsNotEmpty({ message: 'O CEP deve ser informado' })
-  @Length(8, 8, { message: 'O CEP deve conter 8 dígitos' })
-  @IsNumber({}, { message: 'O CEP deve conter apenas caracteres numéricos' })
+  @Length(8, 8, { message: 'O CEP deve conter 8 dígitos', groups: ['1', '2'] })
+  @Matches(NUMBER_REGEX, { message: 'O CEP deve conter apenas caracteres numéricos', groups: ['1', '2'] })
+  @IsNotEmpty({ message: 'O CEP deve ser informado', groups: ['1', '2'] })
   cep!: string
 
-  @IsNotEmpty({ message: 'A rua deve ser informada' })
-  @IsString({ message: 'A rua está em um formato incorreto' })
-  @Length(3, 100, { message: 'A rua deve conter entre 3 e 100 caracteres' })
+  @Length(3, 100, { message: 'A rua deve conter entre 3 e 100 caracteres', groups: ['1', '2'] })
+  @IsString({ message: 'A rua está em um formato incorreto', groups: ['1', '2'] })
+  @IsNotEmpty({ message: 'A rua deve ser informada', groups: ['1', '2'] })
   rua!: string
 
-  @IsString({ message: 'O complemento está em um formato incorreto' })
+
+  @IsOptional({ groups: ['1', '2'] })
+  @IsString({ message: 'O complemento está em um formato incorreto', groups: ['1', '2'] })
   complemento!: string | null
 
-  @IsNotEmpty({ message: 'O bairro deve ser informado' })
-  @IsString({ message: 'O bairro está em um formato incorreto' })
-  @Length(3, 100, { message: 'O bairro deve conter entre 3 e 100 caracteres' })
+  @Length(3, 100, { message: 'O bairro deve conter entre 3 e 100 caracteres', groups: ['1', '2'] })
+  @IsString({ message: 'O bairro está em um formato incorreto', groups: ['1', '2'] })
+  @IsNotEmpty({ message: 'O bairro deve ser informado', groups: ['1', '2'] })
   bairro!: string
 
-  @IsNotEmpty({ message: 'A cidade deve ser informada' })
-  @IsString({ message: 'A cidade está em um formato incorreto' })
-  @Length(3, 100, { message: 'A cidade deve conter entre 3 e 100 caracteres' })
+  @Length(3, 100, { message: 'A cidade deve conter entre 3 e 100 caracteres', groups: ['1', '2'] })
+  @IsString({ message: 'A cidade está em um formato incorreto', groups: ['1', '2'] })
+  @IsNotEmpty({ message: 'A cidade deve ser informada', groups: ['1', '2'] })
   cidade!: string
 
-  @IsNotEmpty({ message: 'O estado deve ser informado' })
-  @IsString({ message: 'O estado está em um formato incorreto' })
-  @Length(2, 2, { message: 'O estado deve conter 2 caracteres' })
+  @Length(2, 2, { message: 'O estado deve conter 2 caracteres', groups: ['1', '2'] })
+  @IsString({ message: 'O estado está em um formato incorreto', groups: ['1', '2'] })
+  @IsNotEmpty({ message: 'O estado deve ser informado', groups: ['1', '2'] })
   estado!: string
 
-  @IsNumber({}, { message: 'O ID do responsável deve ser um número' })
+  @IsNumber({}, { message: 'O ID do responsável deve ser um número', groups: ['1'] })
   responsavelId!: number
+
+  @IsOptional({ groups: ['1', '2'] })
+  @IsString({ message: 'O titulo do endereço está em um formato incorreto', groups: ['1', '2'] })
+  @Length(2, 100, { message: 'O titulo do endereço deve conter entre 2 e 100 caracteres', groups: ['1', '2'] })
+  label = null
 
   criadoEm!: Date
 

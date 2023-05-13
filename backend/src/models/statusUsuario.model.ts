@@ -1,4 +1,4 @@
-import { Status, Prisma } from "@prisma/client"
+import { StatusUsuario, Prisma } from "@prisma/client"
 import prisma from "../config/prisma"
 import prismaErros from "../utils/prismaErros.util"
 
@@ -7,16 +7,16 @@ export default class StatusUsuarioModel {
   async getAll(params?: {
     skip?: number
     take?: number
-    cursor?: Prisma.StatusWhereUniqueInput
-    where?: Prisma.StatusWhereInput
-    orderBy?: Prisma.StatusOrderByWithRelationInput
-    include?: Prisma.StatusInclude
-    select?: Prisma.StatusSelect
+    cursor?: Prisma.StatusUsuarioWhereUniqueInput
+    where?: Prisma.StatusUsuarioWhereInput
+    orderBy?: Prisma.StatusUsuarioOrderByWithRelationInput
+    include?: Prisma.StatusUsuarioInclude
+    select?: Prisma.StatusUsuarioSelect
   }
-  ): Promise<Status[]> {
+  ): Promise<StatusUsuario[]> {
     try {
 
-      const status = await prisma.status.findMany({
+      const status = await prisma.statusUsuario.findMany({
         ...params
       })
 
@@ -29,13 +29,13 @@ export default class StatusUsuarioModel {
   }
 
   async getOne(params: {
-    include?: Prisma.StatusInclude
-    select?: Prisma.StatusSelect
-    where: Prisma.StatusWhereUniqueInput
-  }): Promise<Status | null> {
+    include?: Prisma.StatusUsuarioInclude
+    select?: Prisma.StatusUsuarioSelect
+    where: Prisma.StatusUsuarioWhereUniqueInput
+  }): Promise<StatusUsuario | null> {
     try {
 
-      const status = await prisma.status.findUnique({
+      const status = await prisma.statusUsuario.findUnique({
         ...params
       })
 

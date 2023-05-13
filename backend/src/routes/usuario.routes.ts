@@ -2,16 +2,20 @@ import { Router } from 'express'
 import UsuarioModel from '../models/usuario.model'
 import UsuarioController from '../controllers/usuario.controller'
 import StatusUsuarioModel from '../models/statusUsuario.model'
+import UsuarioService from '../services/usuario.service'
 
-const Usuario = new UsuarioModel
-const Status = new StatusUsuarioModel
-const Controller = new UsuarioController(Usuario, Status)
+const usuarioModel = new UsuarioModel
+const statusUsuarioModel = new StatusUsuarioModel
+const usuarioService = new UsuarioService(usuarioModel, statusUsuarioModel)
+
+const usuarioController = new UsuarioController(usuarioModel, usuarioService)
 
 const router = Router()
 
 router
-  .get('/usuarios/:type', Controller.getAll.bind(Controller))
-  .post('/usuario/:type', Controller.create.bind(Controller))
-  .put('/usuario/:id/alterar-status/:status', Controller.updateStatus.bind(Controller))
+  .post('/usuario/login', usuarioController.login.bind(usuarioController))
+  .get('/usuarios/:type', usuarioController.getAll.bind(usuarioController))
+  .post('/usuario/:type', usuarioController.create.bind(usuarioController))
+  .put('/usuario/:id/alterar-status/:status', usuarioController.updateStatus.bind(usuarioController))
 
 export default router

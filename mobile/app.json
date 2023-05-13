@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "orcabeer",
+    "name": "Orça beer",
     "slug": "orcabeer",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo_vertical_fundo_branco.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.app.orcabeer"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "784e04ab-36ff-4a14-ad00-b25b4ebf1166"
+      }
     }
   }
 }

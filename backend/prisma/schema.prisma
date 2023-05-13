@@ -11,28 +11,43 @@ datasource db {
 }
 
 model Usuario {
-  id                  Int        @id @default(autoincrement())
-  cnpj                String?    @unique @db.VarChar(14)
-  nomeFantasia        String?    @db.VarChar(255)
-  razaoSocial         String?    @db.VarChar(255)
-  email               String     @unique @db.VarChar(50) /// o e-mail é único entre os usuários.
-  cpfResponsavel      String     @db.VarChar(11)
-  nomeResponsavel     String     @db.VarChar(255)
-  senha               String     @db.VarChar(255)
-  telefone            String     @db.VarChar(15)
-  avaliacao           Int        @default(0)
-  cashback            Float      @default(0) /// 0.4% de cashback em cada orcamento feito pelo fornecedor finalizado.
-  radioAtendimento    Int?       @db.Int
-  vezesIndicou        Int?       @default(0) /// Quantas vezes o fornecedor indicou outros fornecedores e os mesmos criaram conta na plataforma
-  qtdPedidosRestantes Int?       @default(1)
-  codigoConvite       String?    @unique @db.VarChar(6)
-  status              Status     @relation(fields: [statusId], references: [id])
-  statusId            Int
-  Conta               tpContas   @relation(fields: [tpConta], references: [id])
-  tpConta             Int
-  Endereco            Endereco[]
-  criadoEm            DateTime   @default(now())
-  atualizadoEm        DateTime   @updatedAt
+  id                      Int           @id @default(autoincrement())
+  cnpj                    String?       @unique @db.VarChar(14)
+  nomeFantasia            String        @db.VarChar(255)
+  razaoSocial             String        @db.VarChar(255)
+  email                   String        @unique @db.VarChar(50) /// o e-mail é único entre os usuários.
+  cpfResponsavel          String        @db.VarChar(11)
+  nomeResponsavel         String        @db.VarChar(255)
+  senha                   String        @db.VarChar(255)
+  telefone                String        @db.VarChar(15)
+  ultimaValidacaoTelefone DateTime      @default(now()) /// data da ultima validação que foi feita para verificar o telefone do usuario. 
+  avaliacao               Int?          @db.SmallInt /// avaliação do usuario, Se null, ele ainda não foi avaliado.
+  cashback                Float?        @db.Float /// cashback acumulado pelo usuario. Se null, ele ainda não tem cashback acumulado.
+  alcance                 Int?          @db.Int /// alcance do usuario. Se null, ele ainda não tem alcance definido.
+  vezesIndicou            Int           @default(0) /// vezes que o usuario indicou o app para alguem. (Apenas para lojistas)
+  qtdPedidosRestantes     Int?          @db.SmallInt /// se null, a conta é nova ou ele não é lojista
+  codigoConvite           String?       @unique @db.VarChar(6) /// se null, ele não é lojista
+  status                  StatusUsuario @relation(fields: [statusId], references: [id])
+  statusId                Int
+  Conta                   tpContas      @relation(fields: [tpConta], references: [id])
+  tpConta                 Int
+  Endereco                Endereco[]
+  ultimoLogin             DateTime      @default(now())
+  criadoEm                DateTime      @default(now())
+  atualizadoEm            DateTime      @updatedAt
+}
+
+model Admin {
+  id           Int      @id @default(autoincrement())
+  nome         String   @db.VarChar(255)
+  email        String   @unique @db.VarChar(50)
+  senha        String   @db.VarChar(255)
+  telefone     String?  @unique @db.VarChar(15)
+  cpf          String?  @unique @db.VarChar(11)
+  Conta        tpAdmins @relation(fields: [tpAdmin], references: [id])
+  tpAdmin      Int
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
 }
 
 model Endereco {
@@ -48,8 +63,7 @@ model Endereco {
   responsavelId Int
   criadoEm      DateTime @default(now())
   atualizadoEm  DateTime @updatedAt
-
-  // label String?
+  label         String?  @db.VarChar(255)
 }
 
 model Produto {
@@ -60,7 +74,6 @@ model Produto {
   unidadeId   Int
   nome        String           @db.VarChar(255)
   quantidade  Int              @db.SmallInt
-  // preco - talvez tenha o preco aqui.
   // ranking - posição no ranking de produtos.
 }
 
@@ -70,7 +83,6 @@ model ProdutoTemp {
   categoriaId Int
   nome        String           @unique @db.VarChar(255)
   qtdInclusao Int              @db.SmallInt
-  // preco - talvez tenha o preco aqui.
   // ranking - posição no ranking de produtos.
 }
 
@@ -87,7 +99,7 @@ model unidadeProduto {
   Produto     Produto[]
 }
 
-model Status {
+model StatusUsuario {
   id      Int       @id @default(autoincrement())
   status  String    @unique @db.VarChar(255)
   Usuario Usuario[]
@@ -99,8 +111,13 @@ model tpContas {
   Usuario Usuario[]
 }
 
+model tpAdmins {
+  id    Int     @id @default(autoincrement())
+  tipo  String  @unique @db.VarChar(255)
+  Admin Admin[]
+}
+
 enum tdContasEnum {
   FORNECEDOR
   LOJISTA
-  ADMIN
 }
