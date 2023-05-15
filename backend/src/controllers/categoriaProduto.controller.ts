@@ -83,6 +83,7 @@ export default class CategoriaProdutoController {
       }
 
       const newCategoria = categoria.toString()
+      
       const updatedCategoria = await this.categoriaProdutoModel.update({
         where: { id: idCategoria },
         data: {

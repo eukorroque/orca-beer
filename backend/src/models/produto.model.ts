@@ -18,8 +18,9 @@ export default class ProdutoModel {
   @IsString({ message: 'O nome do produto deve ser uma string' })
   nome!: string
 
-  @IsNumber({}, { message: 'A quantidade deve ser um número' })
-  quantidade!: number
+  criadoEm!: Date
+
+  atualizadoEm!: Date
 
   async getAll(params?: {
     skip?: number
