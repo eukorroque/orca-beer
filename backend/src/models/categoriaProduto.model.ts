@@ -8,10 +8,10 @@ export default class CategoriaProdutoModel {
 
   id!: number
 
-  @IsNotEmpty({ message: 'A categoria deve ser informada' })
-  @IsString({ message: 'A categoria está em um formato incorreto' })
   @Length(3, 255, { message: 'A categoria deve conter entre 3 e 255 caracteres' })
   @Matches(NAME_REGEX, { message: 'A categoria deve conter apenas caracteres alfanuméricos' })
+  @IsNotEmpty({ message: 'A categoria deve ser informada' })
+  @IsString({ message: 'A categoria deve ser uma string' })
   categoria!: string
 
   criadoEm!: Date

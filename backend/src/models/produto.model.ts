@@ -13,9 +13,9 @@ export default class ProdutoModel {
   @IsNumber({}, { message: 'O ID dea unidade deve ser um número' })
   unidadeId!: number
 
-  @IsNotEmpty({ message: 'O nome do produto deve ser informado' })
-  @IsString({ message: 'O nome do produto está em um formato incorreto' })
   @Length(3, 255, { message: 'O nome do produto deve conter entre 3 e 255 caracteres' })
+  @IsNotEmpty({ message: 'O nome do produto deve ser informado' })
+  @IsString({ message: 'O nome do produto deve ser uma string' })
   nome!: string
 
   criadoEm!: Date
