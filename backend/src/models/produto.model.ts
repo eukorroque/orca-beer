@@ -18,8 +18,9 @@ export default class ProdutoModel {
   @Length(3, 255, { message: 'O nome do produto deve conter entre 3 e 255 caracteres' })
   nome!: string
 
-  @IsNumber({}, { message: 'A quantidade deve ser um número' })
-  quantidade!: number
+  criadoEm!: Date
+
+  atualizadoEm!: Date
 
   async getAll(params?: {
     skip?: number

@@ -1,23 +1,31 @@
 import { ProdutoTemp, Prisma } from "@prisma/client"
 import prisma from "../config/prisma"
 import prismaErros from "../utils/prismaErros.util"
-import { IsNumber, IsNotEmpty, Length, IsString, Min } from "class-validator"
+import { IsNumber, IsNotEmpty, Length, IsString, Min, Matches } from "class-validator"
+import NUMBER_REGEX from "../utils/regex/numberRegex"
+import NAME_REGEX from "../utils/regex/nameRegex"
 
 export default class ProdutoTempModel implements ProdutoTemp {
 
   id!: number
 
-  @IsNumber({}, { message: 'O ID da categoria deve ser um número' })
+  @Matches(NUMBER_REGEX, { message: 'O ID da categoria deve ser um número' })
+  //@IsNumber({}, { message: 'O id da categoria deve ser um número'})
   categoriaId!: number
 
   @IsNotEmpty({ message: 'O nome do produto deve ser informado' })
   @IsString({ message: 'O nome do produto está em um formato incorreto' })
   @Length(3, 255, { message: 'O nome do produto deve conter entre 3 e 255 caracteres' })
+  @Matches(NAME_REGEX, { message: 'O nome do produto deve conter apenas caracteres alfanuméricos' })
   nome!: string
 
   @IsNumber({}, { message: 'A quantidade de vezes que este produto foi incluído deve ser um número' })
   @Min(0, { message: 'A quantidade de vezes que este produto foi incluído deve ser maior ou igual a 0' })
   qtdInclusao = 0
+
+  criadoEm!: Date
+
+  atualizadoEm!: Date
 
 
   async getAll(params?: {

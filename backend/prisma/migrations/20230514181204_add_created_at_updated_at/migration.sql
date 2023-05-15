@@ -70,7 +70,8 @@ CREATE TABLE `Produto` (
     `categoriaId` INTEGER NOT NULL,
     `unidadeId` INTEGER NOT NULL,
     `nome` VARCHAR(255) NOT NULL,
-    `quantidade` SMALLINT NOT NULL,
+    `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `atualizadoEm` DATETIME(3) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -81,6 +82,8 @@ CREATE TABLE `ProdutoTemp` (
     `categoriaId` INTEGER NOT NULL,
     `nome` VARCHAR(255) NOT NULL,
     `qtdInclusao` SMALLINT NOT NULL,
+    `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `atualizadoEm` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `ProdutoTemp_nome_key`(`nome`),
     PRIMARY KEY (`id`)
@@ -90,6 +93,8 @@ CREATE TABLE `ProdutoTemp` (
 CREATE TABLE `categoriaProduto` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `categoria` VARCHAR(255) NOT NULL,
+    `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `atualizadoEm` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `categoriaProduto_categoria_key`(`categoria`),
     PRIMARY KEY (`id`)
@@ -99,6 +104,8 @@ CREATE TABLE `categoriaProduto` (
 CREATE TABLE `unidadeProduto` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `unidade` VARCHAR(255) NOT NULL,
+    `criadoEm` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `atualizadoEm` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `unidadeProduto_unidade_key`(`unidade`),
     PRIMARY KEY (`id`)

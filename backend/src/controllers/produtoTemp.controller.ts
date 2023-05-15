@@ -38,18 +38,24 @@ export default class ProdutoTempController {
       const { produtoTemp } = req.body
       const msgResponse = 'Produto incluído com sucesso!'
 
-      if (!produtoTemp) {
+      if (!produtoTemp.nome) {
         return next('Informe o produto que deseja incluir em seu orçamento')
       }
 
+      if (!produtoTemp.categoriaId || !Number.isInteger(parseInt(produtoTemp.categoriaId))) {
+        return next('Informe a categoria do produto')
+      }
+      
       const errors = await validate(Object.assign(new ProdutoTempModel(), produtoTemp))
-
+      
       if (errors.length > 0) {
         const newError = classValidatorErros(errors)        
-          return next(newError)
+        return next(newError)
       }
-
-      const existsCategoria = await this.categoriaProdutoModel.getAll({ where: { id: produtoTemp.categoriaId } })
+      
+      produtoTemp.categoriaId = parseInt(produtoTemp.categoriaId) 
+      
+      const existsCategoria = await this.categoriaProdutoModel.getOne({ where: { id: parseInt(produtoTemp.categoriaId) } })
       const existsNome = await this.produtoTempModel.getOne({ where: { nome: `${produtoTemp.nome}` } })
       
       if (!existsCategoria) {
@@ -70,7 +76,7 @@ export default class ProdutoTempController {
         res.status(HttpStatus.OK).json({
           ok: true,
           msg: msgResponse,
-          id: updateProdutoTemp
+          data: updateProdutoTemp
         })
         return
       }
