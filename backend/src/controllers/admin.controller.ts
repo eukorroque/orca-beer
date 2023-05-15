@@ -30,14 +30,21 @@ export default class AdminController {
 
       }
 
-      const idUsuario = await this.adminModel.create({
-        ...usuario
+      const { tpAdmin, ...rest } = usuario
+
+      const idAdmin = await this.adminModel.create({
+        ...rest,
+        Conta: {
+          connect: {
+            id: parseInt(tpAdmin)
+          }
+        }
       })
 
       res.status(HttpStatus.CREATED).json({
         ok: true,
         msg: 'Usuário cadastrado com sucesso.',
-        id: idUsuario
+        id: idAdmin
       })
 
     } catch (error: any) {

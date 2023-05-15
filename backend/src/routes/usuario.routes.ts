@@ -3,12 +3,15 @@ import UsuarioModel from '../models/usuario.model'
 import UsuarioController from '../controllers/usuario.controller'
 import StatusUsuarioModel from '../models/statusUsuario.model'
 import UsuarioService from '../services/usuario.service'
+import SessionModel from '../models/session.model'
+
 
 const usuarioModel = new UsuarioModel
 const statusUsuarioModel = new StatusUsuarioModel
+const sessionModel = new SessionModel
 const usuarioService = new UsuarioService(usuarioModel, statusUsuarioModel)
 
-const usuarioController = new UsuarioController(usuarioModel, usuarioService)
+const usuarioController = new UsuarioController(usuarioModel, usuarioService, sessionModel)
 
 const router = Router()
 
