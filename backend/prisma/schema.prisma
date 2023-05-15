@@ -73,7 +73,9 @@ model Produto {
   unidade     unidadeProduto   @relation(fields: [unidadeId], references: [id])
   unidadeId   Int
   nome        String           @db.VarChar(255)
-  quantidade  Int              @db.SmallInt
+  criadoEm      DateTime @default(now())
+  atualizadoEm  DateTime @updatedAt
+  //quantidade  Int              @db.SmallInt
   // ranking - posição no ranking de produtos.
 }
 
@@ -83,6 +85,8 @@ model ProdutoTemp {
   categoriaId Int
   nome        String           @unique @db.VarChar(255)
   qtdInclusao Int              @db.SmallInt
+  criadoEm      DateTime @default(now())
+  atualizadoEm  DateTime @updatedAt
   // ranking - posição no ranking de produtos.
 }
 
@@ -91,12 +95,16 @@ model categoriaProduto {
   categoria   String        @unique @db.VarChar(255)
   Produto     Produto[]
   ProdutoTemp ProdutoTemp[]
+  criadoEm      DateTime @default(now())
+  atualizadoEm  DateTime @updatedAt
 }
 
 model unidadeProduto {
   id          Int           @id @default(autoincrement())
   unidade     String        @unique @db.VarChar(255)
   Produto     Produto[]
+  criadoEm      DateTime @default(now())
+  atualizadoEm  DateTime @updatedAt
 }
 
 model StatusUsuario {
