@@ -11,6 +11,7 @@ const isLoggedInterceptor = (type: Array<'admin' | 'lojista' | 'fornecedor'>) =>
     const secretToken = process.env.JWT_TOKEN as string
     const sessionModel = new SessionModel
 
+
     if (!authHeader) {
       next('Token não informado')
       return
@@ -19,34 +20,44 @@ const isLoggedInterceptor = (type: Array<'admin' | 'lojista' | 'fornecedor'>) =>
     const [bearer, token] = authHeader.split(' ')
 
     if (bearer !== 'Bearer' || !token) {
-      next('Usuário não autenticado')
+      next('Token não informado')
       return
     }
 
-    jwt.verify(token, secretToken, async (err, decoded) => {
+    jwt.verify(token, secretToken, { ignoreExpiration: true }, async (err, decoded) => {
       if (err) {
-
-        if (err.name === 'TokenExpiredError') {
-          next('Token expirado')
-          return
-        }
-
-        next('Usuário não autenticado')
+        next('Token inválido')
         return
       }
 
       const sessaoAtual = await sessionModel.getOne({
         where: {
-          sid: token
+          token
         }
       })
 
-      if (!sessaoAtual || new Date() > sessaoAtual.expiresAt) {
-        next('Sua sessão foi expirada')
+      if (!sessaoAtual) {
+        next('Sessão não encontrada. Faça login novamente')
         return
       }
 
-      req.session = decoded as any
+      if (sessaoAtual.interceptado) {
+        next(`Sessão interceptada. Motivo: ${sessaoAtual.motivoInterceptacao}`)
+        return
+      }
+
+      if (sessaoAtual.expiraEm < new Date()) {
+
+        await sessionModel.delete({ token })
+
+        res.clearCookie('token')
+
+        next('Sessão expirada. Faça login novamente')
+        return
+      }
+
+
+      req.body.userSession = decoded
 
       next()
     })

@@ -11,43 +11,45 @@ datasource db {
 }
 
 model Usuario {
-  id                      Int           @id @default(autoincrement())
-  cnpj                    String?       @unique @db.VarChar(14)
-  nomeFantasia            String        @db.VarChar(255)
-  razaoSocial             String        @db.VarChar(255)
-  email                   String        @unique @db.VarChar(50) /// o e-mail é único entre os usuários.
-  cpfResponsavel          String        @db.VarChar(11)
-  nomeResponsavel         String        @db.VarChar(255)
-  senha                   String        @db.VarChar(255)
-  telefone                String        @db.VarChar(15)
-  ultimaValidacaoTelefone DateTime      @default(now()) /// data da ultima validação que foi feita para verificar o telefone do usuario. 
-  avaliacao               Int?          @db.SmallInt /// avaliação do usuario, Se null, ele ainda não foi avaliado.
-  cashback                Float?        @db.Float /// cashback acumulado pelo usuario. Se null, ele ainda não tem cashback acumulado.
-  alcance                 Int?          @db.Int /// alcance do usuario. Se null, ele ainda não tem alcance definido.
-  vezesIndicou            Int           @default(0) /// vezes que o usuario indicou o app para alguem. (Apenas para lojistas)
-  qtdPedidosRestantes     Int?          @db.SmallInt /// se null, a conta é nova ou ele não é lojista
-  codigoConvite           String?       @unique @db.VarChar(6) /// se null, ele não é lojista
-  status                  StatusUsuario @relation(fields: [statusId], references: [id])
+  id                      Int              @id @default(autoincrement())
+  cnpj                    String?          @unique @db.VarChar(14)
+  nomeFantasia            String           @db.VarChar(255)
+  razaoSocial             String           @db.VarChar(255)
+  email                   String           @unique @db.VarChar(50) /// o e-mail é único entre os usuários.
+  cpfResponsavel          String           @db.VarChar(11)
+  nomeResponsavel         String           @db.VarChar(255)
+  senha                   String           @db.VarChar(255)
+  telefone                String           @db.VarChar(15)
+  ultimaValidacaoTelefone DateTime         @default(now()) /// data da ultima validação que foi feita para verificar o telefone do usuario. 
+  avaliacao               Int?             @db.SmallInt /// avaliação do usuario, Se null, ele ainda não foi avaliado.
+  cashback                Float?           @db.Float /// cashback acumulado pelo usuario. Se null, ele ainda não tem cashback acumulado.
+  alcance                 Int?             @db.Int /// alcance do usuario. Se null, ele ainda não tem alcance definido.
+  vezesIndicou            Int              @default(0) /// vezes que o usuario indicou o app para alguem. (Apenas para lojistas)
+  qtdPedidosRestantes     Int?             @db.SmallInt /// se null, a conta é nova ou ele não é lojista
+  codigoConvite           String?          @unique @db.VarChar(6) /// se null, ele não é lojista
+  status                  StatusUsuario    @relation(fields: [statusId], references: [id])
   statusId                Int
-  Conta                   tpContas      @relation(fields: [tpConta], references: [id])
+  Conta                   tpContas         @relation(fields: [tpConta], references: [id])
   tpConta                 Int
   Endereco                Endereco[]
-  ultimoLogin             DateTime      @default(now())
-  criadoEm                DateTime      @default(now())
-  atualizadoEm            DateTime      @updatedAt
+  SessoesUsuario          SessoesUsuario[]
+  ultimoLogin             DateTime         @default(now())
+  criadoEm                DateTime         @default(now())
+  atualizadoEm            DateTime         @updatedAt
 }
 
 model Admin {
-  id           Int      @id @default(autoincrement())
-  nome         String   @db.VarChar(255)
-  email        String   @unique @db.VarChar(50)
-  senha        String   @db.VarChar(255)
-  telefone     String?  @unique @db.VarChar(15)
-  cpf          String?  @unique @db.VarChar(11)
-  Conta        tpAdmins @relation(fields: [tpAdmin], references: [id])
-  tpAdmin      Int
-  criadoEm     DateTime @default(now())
-  atualizadoEm DateTime @updatedAt
+  id             Int              @id @default(autoincrement())
+  nome           String           @db.VarChar(255)
+  email          String           @unique @db.VarChar(50)
+  senha          String           @db.VarChar(255)
+  telefone       String?          @unique @db.VarChar(15)
+  cpf            String?          @unique @db.VarChar(11)
+  Conta          tpAdmins         @relation(fields: [tpAdmin], references: [id])
+  tpAdmin        Int
+  criadoEm       DateTime         @default(now())
+  atualizadoEm   DateTime         @updatedAt
+  SessoesUsuario SessoesUsuario[]
 }
 
 model Endereco {
@@ -67,11 +69,18 @@ model Endereco {
   label         String?  @db.VarChar(255)
 }
 
-model Session {
-  id        String   @id
-  sid       String   @unique
-  data      String
-  expiresAt DateTime
+model SessoesUsuario {
+  id                  Int       @id @default(autoincrement())
+  token               String    @unique @db.VarChar(255)
+  usuario             Usuario   @relation(fields: [usuarioId], references: [id])
+  usuarioId           Int
+  interceptado        Boolean   @default(false) /// se true, o usuario teve sua sessão derrubada por um admin.
+  Admin               Admin?    @relation(fields: [adminId], references: [id])
+  adminId             Int? /// id do admin que derrubou a sessão do usuario (Caso seja diferente de null)
+  motivoInterceptacao String?   @db.VarChar(255)
+  interceptadoEm      DateTime?
+  expiraEm            DateTime
+  criadoEm            DateTime  @default(now())
 }
 
 model Produto {

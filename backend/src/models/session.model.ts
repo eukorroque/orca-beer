@@ -1,25 +1,25 @@
-import { Session, Prisma } from "@prisma/client"
+import { SessoesUsuario, Prisma } from "@prisma/client"
 import prisma from "../config/prisma"
 import prismaErros from "../utils/prismaErros.util"
 
-export default class SessionModel {
+export default class SessoesUsuarioModel {
 
   async getAll(params?: {
     skip?: number
     take?: number
-    cursor?: Prisma.SessionWhereUniqueInput
-    where?: Prisma.SessionWhereInput
-    orderBy?: Prisma.SessionOrderByWithRelationInput
-    select?: Prisma.SessionSelect
+    cursor?: Prisma.SessoesUsuarioWhereUniqueInput
+    where?: Prisma.SessoesUsuarioWhereInput
+    orderBy?: Prisma.SessoesUsuarioOrderByWithRelationInput
+    select?: Prisma.SessoesUsuarioSelect
   }
-  ): Promise<Session[]> {
+  ): Promise<SessoesUsuario[]> {
     try {
 
-      const session = await prisma.session.findMany({
+      const sessoes = await prisma.sessoesUsuario.findMany({
         ...params
       })
 
-      return session
+      return sessoes
 
     } catch (error: any) {
       throw new Error(prismaErros(error))
@@ -28,16 +28,16 @@ export default class SessionModel {
   }
 
   async getOne(params: {
-    select?: Prisma.SessionSelect
-    where: Prisma.SessionWhereUniqueInput
-  }): Promise<Session | null> {
+    select?: Prisma.SessoesUsuarioSelect
+    where: Prisma.SessoesUsuarioWhereUniqueInput
+  }): Promise<SessoesUsuario | null> {
     try {
 
-      const session = await prisma.session.findUnique({
+      const sessoes = await prisma.sessoesUsuario.findUnique({
         ...params
       })
 
-      return session
+      return sessoes
 
     } catch (error: any) {
       throw new Error(prismaErros(error))
@@ -46,22 +46,40 @@ export default class SessionModel {
   }
 
   async create(
-    sessionData: Prisma.SessionCreateInput
-  ): Promise<Session | null> {
+    sessoesData: Prisma.SessoesUsuarioCreateInput
+  ): Promise<SessoesUsuario | null> {
     try {
-      const session = await prisma.session.create({
+      const sessoes = await prisma.sessoesUsuario.create({
         data: {
-          ...sessionData,
+          ...sessoesData,
         }
       })
 
 
-      return session
+      return sessoes
 
     } catch (error: any) {
 
       throw new Error(prismaErros(error))
     }
+  }
+
+  async delete(
+    where: Prisma.SessoesUsuarioWhereUniqueInput
+  ): Promise<SessoesUsuario | null> {
+    try {
+
+      const sessoes = await prisma.sessoesUsuario.delete({
+        where
+      })
+
+      return sessoes
+
+    } catch (error: any) {
+      throw new Error(prismaErros(error))
+
+    }
+
   }
 
 }

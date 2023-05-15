@@ -15,6 +15,7 @@ export default class UsuarioController {
   ) {
   }
 
+
   async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
 
@@ -201,13 +202,16 @@ export default class UsuarioController {
         statusId: user.statusId,
         tpConta: user.tpConta,
         nome: user.nomeFantasia || user.nomeResponsavel
-      })
+      }, '7d')
 
       const session = await this.sessionModel.create({
-        id: user.id.toString(),
-        sid: token,
-        data: JSON.stringify({ statusId: user.statusId, tpConta: user.tpConta }),
-        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 1) // 7 dias
+        token,
+        expiraEm: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        usuario: {
+          connect: {
+            id: user.id
+          }
+        }
       })
 
       if (!session) {
@@ -215,7 +219,7 @@ export default class UsuarioController {
       }
 
       // criando cookie e salvando no navegador do usuário:
-      res.setHeader('Set-Cookie', `token=${token}; path=/; HttpOnly; SameSite=Strict;`)
+      res.setHeader('Set-Cookie', `token=${token}; path=/; HttpOnly; SameSite=Strict; ${process.env.NODE_ENV === 'production' ? 'Secure;' : ''}`)
 
       res.status(HttpStatus.OK).json({
         ok: true,
