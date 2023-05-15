@@ -68,7 +68,7 @@ export default class UnidadeProdutoController {
       const { unidade } = req.body
 
       if (!id || !Number.isInteger(parseInt(id))) {
-        return next('Informe o id da unidade que deseja atualizar no sistema.')
+        return next('Informe o id da unidade que deseja atualizar.')
       }
 
       if (!unidade) {

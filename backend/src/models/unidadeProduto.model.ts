@@ -1,7 +1,8 @@
 import { unidadeProduto, Prisma } from "@prisma/client";
 import prisma from "../config/prisma";
 import prismaErros from "../utils/prismaErros.util";
-import { IsNotEmpty, Length, IsString } from "class-validator"
+import { IsNotEmpty, Length, IsString, Matches } from "class-validator";
+import NAME_REGEX from "../utils/regex/nameRegex"
 
 export default class UnidadeProdutoModel {
 
@@ -10,7 +11,12 @@ export default class UnidadeProdutoModel {
   @IsNotEmpty({ message: 'A unidade deve ser informada' })
   @IsString({ message: 'A unidade está em um formato incorreto' })
   @Length(3, 255, { message: 'A unidade deve conter entre 3 e 255 caracteres' })
+  @Matches(NAME_REGEX, { message: 'A unidade deve conter apenas caracteres alfanuméricos' })
   unidade!: string
+
+  criadoEm!: Date
+
+  atualizadoEm!: Date  
 
   async getAll(params?: {
     skip?: number
