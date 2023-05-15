@@ -61,9 +61,17 @@ model Endereco {
   estado        String   @db.VarChar(2)
   responsavel   Usuario  @relation(fields: [responsavelId], references: [id])
   responsavelId Int
+  deletado      Boolean  @default(false)
   criadoEm      DateTime @default(now())
   atualizadoEm  DateTime @updatedAt
   label         String?  @db.VarChar(255)
+}
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String
+  expiresAt DateTime
 }
 
 model Produto {
@@ -94,9 +102,9 @@ model categoriaProduto {
 }
 
 model unidadeProduto {
-  id          Int           @id @default(autoincrement())
-  unidade     String        @unique @db.VarChar(255)
-  Produto     Produto[]
+  id      Int       @id @default(autoincrement())
+  unidade String    @unique @db.VarChar(255)
+  Produto Produto[]
 }
 
 model StatusUsuario {

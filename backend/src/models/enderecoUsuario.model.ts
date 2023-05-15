@@ -52,6 +52,8 @@ export default class EnderecoUsuarioModel implements Endereco {
   @Length(2, 100, { message: 'O titulo do endereço deve conter entre 2 e 100 caracteres', groups: ['1', '2'] })
   label = null
 
+  deletado = false
+
   criadoEm!: Date
 
   atualizadoEm!: Date

@@ -4,12 +4,14 @@ import { NextFunction, Request, Response } from 'express'
 import { Prisma } from "@prisma/client"
 import createToken from "../utils/createToken"
 import UsuarioService from "../services/usuario.service"
+import SessionModel from "../models/session.model"
 
 export default class UsuarioController {
 
   constructor (
     private usuarioModel: UsuarioModel,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private sessionModel: SessionModel
   ) {
   }
 
@@ -201,6 +203,16 @@ export default class UsuarioController {
         nome: user.nomeFantasia || user.nomeResponsavel
       })
 
+      const session = await this.sessionModel.create({
+        id: user.id.toString(),
+        sid: token,
+        data: JSON.stringify({ statusId: user.statusId, tpConta: user.tpConta }),
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 1) // 7 dias
+      })
+
+      if (!session) {
+        return next('Não foi possível criar a sessão. Tente novamente mais tarde.')
+      }
 
       // criando cookie e salvando no navegador do usuário:
       res.setHeader('Set-Cookie', `token=${token}; path=/; HttpOnly; SameSite=Strict;`)
