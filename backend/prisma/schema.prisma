@@ -89,7 +89,7 @@ model Produto {
   categoriaId  Int
   unidade      unidadeProduto   @relation(fields: [unidadeId], references: [id])
   unidadeId    Int
-  nome         String           @db.VarChar(255)
+  nome         String           @unique @db.VarChar(255)
   criadoEm     DateTime         @default(now())
   atualizadoEm DateTime         @updatedAt
   //quantidade  Int              @db.SmallInt

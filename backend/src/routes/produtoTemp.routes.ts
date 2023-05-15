@@ -2,10 +2,12 @@ import { Router } from 'express'
 import ProdutoTempModel from '../models/produtoTemp.model'
 import CategoriaProdutoModel from '../models/categoriaProduto.model'
 import ProdutoTempController from '../controllers/produtoTemp.controller'
+import ProdutoModel from '../models/produto.model'
 
-const ModelProdutoTemp = new ProdutoTempModel
-const ModelCategoria = new CategoriaProdutoModel
-const Controller = new ProdutoTempController(ModelProdutoTemp, ModelCategoria)
+const produtoTempModel = new ProdutoTempModel
+const categoriaProdutoModel = new CategoriaProdutoModel
+const produtoModel = new ProdutoModel
+const Controller = new ProdutoTempController(produtoTempModel, categoriaProdutoModel, produtoModel)
 
 const router = Router()
 

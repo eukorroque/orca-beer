@@ -1,6 +1,6 @@
-import { Produto, Prisma } from "@prisma/client";
-import prisma from "../config/prisma";
-import prismaErros from "../utils/prismaErros.util";
+import { Produto, Prisma } from "@prisma/client"
+import prisma from "../config/prisma"
+import prismaErros from "../utils/prismaErros.util"
 import { IsNumber, IsNotEmpty, Length, IsString } from "class-validator"
 
 export default class ProdutoModel {
@@ -38,6 +38,25 @@ export default class ProdutoModel {
       })
 
       return produtos
+
+    } catch (error: any) {
+      throw new Error(prismaErros(error))
+
+    }
+  }
+
+  async getOne(params: {
+    where: Prisma.ProdutoWhereUniqueInput
+    include?: Prisma.ProdutoInclude
+    select?: Prisma.ProdutoSelect
+  }): Promise<Produto | null> {
+    try {
+
+      const produto = await prisma.produto.findUnique({
+        ...params
+      })
+
+      return produto
 
     } catch (error: any) {
       throw new Error(prismaErros(error))

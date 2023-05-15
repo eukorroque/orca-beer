@@ -78,10 +78,15 @@ export default class UsuarioService {
           throw new Error('Tipo de usuário inválido')
       }
 
-      const errors = await validate(Object.assign(new UsuarioModel(), usuario), { groups: [usuario.tpConta.toString()] })
+      const errors = await validate(Object.assign(new UsuarioModel(), usuario), {
+        groups: [usuario.tpConta.toString()],
+        stopAtFirstError: true
+      })
 
       if (errors.length > 0) {
         const newError = classValidatorErros(errors)
+
+        console.log(newError)
 
         throw new Error(newError)
 
@@ -89,11 +94,10 @@ export default class UsuarioService {
 
       // validando os dados do endereço:
       const errorsEndereco = await validate(
-        Object.assign(new EnderecoUsuarioModel(), endereco),
-        {
-          stopAtFirstError: true,
-          groups: ['2']
-        }
+        Object.assign(new EnderecoUsuarioModel(), endereco), {
+        stopAtFirstError: true,
+        groups: ['2']
+      }
       )
 
       if (errorsEndereco.length > 0) {
