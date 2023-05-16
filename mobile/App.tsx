@@ -1,6 +1,5 @@
 import 'react-native-gesture-handler'
-import React from 'react'
-import { createStackNavigator } from '@react-navigation/stack'
+import React, { useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { useFonts, GemunuLibre_500Medium, GemunuLibre_700Bold } from '@expo-google-fonts/gemunu-libre'
 import LoginScreen from './src/screens/LoginScreen'
@@ -8,13 +7,24 @@ import * as SplashScreen from 'expo-splash-screen'
 import { useCallback } from 'react'
 import theme from './src/config/theme'
 import WelcomeScreen from './src/screens/WelcomeScreen'
+import { createStackNavigator } from '@react-navigation/stack'
+import { RootStackParamList } from './src/types/RootStackParamList'
+import HomeLogistaController from './src/controllers/HomeLojistaController'
+import OrcamentoLojistaScreen from './src/screens/OrcamentoLojistaScreen'
 
-const Stack = createStackNavigator()
+
+
+const Stack = createStackNavigator<RootStackParamList>()
 
 // mantém a tela de splash ativa até que o app esteja pronto
 SplashScreen.preventAutoHideAsync()
 
 const App = () => {
+
+
+  // em prs mais a frente removeremos isso e passaremos pelo redux
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
 
   // como na documentação oficial estava carregando as fontes como um let. Optei por deixar esse padrão.
   // eslint-disable-next-line prefer-const 
@@ -46,20 +56,43 @@ const App = () => {
           }
         }}
       >
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{
-            headerTitle: ''
-          }}
-        />
-        <Stack.Screen
-          name="Welcome"
-          component={WelcomeScreen}
-          options={{
-            headerShown: false
-          }}
-        />
+        {
+          isLoggedIn ? (
+            <Stack.Group>
+              <Stack.Screen name='HomeLojista' component={HomeLogistaController} options={{ headerShown: false }} />
+              <Stack.Screen
+                name='OrcamentoLojista'
+                component={OrcamentoLojistaScreen}
+                options={{
+                  headerStyle: {
+                    backgroundColor: theme.colors.primary
+                  }
+                }}
+              />
+            </Stack.Group>
+          ) : (
+            <Stack.Group>
+              <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{
+                  headerTitle: ''
+                }}
+                initialParams={{
+                  setIsLoggedIn
+                }}
+              />
+              <Stack.Screen
+                name="Welcome"
+                component={WelcomeScreen}
+                options={{
+                  headerShown: false
+                }}
+              />
+
+            </Stack.Group>
+          )
+        }
       </Stack.Navigator>
     </NavigationContainer>
   )
