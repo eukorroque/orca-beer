@@ -1,7 +1,7 @@
 import { ProdutoTemp, Prisma } from "@prisma/client"
 import prisma from "../config/prisma"
 import prismaErros from "../utils/prismaErros.util"
-import { IsNumber, IsNotEmpty, Length, IsString, Min, Matches } from "class-validator"
+import { IsNotEmpty, Length, IsString, Matches } from "class-validator"
 import NUMBER_REGEX from "../utils/regex/numberRegex"
 import NAME_REGEX from "../utils/regex/nameRegex"
 
@@ -10,7 +10,6 @@ export default class ProdutoTempModel implements ProdutoTemp {
   id!: number
 
   @Matches(NUMBER_REGEX, { message: 'O ID da categoria deve ser um número' })
-  //@IsNumber({}, { message: 'O id da categoria deve ser um número'})
   categoriaId!: number
 
   @IsNotEmpty({ message: 'O nome do produto deve ser informado' })
@@ -19,9 +18,7 @@ export default class ProdutoTempModel implements ProdutoTemp {
   @Matches(NAME_REGEX, { message: 'O nome do produto deve conter apenas caracteres alfanuméricos' })
   nome!: string
 
-  @IsNumber({}, { message: 'A quantidade de vezes que este produto foi incluído deve ser um número' })
-  @Min(0, { message: 'A quantidade de vezes que este produto foi incluído deve ser maior ou igual a 0' })
-  qtdInclusao = 0
+  qtdInclusao = 1
 
   criadoEm!: Date
 
@@ -86,7 +83,7 @@ export default class ProdutoTempModel implements ProdutoTemp {
 
     }
   }
-  
+
   async create(
     produtoTempData: Prisma.ProdutoTempCreateInput
   ): Promise<number> {

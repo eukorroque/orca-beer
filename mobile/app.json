@@ -4,10 +4,10 @@
     "slug": "orcabeer",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo_vertical_fundo_branco.png",
+    "icon": "./assets/app/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/app/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#F1B617"
     },
@@ -19,13 +19,13 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/app/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.app.orcabeer"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/template/app/favicon.png"
     },
     "extra": {
       "eas": {

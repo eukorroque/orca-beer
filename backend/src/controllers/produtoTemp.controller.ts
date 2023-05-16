@@ -5,12 +5,14 @@ import { NextFunction, Request, Response } from 'express'
 import CategoriaProdutoModel from "../models/categoriaProduto.model"
 import { validate } from "class-validator"
 import classValidatorErros from "../utils/classValidatorErros.util"
+import ProdutoModel from "../models/produto.model"
 
 export default class ProdutoTempController {
 
   constructor (
     private produtoTempModel: ProdutoTempModel,
-    private categoriaProdutoModel: CategoriaProdutoModel
+    private categoriaProdutoModel: CategoriaProdutoModel,
+    private produtoModel: ProdutoModel
   ) {
   }
 
@@ -39,47 +41,58 @@ export default class ProdutoTempController {
       const { produtoTemp } = req.body
       const msgResponse = 'Produto incluído com sucesso!'
 
-      if (!produtoTemp.nome) {
-        return next('Informe o produto que deseja incluir em seu orçamento')
-      }
-
-      if (!produtoTemp.categoriaId || !Number.isInteger(parseInt(produtoTemp.categoriaId))) {
-        return next('Informe a categoria do produto')
-      }
-      
       const errors = await validate(Object.assign(new ProdutoTempModel(), produtoTemp))
-      
+
       if (errors.length > 0) {
-        const newError = classValidatorErros(errors)        
+        const newError = classValidatorErros(errors)
         return next(newError)
       }
-      
-      produtoTemp.categoriaId = parseInt(produtoTemp.categoriaId) 
-      
-      const existsCategoria = await this.categoriaProdutoModel.getOne({ where: { id: parseInt(produtoTemp.categoriaId) } })
-      
-      
+
+      produtoTemp.categoriaId = parseInt(produtoTemp.categoriaId)
+
+      const existsCategoria = await this.categoriaProdutoModel.getOne({ where: { id: produtoTemp.categoriaId } })
+
+
       if (!existsCategoria) {
         return next('A categoria informada não existe.')
-      } 
-    
-      const existsNome = await this.produtoTempModel.getOne({ where: { nome: `${produtoTemp.nome}` } })
-      
+      }
+
+      const produtoAlreadyExists = await this.produtoModel.getOne({
+        where: {
+          nome: produtoTemp.nome
+        }
+      })
+
+      if (produtoAlreadyExists) {
+        res.status(HttpStatus.OK).json({
+          ok: true,
+          msg: 'Produto já cadastrado em nossa base de dados.',
+        })
+
+        return
+      }
+
+      const existsNome = await this.produtoTempModel.getOne({
+        where: {
+          nome: produtoTemp.nome
+        }
+      })
+
       if (existsNome) {
 
         const updateProdutoTemp = await this.produtoTempModel.update({
           where: { nome: `${produtoTemp.nome}` },
           data: {
             qtdInclusao: {
-                increment: 1
+              increment: 1
             }
           }
         })
-    
-    if(!updateProdutoTemp){
-       return next('Ocorreu um erro ao tentar adicionar o produto em nossa base de dados.')
-    }
-        
+
+        if (!updateProdutoTemp) {
+          return next('Ocorreu um erro ao tentar adicionar o produto em nossa base de dados.')
+        }
+
         res.status(HttpStatus.OK).json({
           ok: true,
           msg: msgResponse,

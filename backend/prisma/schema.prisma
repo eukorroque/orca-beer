@@ -10,6 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum tdContasEnum {
+  FORNECEDOR
+  LOJISTA
+}
+
 model Usuario {
   id                      Int              @id @default(autoincrement())
   cnpj                    String?          @unique @db.VarChar(14)
@@ -36,6 +41,7 @@ model Usuario {
   ultimoLogin             DateTime         @default(now())
   criadoEm                DateTime         @default(now())
   atualizadoEm            DateTime         @updatedAt
+  Pedido                  Pedido[]
 }
 
 model Admin {
@@ -89,7 +95,7 @@ model Produto {
   categoriaId  Int
   unidade      unidadeProduto   @relation(fields: [unidadeId], references: [id])
   unidadeId    Int
-  nome         String           @db.VarChar(255)
+  nome         String           @unique @db.VarChar(255)
   criadoEm     DateTime         @default(now())
   atualizadoEm DateTime         @updatedAt
   //quantidade  Int              @db.SmallInt
@@ -142,7 +148,22 @@ model tpAdmins {
   Admin Admin[]
 }
 
-enum tdContasEnum {
-  FORNECEDOR
-  LOJISTA
+model Pedido {
+  id                     Int          @id @default(autoincrement())
+  produtos               Json /// json com os produtos do pedido. Incluindo produtosTemp
+  prazoEntrega           DateTime
+  lojista                Usuario      @relation(fields: [lojistaId], references: [id])
+  lojistaId              Int
+  status                 StatusPedido @relation(fields: [statusId], references: [id])
+  statusId               Int
+  observacoes            String?      @db.VarChar(255)
+  fornecedoresAlcancados Json /// json com os fornecedores que receberam o pedido e um bool para saber se ele aceitou ou não.
+  criadoEm               DateTime     @default(now())
+  atualizadoEm           DateTime     @updatedAt
+}
+
+model StatusPedido {
+  id     Int      @id @default(autoincrement())
+  status String   @unique @db.VarChar(255)
+  Pedido Pedido[]
 }

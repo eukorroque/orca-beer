@@ -3,7 +3,6 @@ import { HttpStatus } from "../enums/httpStatus.enum"
 import { NextFunction, Request, Response } from 'express'
 import classValidatorErros from "../utils/classValidatorErros.util"
 import AdminModel from "../models/admin.model"
-// import createToken from "../utils/createToken"
 
 export default class AdminController {
 
