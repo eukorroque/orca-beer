@@ -27,8 +27,8 @@ const HeaderLojista = () => {
       </S.IconsContainer>
       <S.AdressContainer>
         <SelectDropdown
-          dropdownStyle={{ width: 300, borderRadius: 16 }}
-          buttonStyle={{ width: 300, borderRadius: 16, backgroundColor: theme.colors.primary }}
+          dropdownStyle={{ width: 300, borderRadius: 8 }}
+          buttonStyle={{ width: 300, borderRadius: 8, backgroundColor: theme.colors.primary }}
           buttonTextStyle={{ fontFamily: theme.fonts.regular, fontSize: theme.fontSizes.body.p3 }}
           rowTextStyle={{ fontFamily: theme.fonts.regular }}
           data={data.enderecos}

@@ -1,5 +1,19 @@
 import styled from "styled-components/native"
 
+export const Button = styled.Button`
+  box-sizing: border-box;
+  margin: 5px 0;
+  padding: 5px 10px;
+  background-color: #FBFBFB;
+  border: 1px solid #D9D9D9;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  z-index: 1;
+  
+`
+
 export const HeaderContainer = styled.View`
   box-sizing: border-box;
   display: flex;

@@ -2,7 +2,7 @@
 import React from 'react'
 import * as S from './styles'
 import data from './data.json'
-import { TextInput, TouchableOpacity } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import ContainerDefault from '../../components/ContainerDefault'
 import TextDefault from '../../components/TextDefault'
 import ButtonDefault from '../../components/ButtonDefault'
@@ -41,11 +41,11 @@ const LoginScreen = ({ route }: Props) => {
           {/* inputs provisórios enquanto ainda nn tem framework */}
           <TextDefault>Entre com seu CPF ou CNPJ</TextDefault>
           {/* eslint-disable-next-line react-native/no-inline-styles */}
-          <TextInput placeholder="Email" style={{ marginBottom: 25 }} />
+          <S.TextInput placeholder="Email" style={{ marginBottom: 20 }} />
 
           {/* inputs provisórios enquanto ainda nn tem framework */}
           <TextDefault>Digite sua senha</TextDefault>
-          <TextInput placeholder="Senha" secureTextEntry={true} />
+          <S.TextInput placeholder="Senha" secureTextEntry={true}/>
         </S.FormContainer>
 
         <S.ContainerForgotPassword>

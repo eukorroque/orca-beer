@@ -29,3 +29,12 @@ export const ButtonLoginContainer = styled.View`
   margin-top: 20px;
   width: 60%;
 `
+
+export const TextInput = styled.TextInput`
+box-sizing: border-box;
+margin: 5px 0;
+padding: 5px 10px;
+background: #FBFBFB;
+border: 1px solid #D9D9D9;
+border-radius: 8px;
+`

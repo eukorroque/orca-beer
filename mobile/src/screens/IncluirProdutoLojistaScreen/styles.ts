@@ -21,10 +21,46 @@ export const Button = styled.TouchableOpacity`
   align-items: center;
 `
 
-export const NotificationContainer = styled.View`
+export const TextContainer = styled.View`
+  box-sizing: border-box;
+  width: 60%;
+  margin: 50px auto;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  ;
+`
+
+export const InputsContainer = styled.View`
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
   width: 300px;
   margin: 0 auto;
-  align-items: center;
+`
+
+export const TextInput = styled.TextInput`
+box-sizing: border-box;
+margin: 20px 0;
+margin-top: 1px;
+padding: 5px 10px;
+background: #FBFBFB;
+border: 1px solid #D9D9D9;
+border-radius: 8px;
+`
+
+export const LargeInputContainer = styled.View`
+  box-sizing: border-box;
+  width: 65%;
+`
+export const SmallInputContainer = styled.View`
+  box-sizing: border-box;
+  width: 30%;
 `
 
 export const NotificationBar = styled.View`
