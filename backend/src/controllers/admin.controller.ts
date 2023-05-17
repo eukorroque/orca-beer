@@ -157,7 +157,6 @@ export default class AdminController {
   //         select
   //       })
 
-  //     // TODO: Perguntar referente a se o usuário vai ter q ter uma senha diferente para cada tipo de conta ou não.
   //     if (Array.isArray(user)) user = user[0]
 
   //     if (!user || user.statusId === 7) {

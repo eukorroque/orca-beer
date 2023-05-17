@@ -1,7 +1,8 @@
+
 /**
- * Esse regex aceita apenas letras (com a acentuação PT-BR), números e espaços.
+ * Esse regex aceita apenas letras (com a acentuação PT-BR).
  * 
  */
-const NAME_REGEX = /^[\p{L}0-9 ]+$/u
+const NAME_REGEX = /^[a-zA-ZÀ-ú ]+$/
 
 export default NAME_REGEX

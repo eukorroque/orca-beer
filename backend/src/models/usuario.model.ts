@@ -2,8 +2,9 @@ import { Usuario, Prisma } from "@prisma/client"
 import prisma from "../config/prisma"
 import prismaErros from "../utils/prismaErros.util"
 import { IsNumber, IsNotEmpty, Length, IsString, IsEmail, Min, Matches, IsOptional } from "class-validator"
-import NAME_REGEX from "../utils/regex/nameRegex"
+import ALPHANUMERIC_REGEX from "../utils/regex/alphanumericRegex"
 import NUMBER_REGEX from "../utils/regex/numberRegex"
+import NAME_REGEX from "../utils/regex/nameRegex"
 
 export default class UsuarioModel implements Usuario {
 
@@ -22,14 +23,14 @@ export default class UsuarioModel implements Usuario {
   @IsNotEmpty({ message: 'O nome fantasia deve ser informado', groups: ['1', '2'] })
   @IsString({ message: 'O nome fantasia deve ser uma string', groups: ['1', '2'] })
   @Length(3, 255, { message: 'O nome fantasia deve conter entre 3 e 255 caracteres', groups: ['1', '2'] })
-  @Matches(NAME_REGEX, { message: 'O nome fantasia deve conter apenas caracteres alfanuméricos', groups: ['1', '2'] })
+  @Matches(ALPHANUMERIC_REGEX, { message: 'O nome fantasia deve conter apenas caracteres alfanuméricos', groups: ['1', '2'] })
   nomeFantasia!: string
 
 
   @IsNotEmpty({ message: 'A razão social deve ser informada', groups: ['1', '2'] })
   @IsString({ message: 'A razão social deve ser uma string', groups: ['1', '2'] })
   @Length(3, 255, { message: 'A razão social deve conter entre 3 e 255 caracteres', groups: ['1', '2'] })
-  @Matches(NAME_REGEX, { message: 'O nome fantasia deve conter apenas caracteres alfanuméricos', groups: ['1', '2'] })
+  @Matches(ALPHANUMERIC_REGEX, { message: 'O nome fantasia deve conter apenas caracteres alfanuméricos', groups: ['1', '2'] })
   razaoSocial!: string
 
 
@@ -48,7 +49,7 @@ export default class UsuarioModel implements Usuario {
   @IsNotEmpty({ message: 'O nome do responsável deve ser informado', groups: ['1', '2'] })
   @IsString({ message: 'O nome do responsável deve ser uma string', groups: ['1', '2'] })
   @Length(3, 255, { message: 'O nome do responsável deve conter entre 3 e 255 caracteres', groups: ['1', '2'] })
-  @Matches(NAME_REGEX, { message: 'O nome fantasia deve conter apenas caracteres alfanuméricos', groups: ['1', '2'] })
+  @Matches(NAME_REGEX, { message: 'O nome fantasia não pode conter números/caracteres especiais', groups: ['1', '2'] })
   nomeResponsavel!: string
 
 

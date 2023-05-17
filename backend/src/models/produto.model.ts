@@ -29,6 +29,7 @@ export default class ProdutoModel {
     where?: Prisma.ProdutoWhereInput
     orderBy?: Prisma.ProdutoOrderByWithRelationInput
     include?: Prisma.ProdutoInclude
+    select?: Prisma.ProdutoSelect
   }
   ): Promise<Produto[]> {
     try {
@@ -57,6 +58,29 @@ export default class ProdutoModel {
       })
 
       return produto
+
+    } catch (error: any) {
+      throw new Error(prismaErros(error))
+
+    }
+  }
+
+  async getMany(params: {
+    skip?: number
+    take?: number
+    cursor?: Prisma.ProdutoWhereUniqueInput
+    where?: Prisma.ProdutoWhereInput
+    orderBy?: Prisma.ProdutoOrderByWithRelationInput
+    include?: Prisma.ProdutoInclude
+    select?: Prisma.ProdutoSelect
+  }): Promise<Produto[]> {
+    try {
+
+      const produtos = await prisma.produto.findMany({
+        ...params
+      })
+
+      return produtos
 
     } catch (error: any) {
       throw new Error(prismaErros(error))

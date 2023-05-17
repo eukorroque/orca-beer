@@ -15,7 +15,7 @@ export default class UsuarioController {
       const { pedido } = req.body
 
 
-      if (!pedido) {
+      if (!pedido || !pedido.produtos) {
         return next('Não foram passados todos os dados necessários para o cadastro')
       }
 

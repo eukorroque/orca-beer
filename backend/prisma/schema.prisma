@@ -110,6 +110,7 @@ model ProdutoTemp {
   qtdInclusao  Int              @db.SmallInt
   criadoEm     DateTime         @default(now())
   atualizadoEm DateTime         @updatedAt
+  // idProduto - ele vai ser null, caso não seja. sinal que o produtoTemp ja está vinculado a um produto oficial.
   // ranking - posição no ranking de produtos.
 }
 

@@ -1,17 +1,21 @@
-import { HttpStatus } from "../enums/httpStatus.enum";
-import UnidadeProdutoModel from "../models/unidadeProduto.model";
-import { NextFunction, Request, Response } from 'express';
-import { validate } from "class-validator";
+import { HttpStatus } from "../enums/httpStatus.enum"
+import UnidadeProdutoModel from "../models/unidadeProduto.model"
+import { NextFunction, Request, Response } from 'express'
+import { validate } from "class-validator"
 import classValidatorErros from "../utils/classValidatorErros.util"
+
+/**
+ * TODO: Validar os campos. quanto for atualizar. (não está validando)
+ */
 
 export default class UnidadeProdutoController {
 
-  constructor(
+  constructor (
     private unidadeProdutoModel: UnidadeProdutoModel
   ) {
   }
- 
-  async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
+
+  async getAll(_req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
 
       const unidades = await this.unidadeProdutoModel.getAll()
@@ -42,8 +46,8 @@ export default class UnidadeProdutoController {
       const errors = await validate(Object.assign(new UnidadeProdutoModel(), unidade))
 
       if (errors.length > 0) {
-        const newError = classValidatorErros(errors)        
-          return next(newError)
+        const newError = classValidatorErros(errors)
+        return next(newError)
       }
 
       const idUnidade = await this.unidadeProdutoModel.create({
@@ -63,7 +67,7 @@ export default class UnidadeProdutoController {
 
   async update(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      
+
       const { id } = req.params
       const { unidade } = req.body
 
@@ -87,7 +91,7 @@ export default class UnidadeProdutoController {
         where: { id: idUnidade },
         data: {
           unidade: {
-              set: newUnidade
+            set: newUnidade
           }
         }
       })
@@ -104,6 +108,6 @@ export default class UnidadeProdutoController {
     } catch (error: any) {
       return next(error.message)
     }
-  } 
+  }
 
 }

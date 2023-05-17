@@ -3,7 +3,7 @@ import prisma from "../config/prisma"
 import prismaErros from "../utils/prismaErros.util"
 import { IsNotEmpty, Length, IsString, Matches } from "class-validator"
 import NUMBER_REGEX from "../utils/regex/numberRegex"
-import NAME_REGEX from "../utils/regex/nameRegex"
+import ALPHANUMERIC_REGEX from "../utils/regex/alphanumericRegex"
 
 export default class ProdutoTempModel implements ProdutoTemp {
 
@@ -15,7 +15,7 @@ export default class ProdutoTempModel implements ProdutoTemp {
   @IsNotEmpty({ message: 'O nome do produto deve ser informado' })
   @IsString({ message: 'O nome do produto está em um formato incorreto' })
   @Length(3, 255, { message: 'O nome do produto deve conter entre 3 e 255 caracteres' })
-  @Matches(NAME_REGEX, { message: 'O nome do produto deve conter apenas caracteres alfanuméricos' })
+  @Matches(ALPHANUMERIC_REGEX, { message: 'O nome do produto deve conter apenas caracteres alfanuméricos' })
   nome!: string
 
   qtdInclusao = 1
@@ -116,6 +116,29 @@ export default class ProdutoTempModel implements ProdutoTemp {
     } catch (error: any) {
 
       throw new Error(prismaErros(error))
+    }
+  }
+
+  async getMany(params: {
+    skip?: number
+    take?: number
+    cursor?: Prisma.ProdutoTempWhereUniqueInput
+    where?: Prisma.ProdutoTempWhereInput
+    orderBy?: Prisma.ProdutoTempOrderByWithRelationInput
+    include?: Prisma.ProdutoTempInclude
+    select?: Prisma.ProdutoTempSelect
+  }): Promise<ProdutoTemp[]> {
+    try {
+
+      const produtosTemp = await prisma.produtoTemp.findMany({
+        ...params
+      })
+
+      return produtosTemp
+
+    } catch (error: any) {
+      throw new Error(prismaErros(error))
+
     }
   }
 }

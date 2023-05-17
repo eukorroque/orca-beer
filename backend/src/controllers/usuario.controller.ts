@@ -218,6 +218,13 @@ export default class UsuarioController {
         return next('Não foi possível criar a sessão. Tente novamente mais tarde.')
       }
 
+      await this.usuarioModel.update({
+        where: { id: user.id },
+        data: {
+          ultimoLogin: new Date()
+        }
+      })
+
       // criando cookie e salvando no navegador do usuário:
       res.setHeader('Set-Cookie', `token=${token}; path=/; HttpOnly; SameSite=Strict; ${process.env.NODE_ENV === 'production' ? 'Secure;' : ''}`)
 
