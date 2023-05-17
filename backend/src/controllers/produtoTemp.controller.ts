@@ -16,7 +16,7 @@ export default class ProdutoTempController {
   ) {
   }
 
-  async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
+  async getAll(_req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
 
       const produtosTemp = await this.produtoTempModel.getAll()
@@ -81,7 +81,7 @@ export default class ProdutoTempController {
       if (existsNome) {
 
         const updateProdutoTemp = await this.produtoTempModel.update({
-          where: { nome: `${produtoTemp.nome}` },
+          where: { nome: produtoTemp.nome },
           data: {
             qtdInclusao: {
               increment: 1

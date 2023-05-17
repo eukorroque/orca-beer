@@ -10,6 +10,11 @@ export const HeaderContainer = styled.View`
   align-items: center;
 `
 
+export const Image = styled.Image`
+  width: 66px;
+  height: 66px;
+`
+
 export const ProfileContainer = styled.View`
   box-sizing: border-box;
   margin-left: 5px;
