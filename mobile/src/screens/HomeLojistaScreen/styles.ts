@@ -2,6 +2,8 @@ import styled from "styled-components/native"
 import theme from "../../config/theme"
 
 export const Container = styled.ScrollView`
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
 `
 
 export const ButtonContainer = styled.View`
