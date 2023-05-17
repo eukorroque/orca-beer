@@ -11,6 +11,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { RootStackParamList } from './src/types/RootStackParamList'
 import HomeLogistaController from './src/controllers/HomeLojistaController'
 import OrcamentoLojistaScreen from './src/screens/OrcamentoLojistaScreen'
+import IncluirProdutoLojistaScreen from './src/screens/IncluirProdutoLojistaScreen'
 
 
 
@@ -49,7 +50,7 @@ const App = () => {
   return (
     <NavigationContainer onReady={onLayoutRootView}>
       <Stack.Navigator
-        initialRouteName="Welcome"
+        initialRouteName="Welcome"        
         screenOptions={{
           cardStyle: {
             backgroundColor: theme.colors.background
@@ -59,14 +60,29 @@ const App = () => {
         {
           isLoggedIn ? (
             <Stack.Group>
-              <Stack.Screen name='HomeLojista' component={HomeLogistaController} options={{ headerShown: false }} />
+              <Stack.Screen name='HomeLojista' 
+              component={HomeLogistaController} 
+              options={{ headerShown: false }} />
               <Stack.Screen
                 name='OrcamentoLojista'
                 component={OrcamentoLojistaScreen}
                 options={{
                   headerStyle: {
-                    backgroundColor: theme.colors.primary
-                  }
+                    backgroundColor: theme.colors.primary,
+                    height: 150,
+                  },
+                  headerTitle: 'Novo orçamento'
+                }}
+              />
+              <Stack.Screen
+                name='IncluirProdutoLojista'
+                component={IncluirProdutoLojistaScreen}
+                options={{
+                  headerStyle: {
+                    backgroundColor: theme.colors.primary,
+                    height: 150,
+                  },
+                  headerTitle: 'Incluir Produto'
                 }}
               />
             </Stack.Group>

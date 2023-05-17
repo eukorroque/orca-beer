@@ -37,7 +37,7 @@ export const NotificationBar = styled.View`
   background-color: #000;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
-  margin-top: 10px;
+  margin: 0 auto;
   padding: 8px;
 `
 

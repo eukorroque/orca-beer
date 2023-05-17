@@ -4,5 +4,6 @@ export type RootStackParamList = {
   Welcome: undefined
   HomeLojista: undefined
   OrcamentoLojista: undefined
+  IncluirProdutoLojista: undefined
 }
 
