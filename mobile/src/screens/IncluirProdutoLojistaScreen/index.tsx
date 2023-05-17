@@ -13,18 +13,12 @@ const OrcamentoLojistaScreen = () => {
   return (
     <ContainerDefault>
       <S.ButtonContainer>
-        <S.ButtonLight
-          onPress={() => navigation.navigate('IncluirProdutoLojista')}
-        >
-          <TextDefault bold >Incluir produto</TextDefault>
-        </S.ButtonLight>
-      </S.ButtonContainer>
-      <S.ButtonContainer>
         <S.Button
-          onPress={() => navigation.navigate('HomeLojista')}
+          onPress={() => navigation.navigate('OrcamentoLojista')}
         >
-          <TextDefault bold >Enviar orçamento</TextDefault>
+          <TextDefault bold >Adicionar produto</TextDefault>
         </S.Button>
+
       </S.ButtonContainer>
     </ContainerDefault>
   )

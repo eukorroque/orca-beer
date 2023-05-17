@@ -11,6 +11,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { RootStackParamList } from './src/types/RootStackParamList'
 import HomeLogistaController from './src/controllers/HomeLojistaController'
 import OrcamentoLojistaScreen from './src/screens/OrcamentoLojistaScreen'
+import IncluirProdutoLojistaScreen from './src/screens/IncluirProdutoLojistaScreen'
 
 
 
@@ -67,8 +68,21 @@ const App = () => {
                 component={OrcamentoLojistaScreen}
                 options={{
                   headerStyle: {
-                    backgroundColor: theme.colors.primary
-                  }
+                    backgroundColor: theme.colors.primary,
+                    height: 150,
+                  },
+                  headerTitle: 'Novo orçamento'
+                }}
+              />
+              <Stack.Screen
+                name='IncluirProdutoLojista'
+                component={IncluirProdutoLojistaScreen}
+                options={{
+                  headerStyle: {
+                    backgroundColor: theme.colors.primary,
+                    height: 150,
+                  },
+                  headerTitle: 'Incluir Produto'
                 }}
               />
             </Stack.Group>

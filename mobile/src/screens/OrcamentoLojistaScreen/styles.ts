@@ -21,6 +21,16 @@ export const Button = styled.TouchableOpacity`
   align-items: center;
 `
 
+export const ButtonLight = styled.TouchableOpacity`
+  background-color: ${theme.colors.background};
+  border: 1px solid ${theme.colors.primary};
+  border-radius: 32px;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 12px;
+  align-items: center;
+`
+
 export const NotificationContainer = styled.View`
   width: 300px;
   margin: 0 auto;
@@ -37,7 +47,7 @@ export const NotificationBar = styled.View`
   background-color: #000;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
-  margin-top: 10px;
+  margin: 0 auto;
   padding: 8px;
 `
 
