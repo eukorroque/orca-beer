@@ -6,6 +6,7 @@ import ProdutoModel from "../models/produto.model"
 import ProdutoTempModel from "../models/produtoTemp.model"
 import UsuarioModel from "../models/usuario.model"
 import { Pedido } from "@prisma/client"
+import IFornecedoresInPedidoArray from "../interfaces/IFornecedoresInPedidoArray"
 
 export default class PedidoService {
 
@@ -80,10 +81,6 @@ export default class PedidoService {
       pedido.statusId = 1
       pedido.prazoEntrega = new Date(pedido.prazoEntrega)
 
-      // o lojistaId está vindo do body porém ele virá pelo token futuramente.
-      pedido.lojistaId = parseInt(pedido.lojistaId)
-
-
       const errors = await validate(Object.assign(new PedidoModel(), pedido), {
         stopAtFirstError: true
       })
@@ -130,12 +127,65 @@ export default class PedidoService {
               id: idFornecedor
             }
           },
+          // TODO: a principio o id 1 será o default quando o pedido é criado. Ver sobre isso futuramente
           statusId: 1
         }
 
       })
 
       return pedidos
+
+    } catch (error: any) {
+      throw new Error(error.message)
+    }
+  }
+
+  async aceitarPedido(idPedido: number, idFornecedor: number): Promise<Pedido | null> {
+    try {
+
+      const pedido = await this.pedidoModel.getOne({ where: { id: idPedido } })
+
+      if (!pedido) {
+        throw new Error('Pedido não encontrado')
+      }
+
+      const fornecedoresAlcancados: IFornecedoresInPedidoArray[] = pedido.fornecedoresAlcancados as any
+
+      const hasFornecedor = fornecedoresAlcancados.find(fornecedor => fornecedor.id === idFornecedor)
+
+      if (!hasFornecedor) {
+        throw new Error('Esse fornecedor não faz parte dos fornecedores selecionados para esse pedido')
+      }
+
+      if (hasFornecedor.aceitou) {
+        throw new Error('Esse fornecedor já aceitou esse pedido')
+      }
+
+      const newArr = fornecedoresAlcancados.map(fornecedor => {
+        if (fornecedor.id === idFornecedor) {
+          return {
+            ...fornecedor,
+            aceitou: true
+          }
+        }
+
+        return fornecedor
+      })
+
+      const pedidoAtualizado = await this.pedidoModel.update({
+        where: {
+          id: idPedido
+        },
+        data: {
+          fornecedoresAlcancados: newArr as any
+        }
+      })
+
+      return pedidoAtualizado
+
+
+      //criar na tabela de orçamentos o orçamento do fornecedor
+
 
     } catch (error: any) {
       throw new Error(error.message)

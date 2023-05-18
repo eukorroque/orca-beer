@@ -1,6 +1,7 @@
 import { HttpStatus } from "../enums/httpStatus.enum"
 import { NextFunction, Request, Response } from 'express'
 import PedidoService from '../services/pedido.service'
+import IUserSession from "../interfaces/IUserSession"
 
 export default class UsuarioController {
 
@@ -13,12 +14,13 @@ export default class UsuarioController {
   async create(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { pedido } = req.body
-
+      const userSession: IUserSession = req.body.userSession
 
       if (!pedido || !pedido.produtos) {
         return next('Não foram passados todos os dados necessários para o cadastro')
       }
 
+      pedido.lojistaId = userSession.id
       const idPedido = await this.pedidoService.create(pedido)
 
       res.status(HttpStatus.CREATED).json({
@@ -55,6 +57,35 @@ export default class UsuarioController {
       return next(error.message)
     }
 
+  }
+
+
+  /**
+   * Endpoint para o fornecedor aceitar um pedido
+   */
+  async aceitarPedido(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { idPedido } = req.params
+      const userSession: IUserSession = req.body.userSession
+
+      if (!idPedido || !Number.isInteger(parseInt(idPedido))) {
+        return next('Informe o id do pedido que deseja aceitar.')
+      }
+
+      const pedido = await this.pedidoService.aceitarPedido(parseInt(idPedido), userSession.id)
+
+      if (!pedido) {
+        return next('Não foi possível aceitar o pedido. Tente novamente mais tarde.')
+      }
+
+      res.status(HttpStatus.OK).json({
+        ok: true,
+        msg: 'Pedido aceito com sucesso'
+      })
+
+    } catch (error: any) {
+      return next(error.message)
+    }
   }
 
 

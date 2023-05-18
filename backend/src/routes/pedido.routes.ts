@@ -5,6 +5,7 @@ import PedidoModel from '../models/pedido.model'
 import ProdutoModel from '../models/produto.model'
 import ProdutoTempModel from '../models/produtoTemp.model'
 import UsuarioModel from '../models/usuario.model'
+import isLoggedInterceptor from '../middlewares/isLogged.middleware'
 
 const pedidoModel = new PedidoModel
 const produtoModel = new ProdutoModel
@@ -16,7 +17,8 @@ const Controller = new PedidoController(pedidoService)
 const router = Router()
 
 router
-  .post('/pedido', Controller.create.bind(Controller))
+  .post('/pedido', isLoggedInterceptor(['lojista']), Controller.create.bind(Controller))
   .get('/pedido/:idFornecedor', Controller.getByIdFornecedor.bind(Controller))
+  .put('/pedido/:idPedido/aceitar', isLoggedInterceptor(['fornecedor']), Controller.aceitarPedido.bind(Controller))
 
 export default router
