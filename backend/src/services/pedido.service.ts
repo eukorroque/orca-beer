@@ -20,7 +20,6 @@ export default class PedidoService {
 
       const produtos: IProdutoInPedidoArray[] = pedido.produtos as any
       const produtosTemp: IProdutoInPedidoArray[] | undefined = pedido.produtosTemp as any
-      const dataPedido = {}
 
 
       const existsProdutos = await this.produtoModel.getMany({
@@ -75,6 +74,15 @@ export default class PedidoService {
         aceitou: false
       }))
 
+      // passando os valores necessários para o objeto de pedido para que ele seja validado pelo class-validator
+      pedido.fornecedoresAlcancados = fornecedoresArray
+      pedido.statusId = 1
+      pedido.prazoEntrega = new Date(pedido.prazoEntrega)
+
+      // o lojistaId está vindo do body porém ele virá pelo token futuramente.
+      pedido.lojistaId = parseInt(pedido.lojistaId)
+
+
       const errors = await validate(Object.assign(new PedidoModel(), pedido), {
         stopAtFirstError: true
       })
@@ -82,19 +90,25 @@ export default class PedidoService {
       if (errors.length > 0) {
         const newError = classValidatorErros(errors)
 
-        console.log(newError)
-
         throw new Error(newError)
 
       }
 
-      const data: any = {
-        ...pedido,
-      }
+      const { statusId, lojistaId, ...pedidoData } = pedido
 
 
       const idPedido = await this.pedidoModel.create({
-        ...data
+        ...pedidoData,
+        status: {
+          connect: {
+            id: statusId
+          }
+        },
+        lojista: {
+          connect: {
+            id: lojistaId
+          }
+        }
       })
 
 

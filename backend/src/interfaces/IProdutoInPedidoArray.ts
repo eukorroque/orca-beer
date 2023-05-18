@@ -3,4 +3,6 @@
 export interface IProdutoInPedidoArray {
   produtoId: number
   quantidade: number
+  categoriaId: number
+  unidadeId: number
 }

@@ -100,6 +100,7 @@ model Produto {
   atualizadoEm DateTime         @updatedAt
   //quantidade  Int              @db.SmallInt
   // ranking - posição no ranking de produtos.
+  ProdutoTemp  ProdutoTemp[]
 }
 
 model ProdutoTemp {
@@ -110,7 +111,8 @@ model ProdutoTemp {
   qtdInclusao  Int              @db.SmallInt
   criadoEm     DateTime         @default(now())
   atualizadoEm DateTime         @updatedAt
-  // idProduto - ele vai ser null, caso não seja. sinal que o produtoTemp ja está vinculado a um produto oficial.
+  produto      Produto?         @relation(fields: [produtoId], references: [id])
+  produtoId    Int? ///  ele vai ser null, caso não seja. sinal que o produtoTemp ja está vinculado a um produto oficial.
   // ranking - posição no ranking de produtos.
 }
 
@@ -151,7 +153,8 @@ model tpAdmins {
 
 model Pedido {
   id                     Int          @id @default(autoincrement())
-  produtos               Json /// json com os produtos do pedido. Incluindo produtosTemp
+  produtosTemp           Json? /// json com os produtos temporários do pedido.
+  produtos               Json /// json com os produtos do pedido.
   prazoEntrega           DateTime
   lojista                Usuario      @relation(fields: [lojistaId], references: [id])
   lojistaId              Int

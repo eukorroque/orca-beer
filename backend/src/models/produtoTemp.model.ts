@@ -1,7 +1,7 @@
 import { ProdutoTemp, Prisma } from "@prisma/client"
 import prisma from "../config/prisma"
 import prismaErros from "../utils/prismaErros.util"
-import { IsNotEmpty, Length, IsString, Matches } from "class-validator"
+import { IsNotEmpty, Length, IsString, Matches, IsOptional } from "class-validator"
 import NUMBER_REGEX from "../utils/regex/numberRegex"
 import ALPHANUMERIC_REGEX from "../utils/regex/alphanumericRegex"
 
@@ -17,6 +17,11 @@ export default class ProdutoTempModel implements ProdutoTemp {
   @Length(3, 255, { message: 'O nome do produto deve conter entre 3 e 255 caracteres' })
   @Matches(ALPHANUMERIC_REGEX, { message: 'O nome do produto deve conter apenas caracteres alfanuméricos' })
   nome!: string
+
+
+  @IsOptional()
+  @Matches(NUMBER_REGEX, { message: 'O ID do produto deve ser um número' })
+  produtoId!: number | null
 
   qtdInclusao = 1
 
