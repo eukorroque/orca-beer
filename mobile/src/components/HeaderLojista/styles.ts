@@ -13,6 +13,7 @@ export const HeaderContainer = styled.View`
 export const Image = styled.Image`
   width: 66px;
   height: 66px;
+  border-radius: 33px;
 `
 
 export const ProfileContainer = styled.View`

@@ -38,7 +38,6 @@ export const NotificationContainer = styled.View`
 `
 
 export const NotificationBar = styled.View`
-  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -52,7 +51,6 @@ export const NotificationBar = styled.View`
 `
 
 export const NotificationBody = styled.View`
-  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -68,7 +66,6 @@ export const NotificationBody = styled.View`
 `
 
 export const NotificationTextBox = styled.View`
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -87,7 +84,6 @@ export const NotificationButton = styled.TouchableOpacity`
 `
 
 export const SimpleContainer = styled.View`
-  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;

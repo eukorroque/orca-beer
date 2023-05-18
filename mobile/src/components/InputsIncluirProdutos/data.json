@@ -1,0 +1,25 @@
+{
+      "categorias": [
+        {
+        "label": "Cervejas"
+        },
+        {
+        "label": "Refrigerantes"
+        },
+        {
+          "label": "Destilados"
+        }
+      ],
+      "produtos": [
+        {
+        "label": "Heineken"
+        },
+        {
+        "label": "Coca-cola"
+        },
+        {
+          "label": "Absolut"
+          }
+      ]
+
+}
