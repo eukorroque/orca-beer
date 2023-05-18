@@ -5,6 +5,7 @@ import { IProdutoInPedidoArray } from "../interfaces/IProdutoInPedidoArray"
 import ProdutoModel from "../models/produto.model"
 import ProdutoTempModel from "../models/produtoTemp.model"
 import UsuarioModel from "../models/usuario.model"
+import { Pedido } from "@prisma/client"
 
 export default class PedidoService {
 
@@ -113,6 +114,28 @@ export default class PedidoService {
 
 
       return idPedido
+
+    } catch (error: any) {
+      throw new Error(error.message)
+    }
+  }
+
+  async getByIdFornecedor(idFornecedor: number): Promise<Pedido[]> {
+    try {
+
+      const pedidos = await this.pedidoModel.getMany({
+        where: {
+          fornecedoresAlcancados: {
+            array_contains: {
+              id: idFornecedor
+            }
+          },
+          statusId: 1
+        }
+
+      })
+
+      return pedidos
 
     } catch (error: any) {
       throw new Error(error.message)

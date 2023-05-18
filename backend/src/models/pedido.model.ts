@@ -131,4 +131,27 @@ export default class PedidoModel implements Pedido {
       throw new Error(prismaErros(error))
     }
   }
+
+  async getMany(params: {
+    skip?: number
+    take?: number
+    cursor?: Prisma.PedidoWhereUniqueInput
+    where?: Prisma.PedidoWhereInput
+    orderBy?: Prisma.PedidoOrderByWithRelationInput
+    include?: Prisma.PedidoInclude
+    select?: Prisma.PedidoSelect
+  }): Promise<Pedido[]> {
+    try {
+
+      const pedidos = await prisma.pedido.findMany({
+        ...params
+      })
+
+      return pedidos
+
+    } catch (error: any) {
+      throw new Error(prismaErros(error))
+
+    }
+  }
 }

@@ -17,5 +17,6 @@ const router = Router()
 
 router
   .post('/pedido', Controller.create.bind(Controller))
+  .get('/pedido/:idFornecedor', Controller.getByIdFornecedor.bind(Controller))
 
 export default router

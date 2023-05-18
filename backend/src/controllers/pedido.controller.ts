@@ -33,5 +33,29 @@ export default class UsuarioController {
 
   }
 
+  /**
+   * Retorna todos os pedidos que não foram finalizado com base no id do fornecedor
+   */
+  async getByIdFornecedor(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { idFornecedor } = req.params
+
+      if (!idFornecedor || !Number.isInteger(parseInt(idFornecedor))) {
+        return next('Informe o id do fornecedor que deseja obter as informações sobre pedidos.')
+      }
+
+      const pedidos = await this.pedidoService.getByIdFornecedor(parseInt(idFornecedor))
+
+      res.status(HttpStatus.OK).json({
+        ok: true,
+        pedidos
+      })
+
+    } catch (error: any) {
+      return next(error.message)
+    }
+
+  }
+
 
 }
