@@ -6,7 +6,9 @@ export default {
     secondaryText: '#9FA5C0',
     outline: '#D0DBEA',
     form: '#F4F5F7',
-    background: '#FFFFFF'
+    background: '#FFFFFF',
+    inputBody: '#FBFBFB',
+    inputBorder: '#D9D9D9'
   },
   fontSizes: {
     header: {

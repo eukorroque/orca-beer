@@ -12,6 +12,7 @@ import { RootStackParamList } from './src/types/RootStackParamList'
 import HomeLogistaController from './src/controllers/HomeLojistaController'
 import OrcamentoLojistaScreen from './src/screens/OrcamentoLojistaScreen'
 import IncluirProdutoLojistaScreen from './src/screens/IncluirProdutoLojistaScreen'
+import { NativeBaseProvider } from "native-base"
 
 
 
@@ -48,74 +49,71 @@ const App = () => {
 
 
   return (
-    <NavigationContainer onReady={onLayoutRootView}>
-      <Stack.Navigator
-        initialRouteName="Welcome"
-        screenOptions={{
-          cardStyle: {
-            backgroundColor: theme.colors.background
+    <NativeBaseProvider>
+      <NavigationContainer onReady={onLayoutRootView}>
+        <Stack.Navigator
+          initialRouteName="Welcome"
+          screenOptions={{
+            cardStyle: {
+              backgroundColor: theme.colors.background
+            }
+          }}
+        >
+          {
+            isLoggedIn ? (
+              <Stack.Group>
+                <Stack.Screen name='HomeLojista'
+                  component={HomeLogistaController}
+                  options={{ headerShown: false }} />
+                <Stack.Screen
+                  name='OrcamentoLojista'
+                  component={OrcamentoLojistaScreen}
+                  options={{
+                    headerStyle: {
+                      backgroundColor: theme.colors.primary,
+                      height: 150,
+                    },
+                    headerTitle: 'Novo orçamento'
+                  }}
+                />
+                <Stack.Screen
+                  name='IncluirProdutoLojista'
+                  component={IncluirProdutoLojistaScreen}
+                  options={{
+                    headerStyle: {
+                      backgroundColor: theme.colors.primary,
+                      height: 150,
+                    },
+                    headerTitle: 'Incluir Produto'
+                  }}
+                />
+              </Stack.Group>
+            ) : (
+              <Stack.Group>
+                <Stack.Screen
+                  name="Login"
+                  component={LoginScreen}
+                  options={{
+                    headerTitle: ''
+                  }}
+                  initialParams={{
+                    setIsLoggedIn
+                  }}
+                />
+                <Stack.Screen
+                  name="Welcome"
+                  component={WelcomeScreen}
+                  options={{
+                    headerShown: false
+                  }}
+                />
+
+              </Stack.Group>
+            )
           }
-        }}
-      >
-        {
-          isLoggedIn ? (
-            <Stack.Group>
-
-              <Stack.Screen name='HomeLojista'
-                component={HomeLogistaController}
-                options={{ headerShown: false }}
-              />
-
-              <Stack.Screen
-                name='OrcamentoLojista'
-                component={OrcamentoLojistaScreen}
-                options={{
-                  headerStyle: {
-                    backgroundColor: theme.colors.primary,
-                    height: 150,
-                  },
-                  headerTitle: 'Novo orçamento'
-                }}
-              />
-
-              <Stack.Screen
-                name='IncluirProdutoLojista'
-                component={IncluirProdutoLojistaScreen}
-                options={{
-                  headerStyle: {
-                    backgroundColor: theme.colors.primary,
-                    height: 150,
-                  },
-                  headerTitle: 'Incluir Produto'
-                }}
-              />
-
-            </Stack.Group>
-          ) : (
-            <Stack.Group>
-              <Stack.Screen
-                name="Login"
-                component={LoginScreen}
-                options={{
-                  headerTitle: ''
-                }}
-                initialParams={{
-                  setIsLoggedIn
-                }}
-              />
-              <Stack.Screen
-                name="Welcome"
-                component={WelcomeScreen}
-                options={{
-                  headerShown: false
-                }}
-              />
-
-            </Stack.Group>
-          )
-        }
-      </Stack.Navigator>
-    </NavigationContainer>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </NativeBaseProvider>
   )
 }
 
