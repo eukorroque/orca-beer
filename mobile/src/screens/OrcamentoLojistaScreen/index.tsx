@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 // Arquivo criado: 16/05/2023 às 11:05
 import React from 'react'
 import TextDefault from '../../components/TextDefault'

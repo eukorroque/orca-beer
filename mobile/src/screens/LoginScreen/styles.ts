@@ -1,4 +1,5 @@
 import styled from "styled-components/native"
+import theme from '../../config/theme'
 
 export const Container = styled.View`
   flex: 1;
@@ -34,7 +35,7 @@ export const TextInput = styled.TextInput`
 box-sizing: border-box;
 margin: 5px 0;
 padding: 5px 10px;
-background: #FBFBFB;
-border: 1px solid #D9D9D9;
+background: ${theme.colors.inputBody};
+border: 1px solid ${theme.colors.inputBorder};
 border-radius: 8px;
 `
