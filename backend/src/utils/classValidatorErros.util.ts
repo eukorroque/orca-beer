@@ -13,19 +13,22 @@ interface Constraints {
 
 /**
  *  Função que retorna os erros de validação do class-validator de forma mais amigável
+ * ATENÇÂO: Por mais que seja passado um array, para melhorar a experiencia do usuário, será retornado apenas o primeiro erro.
  */
 const classValidatorErros = (erros: Errors[]) => {
 
-  const errosRetorno: any = {}
+  // const errosRetorno: any = {}
 
-  erros.forEach(erro => {
-    const propriedade = erro.property
-    const constraints = erro.constraints
+  // erros.forEach(erro => {
+  //   const propriedade = erro.property
+  //   const constraints = erro.constraints
 
-    return errosRetorno[propriedade] = constraints
-  })
+  //   return errosRetorno[propriedade] = constraints
+  // })
 
-  return errosRetorno
+  if (!erros[0].constraints) return null
+
+  return Object.values(erros[0].constraints)[0]
 }
 
 export default classValidatorErros
