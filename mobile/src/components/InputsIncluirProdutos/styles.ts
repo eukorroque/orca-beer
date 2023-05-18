@@ -21,7 +21,6 @@ export const Button = styled.TouchableOpacity`
 `
 
 export const TextContainer = styled.View`
-  box-sizing: border-box;
   width: 80%;
   margin: 50px auto;
   margin-top: 10px;
@@ -33,7 +32,6 @@ export const TextContainer = styled.View`
 `
 
 export const InputsContainer = styled.View`
-  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -48,7 +46,6 @@ export const DefaultInputContainer = styled.View`
 `
 
 export const TextInput = styled.TextInput`
-box-sizing: border-box;
 margin: 20px 0;
 margin-top: 1px;
 padding: 5px 10px;
@@ -59,16 +56,13 @@ height: 50px;
 `
 
 export const LargeInputContainer = styled.View`
-  box-sizing: border-box;
   width: 65%;
 `
 export const SmallInputContainer = styled.View`
-  box-sizing: border-box;
   width: 30%;
 `
 
 export const SelectsContainer = styled.View`
-  box-sizing: border-box;
   align-items: center;
   width: 300px;
   margin: 0 auto;

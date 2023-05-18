@@ -70,7 +70,7 @@ const ProdutosDropdown = () => {
         </S.SelectsContainer>
         <S.DefaultInputContainer style={(existsProduto ? { display: 'none' } : { display: 'flex'})}>
           <TextDefault>Outro</TextDefault>
-          <S.TextInput/>
+          <S.TextInput style={{paddingHorizontal: 5}}/>
         </S.DefaultInputContainer>
         <S.SmallInputContainer>
           <TextDefault>Quantidade</TextDefault>

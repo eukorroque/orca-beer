@@ -23,7 +23,6 @@ const IncluirProdutoScreen = () => {
         >
           <TextDefault bold >Adicionar produto</TextDefault>
         </S.Button>
-
       </S.ButtonContainer>
     </ContainerDefault>
   )
