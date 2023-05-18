@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express'
 import PedidoService from '../services/pedido.service'
 import IUserSession from "../interfaces/IUserSession"
 
-export default class UsuarioController {
+export default class PedidoController {
 
   constructor (
     private pedidoService: PedidoService

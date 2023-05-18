@@ -24,7 +24,7 @@ export default class PedidoService {
       const produtosTemp: IProdutoInPedidoArray[] | undefined = pedido.produtosTemp as any
 
 
-      const existsProdutos = await this.produtoModel.getMany({
+      const existsProdutos = await this.produtoModel.getAll({
         where: {
           id: {
             in: produtos.map(produto => produto.produtoId)
@@ -184,7 +184,7 @@ export default class PedidoService {
       return pedidoAtualizado
 
 
-      //criar na tabela de orçamentos o orçamento do fornecedor
+      //criar na tabela de propostas a proposta do fornecedor.
 
 
     } catch (error: any) {

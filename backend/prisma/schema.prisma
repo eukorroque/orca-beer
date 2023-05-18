@@ -42,6 +42,8 @@ model Usuario {
   criadoEm                DateTime         @default(now())
   atualizadoEm            DateTime         @updatedAt
   Pedido                  Pedido[]
+  propostasFornecedor     Proposta[]       @relation(name: "FornecedorRel")
+  propostasLojista        Proposta[]       @relation(name: "LojistaRel")
 }
 
 model Admin {
@@ -164,10 +166,29 @@ model Pedido {
   fornecedoresAlcancados Json /// json com os fornecedores que receberam o pedido e um bool para saber se ele aceitou ou não.
   criadoEm               DateTime     @default(now())
   atualizadoEm           DateTime     @updatedAt
+  Proposta               Proposta[]
 }
 
 model StatusPedido {
-  id     Int      @id @default(autoincrement())
-  status String   @unique @db.VarChar(255)
-  Pedido Pedido[]
+  id       Int        @id @default(autoincrement())
+  status   String     @unique @db.VarChar(255)
+  Pedido   Pedido[]
+  Proposta Proposta[]
+}
+
+model Proposta {
+  id           Int          @id @default(autoincrement())
+  pedido       Pedido       @relation(fields: [pedidoId], references: [id])
+  pedidoId     Int
+  fornecedor   Usuario      @relation(name: "FornecedorRel", fields: [fornecedorId], references: [id])
+  fornecedorId Int
+  lojista      Usuario      @relation(name: "LojistaRel", fields: [lojistaId], references: [id])
+  lojistaId    Int
+  frete        Float?       @db.Float
+  valor        Float        @db.Float
+  status       StatusPedido @relation(fields: [statusId], references: [id])
+  statusId     Int
+  produtos     Json /// json com os produtos do pedido.
+  criadoEm     DateTime     @default(now())
+  atualizadoEm DateTime     @updatedAt
 }
