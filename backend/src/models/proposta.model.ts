@@ -1,7 +1,7 @@
 import { Prisma, Proposta } from "@prisma/client"
 import prisma from "../config/prisma"
 import prismaErros from "../utils/prismaErros.util"
-import { IsArray, IsNotEmpty, IsNumber, IsOptional, Min } from "class-validator"
+import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional, Min } from "class-validator"
 
 export default class PropostaModel implements Proposta {
   id!: number
@@ -39,6 +39,11 @@ export default class PropostaModel implements Proposta {
   @IsNumber({}, { message: 'O id do status deve ser um número válido' })
   @IsNotEmpty({ message: 'O id do status deve ser informado' })
   statusId!: number
+
+
+  @IsOptional()
+  @IsBoolean({ message: 'O campo lojistaAceitou deve ser um booleano válido' })
+  lojistaAceitou!: boolean | null
 
 
   @IsArray({ message: 'O array de produtos deve ser um array válido' })
