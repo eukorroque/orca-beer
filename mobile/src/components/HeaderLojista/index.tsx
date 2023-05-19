@@ -7,6 +7,7 @@ import { FontAwesome } from '@expo/vector-icons'
 import data from './data.json'
 import DropdownDefault from '../DropdownDefault'
 import theme from '../../config/theme'
+import { StyleSheet } from 'react-native'
 
 const userGhostIcon = require('../../../assets/Profile-PNG-File.png')
 
@@ -26,15 +27,31 @@ const HeaderLojista = () => {
         <FontAwesome name='bell' color='#000' size={25} />
       </S.IconsContainer>
       <S.AdressContainer>
-        <DropdownDefault dropdownStyle={{ width: 300, borderRadius: 8 }} buttonStyle={{ width: 300, borderRadius: 8, backgroundColor: theme.colors.noBackground, height: 15 }} data={data.enderecos} buttonTextAfterSelection={(selectedItem) => {
-            return `${selectedItem.rua}, ${selectedItem.numero}, ${selectedItem.cidade}, ${selectedItem.estado}`}} rowTextForSelection={(item) => {
-              return `${item.rua}, ${item.numero}`
-            }} defaultButtonText='Selecione o endereço de entrega'/>
+        <DropdownDefault
+          dropdownStyle={{ width: 300, borderRadius: 8 }}
+          buttonStyle={styles.buttonStyle}
+          data={data.enderecos}
+          buttonTextAfterSelection={(selectedItem) => {
+            return `${selectedItem.rua}, ${selectedItem.numero}, ${selectedItem.cidade}, ${selectedItem.estado}`
+          }}
+          rowTextForSelection={(item) => {
+            return `${item.rua}, ${item.numero}`
+          }}
+          defaultButtonText='Selecione o endereço de entrega' />
       </S.AdressContainer>
 
     </S.HeaderContainer>
   )
 
 }
+
+const styles = StyleSheet.create({
+  buttonStyle: {
+    backgroundColor: theme.colors.noBackground,
+    borderRadius: 8,
+    height: 15,
+    width: 300
+  }
+})
 
 export default HeaderLojista
