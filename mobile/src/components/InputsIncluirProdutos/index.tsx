@@ -1,12 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react'
 import * as S from './styles'
-import SelectDropdown from 'react-native-select-dropdown'
+import DropdownDefault from '../DropdownDefault'
 import theme from '../../config/theme'
-import { FontAwesome } from '@expo/vector-icons'
 import TextDefault from '../TextDefault'
 import data from './data.json'
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 
 
 
@@ -20,21 +19,12 @@ const ProdutosDropdown = () => {
         <S.SelectsContainer>
           <S.DropdownContainer>
             <TextDefault>Categoria</TextDefault>
-            <SelectDropdown
+            <DropdownDefault 
               dropdownStyle={{ width: 300, borderRadius: 8 }}
               buttonStyle={{ width: 300, borderRadius: 8, backgroundColor: theme.colors.inputBody, borderWidth: 1, borderStyle: 'solid', borderColor: theme.colors.inputBorder, marginTop: 1, marginBottom: 20 }}
-              buttonTextStyle={{ fontFamily: theme.fonts.regular, fontSize: theme.fontSizes.body.p3 }}
-              rowTextStyle={{ fontFamily: theme.fonts.regular }}
               data={data.categorias}
-              onSelect={(selectedItem, index) => {
-                console.log(selectedItem, index)
-              }}
               buttonTextAfterSelection={selectedItem => selectedItem.label}
               rowTextForSelection={item => item.label}
-              showsVerticalScrollIndicator={true}
-              renderDropdownIcon={isOpened =>
-                <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color='#000' size={12} />
-              }
               defaultButtonText=' '
             />
           </S.DropdownContainer>
@@ -42,21 +32,12 @@ const ProdutosDropdown = () => {
             existsProduto && (
               <S.DropdownContainer style={{ display: 'flex' }}>
                 <TextDefault>Produto</TextDefault>
-                <SelectDropdown
+                <DropdownDefault 
                   dropdownStyle={{ width: 300, borderRadius: 8 }}
-                  buttonStyle={styles.buttonStyle}
-                  buttonTextStyle={{ fontFamily: theme.fonts.regular, fontSize: theme.fontSizes.body.p3 }}
-                  rowTextStyle={{ fontFamily: theme.fonts.regular }}
+                  buttonStyle={{ width: 300, borderRadius: 8, backgroundColor: theme.colors.inputBody, borderWidth: 1, borderStyle: 'solid', borderColor: theme.colors.inputBorder, marginTop: 1, marginBottom: 20 }}
                   data={data.produtos}
-                  onSelect={(selectedItem, index) => {
-                    console.log(selectedItem, index)
-                  }}
                   buttonTextAfterSelection={selectedItem => selectedItem.label}
                   rowTextForSelection={item => item.label}
-                  showsVerticalScrollIndicator={true}
-                  renderDropdownIcon={isOpened => {
-                    return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#000'} size={12} />
-                  }}
                   defaultButtonText=' '
                 />
               </S.DropdownContainer>
@@ -77,7 +58,14 @@ const ProdutosDropdown = () => {
         </S.SmallInputContainer>
         <S.LargeInputContainer>
           <TextDefault>Unidade</TextDefault>
-          <S.TextInput />
+          <DropdownDefault 
+              dropdownStyle={{ width: 195, borderRadius: 8 }}
+              buttonStyle={{ width: 195, borderRadius: 8, backgroundColor: theme.colors.inputBody, borderWidth: 1, borderStyle: 'solid', borderColor: theme.colors.inputBorder, marginTop: 1, marginBottom: 20 }}
+              data={data.unidades}
+              buttonTextAfterSelection={selectedItem => selectedItem.label}
+              rowTextForSelection={item => item.label}
+              defaultButtonText=' '
+            />
         </S.LargeInputContainer>
       </S.InputsContainer>
       <S.TextContainer style={(!existsProduto ? { display: 'none' } : { display: 'flex' })}>
@@ -93,19 +81,6 @@ const ProdutosDropdown = () => {
 
 }
 
-const styles = StyleSheet.create({
-  buttonStyle: {
-    backgroundColor: theme.colors.inputBody,
-    borderColor: theme.colors.inputBorder,
-    borderRadius: 8,
-    borderStyle: 'solid',
-    borderWidth: 1,
-    marginBottom: 30,
-    marginTop: 1,
-    width: 300
-  }
-
-})
 
 
 export default ProdutosDropdown

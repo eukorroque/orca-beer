@@ -8,7 +8,8 @@ export default {
     form: '#F4F5F7',
     background: '#FFFFFF',
     inputBody: '#FBFBFB',
-    inputBorder: '#D9D9D9'
+    inputBorder: '#D9D9D9',
+    noBackground: 'rgba(255,255,255,0)'
   },
   fontSizes: {
     header: {

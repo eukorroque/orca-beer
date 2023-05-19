@@ -38,7 +38,5 @@ export const IconsContainer = styled.View`
 `
 
 export const AdressContainer = styled.View`
-  width: 100%;
-  //height: 20px;
-  align-items: center;
+  margin-top: 10px;
 `

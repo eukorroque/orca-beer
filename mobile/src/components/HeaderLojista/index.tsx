@@ -4,9 +4,10 @@ import React from 'react'
 import * as S from './styles'
 import TextDefault from '../TextDefault'
 import { FontAwesome } from '@expo/vector-icons'
-import SelectDropdown from 'react-native-select-dropdown'
-import theme from '../../config/theme'
 import data from './data.json'
+import DropdownDefault from '../DropdownDefault'
+import theme from '../../config/theme'
+import { StyleSheet } from 'react-native'
 
 const userGhostIcon = require('../../../assets/Profile-PNG-File.png')
 
@@ -26,33 +27,31 @@ const HeaderLojista = () => {
         <FontAwesome name='bell' color='#000' size={25} />
       </S.IconsContainer>
       <S.AdressContainer>
-        <SelectDropdown
+        <DropdownDefault
           dropdownStyle={{ width: 300, borderRadius: 8 }}
-          buttonStyle={{ width: 300, borderRadius: 8, backgroundColor: theme.colors.primary }}
-          buttonTextStyle={{ fontFamily: theme.fonts.regular, fontSize: theme.fontSizes.body.p3 }}
-          rowTextStyle={{ fontFamily: theme.fonts.regular }}
+          buttonStyle={styles.buttonStyle}
           data={data.enderecos}
-          onSelect={(selectedItem, index) => {
-            console.log(selectedItem, index)
-          }}
           buttonTextAfterSelection={(selectedItem) => {
             return `${selectedItem.rua}, ${selectedItem.numero}, ${selectedItem.cidade}, ${selectedItem.estado}`
-
           }}
           rowTextForSelection={(item) => {
             return `${item.rua}, ${item.numero}`
           }}
-          showsVerticalScrollIndicator={true}
-          renderDropdownIcon={isOpened => {
-            return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#000'} size={14} />
-          }}
-          defaultButtonText='Selecione o seu endereço'
-        />
+          defaultButtonText='Selecione o endereço de entrega' />
       </S.AdressContainer>
 
     </S.HeaderContainer>
   )
 
 }
+
+const styles = StyleSheet.create({
+  buttonStyle: {
+    backgroundColor: theme.colors.noBackground,
+    borderRadius: 8,
+    height: 15,
+    width: 300
+  }
+})
 
 export default HeaderLojista
