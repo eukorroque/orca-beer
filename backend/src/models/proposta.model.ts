@@ -111,4 +111,22 @@ export default class PropostaModel implements Proposta {
     }
   }
 
+
+  async update(params: {
+    where: Prisma.PropostaWhereUniqueInput
+    data: Prisma.PropostaUpdateInput
+  }): Promise<Proposta | null> {
+    try {
+      const proposta = await prisma.proposta.update({
+        ...params
+      })
+
+      return proposta
+
+    } catch (error: any) {
+
+      throw new Error(prismaErros(error))
+    }
+  }
+
 }

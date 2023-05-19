@@ -1,6 +1,7 @@
 import { HttpStatus } from "../enums/httpStatus.enum"
 import { NextFunction, Request, Response } from 'express'
 import PropostaService from "../services/proposta.service"
+import IUserSession from "../interfaces/IUserSession"
 
 export default class PropostaController {
 
@@ -30,6 +31,36 @@ export default class PropostaController {
       return next(error.message)
     }
 
+  }
+
+
+  async updateProdutosArr(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { idProposta } = req.params
+      const { novoIndice } = req.body
+      const userSession: IUserSession = req.body.userSession
+
+
+      if (!idProposta || !Number.isInteger(parseInt(idProposta))) {
+        return next('Informe o id da proposta')
+      }
+
+      if (!novoIndice) {
+        return next('Não foram passados todos os dados necessários para completar a requisição')
+      }
+
+      novoIndice.responsavelId = userSession.id
+      const updated = await this.propostaService.updateProdutosArr(parseInt(idProposta), novoIndice)
+
+      res.status(HttpStatus.OK).json({
+        ok: true,
+        msg: 'Proposta atualizada com sucesso',
+        updated: updated
+      })
+
+    } catch (error: any) {
+      return next(error.message)
+    }
   }
 
 }

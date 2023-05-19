@@ -198,6 +198,7 @@ export default class PedidoService {
           {
             ordem: 1,
             data: pedido.criadoEm,
+            responsavelId: pedido.lojistaId,
             produtos: [
               ...pedido.produtos as any,
               ...pedido.produtosTemp as any

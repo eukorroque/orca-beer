@@ -177,18 +177,19 @@ model StatusPedido {
 }
 
 model Proposta {
-  id           Int          @id @default(autoincrement())
-  pedido       Pedido       @relation(fields: [pedidoId], references: [id])
-  pedidoId     Int
-  fornecedor   Usuario      @relation(name: "FornecedorRel", fields: [fornecedorId], references: [id])
-  fornecedorId Int
-  lojista      Usuario      @relation(name: "LojistaRel", fields: [lojistaId], references: [id])
-  lojistaId    Int
-  frete        Float?       @db.Float
-  valor        Float        @db.Float
-  status       StatusPedido @relation(fields: [statusId], references: [id])
-  statusId     Int
-  produtos     Json /// esse json é um array com todo o tramite do pedido. Cada alteração que algum usuário fizer será salvo como um novo item no array.
-  criadoEm     DateTime     @default(now())
-  atualizadoEm DateTime     @updatedAt
+  id             Int          @id @default(autoincrement())
+  pedido         Pedido       @relation(fields: [pedidoId], references: [id])
+  pedidoId       Int
+  fornecedor     Usuario      @relation(name: "FornecedorRel", fields: [fornecedorId], references: [id])
+  fornecedorId   Int
+  lojista        Usuario      @relation(name: "LojistaRel", fields: [lojistaId], references: [id])
+  lojistaId      Int
+  lojistaAceitou Boolean? /// se null, o lojista ainda não respondeu a proposta. Se true, ele aceitou. Se false, ele recusou.
+  frete          Float?       @db.Float
+  valor          Float        @db.Float
+  status         StatusPedido @relation(fields: [statusId], references: [id])
+  statusId       Int
+  produtos       Json /// esse json é um array com todo o tramite do pedido. Cada alteração que algum usuário fizer será salvo como um novo item no array.
+  criadoEm       DateTime     @default(now())
+  atualizadoEm   DateTime     @updatedAt
 }
