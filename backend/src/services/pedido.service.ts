@@ -7,6 +7,7 @@ import ProdutoTempModel from "../models/produtoTemp.model"
 import UsuarioModel from "../models/usuario.model"
 import { Pedido } from "@prisma/client"
 import IFornecedoresInPedidoArray from "../interfaces/IFornecedoresInPedidoArray"
+import PropostaService from "./proposta.service"
 
 export default class PedidoService {
 
@@ -14,7 +15,8 @@ export default class PedidoService {
     private pedidoModel: PedidoModel,
     private produtoModel: ProdutoModel,
     private produtoTempModel: ProdutoTempModel,
-    private usuarioModel: UsuarioModel
+    private usuarioModel: UsuarioModel,
+    private propostaService: PropostaService
   ) { }
 
   async create(pedido: any): Promise<number> {
@@ -73,7 +75,7 @@ export default class PedidoService {
 
       const fornecedoresArray = idFornecedores.map(fornecedor => ({
         id: fornecedor.id,
-        aceitou: false
+        aceitou: null
       }))
 
       // passando os valores necessários para o objeto de pedido para que ele seja validado pelo class-validator
@@ -140,7 +142,7 @@ export default class PedidoService {
     }
   }
 
-  async aceitarPedido(idPedido: number, idFornecedor: number): Promise<Pedido | null> {
+  async fornecedorFeedback(idPedido: number, idFornecedor: number, feedback: number): Promise<Pedido | null> {
     try {
 
       const pedido = await this.pedidoModel.getOne({ where: { id: idPedido } })
@@ -148,6 +150,7 @@ export default class PedidoService {
       if (!pedido) {
         throw new Error('Pedido não encontrado')
       }
+
 
       const fornecedoresAlcancados: IFornecedoresInPedidoArray[] = pedido.fornecedoresAlcancados as any
 
@@ -157,15 +160,19 @@ export default class PedidoService {
         throw new Error('Esse fornecedor não faz parte dos fornecedores selecionados para esse pedido')
       }
 
-      if (hasFornecedor.aceitou) {
+      if (hasFornecedor.aceitou && feedback) {
         throw new Error('Esse fornecedor já aceitou esse pedido')
+      }
+
+      if (!hasFornecedor.aceitou && !feedback) {
+        throw new Error('Esse fornecedor já recusou esse pedido')
       }
 
       const newArr = fornecedoresAlcancados.map(fornecedor => {
         if (fornecedor.id === idFornecedor) {
           return {
             ...fornecedor,
-            aceitou: true
+            aceitou: feedback ? true : false
           }
         }
 
@@ -181,10 +188,39 @@ export default class PedidoService {
         }
       })
 
+      //criar na tabela de propostas a proposta do fornecedor caso ele aceite o pedido
+
+
+
+      if (feedback) {
+
+        const arrNegocia = [
+          {
+            ordem: 1,
+            data: pedido.criadoEm,
+            produtos: [
+              ...pedido.produtos as any,
+              ...pedido.produtosTemp as any
+            ]
+          }
+        ]
+
+        const idProposta = await this.propostaService.create({
+          pedidoId: idPedido,
+          fornecedorId: idFornecedor,
+          lojistaId: pedido.lojistaId,
+          statusId: pedido.statusId,
+          produtos: arrNegocia
+        })
+
+        if (!idProposta) {
+          throw new Error('Erro ao criar proposta')
+        }
+      }
+
       return pedidoAtualizado
 
 
-      //criar na tabela de propostas a proposta do fornecedor.
 
 
     } catch (error: any) {

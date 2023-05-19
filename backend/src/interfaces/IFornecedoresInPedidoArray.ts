@@ -2,5 +2,5 @@
 
 export default interface IFornecedoresInPedidoArray {
   id: number
-  aceitou: boolean
+  aceitou: boolean | null
 }

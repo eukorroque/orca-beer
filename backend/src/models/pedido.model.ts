@@ -24,8 +24,8 @@ export default class PedidoModel implements Pedido {
   prazoEntrega!: Date
 
 
-  @Min(1, { message: 'O id do usuário deve ser maior que 0' })
-  @IsNumber({}, { message: 'O id do usuário deve ser um número válido' })
+  @Min(1, { message: 'O id do lojista deve ser maior que 0' })
+  @IsNumber({}, { message: 'O id do lojista deve ser um número válido' })
   @IsNotEmpty({ message: 'O id do lojista deve ser informado' })
   lojistaId!: number
 

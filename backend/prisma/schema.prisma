@@ -188,7 +188,7 @@ model Proposta {
   valor        Float        @db.Float
   status       StatusPedido @relation(fields: [statusId], references: [id])
   statusId     Int
-  produtos     Json /// json com os produtos do pedido.
+  produtos     Json /// esse json é um array com todo o tramite do pedido. Cada alteração que algum usuário fizer será salvo como um novo item no array.
   criadoEm     DateTime     @default(now())
   atualizadoEm DateTime     @updatedAt
 }
