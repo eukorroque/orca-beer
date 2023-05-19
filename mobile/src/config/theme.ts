@@ -9,7 +9,8 @@ export default {
     background: '#FFFFFF',
     inputBody: '#FBFBFB',
     inputBorder: '#D9D9D9',
-    noBackground: 'rgba(255,255,255,0)'
+    noBackground: 'rgba(255,255,255,0)',
+    success: '#009905'
   },
   fontSizes: {
     header: {

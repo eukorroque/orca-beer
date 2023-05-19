@@ -11,6 +11,7 @@ import { RootStackParamList } from '../../types/RootStackParamList'
 import { FontAwesome } from '@expo/vector-icons'
 import data from './data.json'
 import theme from '../../config/theme'
+import ModalDefault from '../../components/ModalDefaut'
 
 
 
@@ -34,11 +35,16 @@ const OrcamentoLojistaScreen = () => {
         </S.ButtonLight>
       </S.ButtonContainer>
       <S.ButtonContainer>
-        <S.Button
+        <ModalDefault 
+          textInModal={'Em breve você receberrá propostas de diferentes fornecedores.'}
+          modalButtonText={'Voltar para tela principal'}
+          message={"Novo orçamento enviado com sucesso!"}
+          title={'Enviar orçamento'}/>
+        {/* <S.Button
           onPress={() => navigation.navigate('HomeLojista')}
         >
           <TextDefault bold >Enviar orçamento</TextDefault>
-        </S.Button>
+        </S.Button> */}
       </S.ButtonContainer>
       <S.FilterContainer>
         <TextDefault marginHorizontal={6}>Filtrar lista</TextDefault>

@@ -12,7 +12,6 @@ import { RootStackParamList } from './src/types/RootStackParamList'
 import HomeLogistaController from './src/controllers/HomeLojistaController'
 import OrcamentoLojistaScreen from './src/screens/OrcamentoLojistaScreen'
 import IncluirProdutoLojistaScreen from './src/screens/IncluirProdutoLojistaScreen'
-import { NativeBaseProvider } from "native-base"
 import HeaderOrcaBeer from './src/components/HeaderOrcaBeer'
 
 
@@ -50,7 +49,6 @@ const App = () => {
 
 
   return (
-    <NativeBaseProvider>
       <NavigationContainer onReady={onLayoutRootView}>
         <Stack.Navigator
           initialRouteName="Welcome"
@@ -114,7 +112,6 @@ const App = () => {
           }
         </Stack.Navigator>
       </NavigationContainer>
-    </NativeBaseProvider>
   )
 }
 
