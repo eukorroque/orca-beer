@@ -1,9 +1,8 @@
 import styled from "styled-components/native"
 import theme from "../../config/theme"
 
-export const Container = styled.ScrollView`
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
+export const AdressContainer = styled.View`
+  margin-bottom: 20px;
 `
 
 export const ButtonContainer = styled.View`
@@ -29,6 +28,25 @@ export const ButtonLight = styled.TouchableOpacity`
   margin-bottom: 20px;
   padding: 12px;
   align-items: center;
+`
+
+export const FilterContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 95%;
+  margin: 15px auto 0 auto;
+  border-bottom-width: .5px;
+  border-bottom-color: ${theme.colors.inputBorder};
+  padding: 10px;
+`
+
+export const ProdutosContainer = styled.View`
+  width: 95%;
+  margin: 0 auto;
+  border-top-width: .5px;
+  border-top-color: ${theme.colors.inputBorder};
 `
 
 export const NotificationContainer = styled.View`
