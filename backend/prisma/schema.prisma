@@ -42,6 +42,8 @@ model Usuario {
   criadoEm                DateTime         @default(now())
   atualizadoEm            DateTime         @updatedAt
   Pedido                  Pedido[]
+  propostasFornecedor     Proposta[]       @relation(name: "FornecedorRel")
+  propostasLojista        Proposta[]       @relation(name: "LojistaRel")
 }
 
 model Admin {
@@ -100,6 +102,7 @@ model Produto {
   atualizadoEm DateTime         @updatedAt
   //quantidade  Int              @db.SmallInt
   // ranking - posição no ranking de produtos.
+  ProdutoTemp  ProdutoTemp[]
 }
 
 model ProdutoTemp {
@@ -110,6 +113,8 @@ model ProdutoTemp {
   qtdInclusao  Int              @db.SmallInt
   criadoEm     DateTime         @default(now())
   atualizadoEm DateTime         @updatedAt
+  produto      Produto?         @relation(fields: [produtoId], references: [id])
+  produtoId    Int? ///  ele vai ser null, caso não seja. sinal que o produtoTemp ja está vinculado a um produto oficial.
   // ranking - posição no ranking de produtos.
 }
 
@@ -150,7 +155,8 @@ model tpAdmins {
 
 model Pedido {
   id                     Int          @id @default(autoincrement())
-  produtos               Json /// json com os produtos do pedido. Incluindo produtosTemp
+  produtosTemp           Json? /// json com os produtos temporários do pedido.
+  produtos               Json /// json com os produtos do pedido.
   prazoEntrega           DateTime
   lojista                Usuario      @relation(fields: [lojistaId], references: [id])
   lojistaId              Int
@@ -160,10 +166,29 @@ model Pedido {
   fornecedoresAlcancados Json /// json com os fornecedores que receberam o pedido e um bool para saber se ele aceitou ou não.
   criadoEm               DateTime     @default(now())
   atualizadoEm           DateTime     @updatedAt
+  Proposta               Proposta[]
 }
 
 model StatusPedido {
-  id     Int      @id @default(autoincrement())
-  status String   @unique @db.VarChar(255)
-  Pedido Pedido[]
+  id       Int        @id @default(autoincrement())
+  status   String     @unique @db.VarChar(255)
+  Pedido   Pedido[]
+  Proposta Proposta[]
+}
+
+model Proposta {
+  id           Int          @id @default(autoincrement())
+  pedido       Pedido       @relation(fields: [pedidoId], references: [id])
+  pedidoId     Int
+  fornecedor   Usuario      @relation(name: "FornecedorRel", fields: [fornecedorId], references: [id])
+  fornecedorId Int
+  lojista      Usuario      @relation(name: "LojistaRel", fields: [lojistaId], references: [id])
+  lojistaId    Int
+  frete        Float?       @db.Float
+  valor        Float        @db.Float
+  status       StatusPedido @relation(fields: [statusId], references: [id])
+  statusId     Int
+  produtos     Json /// json com os produtos do pedido.
+  criadoEm     DateTime     @default(now())
+  atualizadoEm DateTime     @updatedAt
 }

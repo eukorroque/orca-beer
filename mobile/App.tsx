@@ -52,7 +52,7 @@ const App = () => {
     <NativeBaseProvider>
       <NavigationContainer onReady={onLayoutRootView}>
         <Stack.Navigator
-          initialRouteName="Welcome"        
+          initialRouteName="Welcome"
           screenOptions={{
             cardStyle: {
               backgroundColor: theme.colors.background
@@ -62,9 +62,9 @@ const App = () => {
           {
             isLoggedIn ? (
               <Stack.Group>
-                <Stack.Screen name='HomeLojista' 
-                component={HomeLogistaController} 
-                options={{ headerShown: false }} />
+                <Stack.Screen name='HomeLojista'
+                  component={HomeLogistaController}
+                  options={{ headerShown: false }} />
                 <Stack.Screen
                   name='OrcamentoLojista'
                   component={OrcamentoLojistaScreen}

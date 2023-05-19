@@ -1,15 +1,15 @@
-import { categoriaProduto, Prisma } from "@prisma/client";
-import prisma from "../config/prisma";
-import prismaErros from "../utils/prismaErros.util";
+import { categoriaProduto, Prisma } from "@prisma/client"
+import prisma from "../config/prisma"
+import prismaErros from "../utils/prismaErros.util"
 import { IsNotEmpty, Length, IsString, Matches } from "class-validator"
-import NAME_REGEX from "../utils/regex/nameRegex"
+import ALPHANUMERIC_REGEX from "../utils/regex/alphanumericRegex"
 
 export default class CategoriaProdutoModel {
 
   id!: number
 
   @Length(3, 255, { message: 'A categoria deve conter entre 3 e 255 caracteres' })
-  @Matches(NAME_REGEX, { message: 'A categoria deve conter apenas caracteres alfanuméricos' })
+  @Matches(ALPHANUMERIC_REGEX, { message: 'A categoria deve conter apenas caracteres alfanuméricos' })
   @IsNotEmpty({ message: 'A categoria deve ser informada' })
   @IsString({ message: 'A categoria deve ser uma string' })
   categoria!: string
@@ -69,7 +69,7 @@ export default class CategoriaProdutoModel {
           ...categoriaData,
         }
       })
-      
+
       return categoria.id
 
     } catch (error: any) {

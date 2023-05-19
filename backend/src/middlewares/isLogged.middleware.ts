@@ -4,7 +4,7 @@ import SessionModel from '../models/session.model'
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const isLoggedInterceptor = (type: Array<'admin' | 'lojista' | 'fornecedor'>) => (req: Request, res: Response, next: NextFunction) => {
+const isLoggedInterceptor = (type?: Array<'admin' | 'lojista' | 'fornecedor'>) => (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const authHeader = req.headers.authorization

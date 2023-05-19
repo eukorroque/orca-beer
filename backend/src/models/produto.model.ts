@@ -29,6 +29,7 @@ export default class ProdutoModel {
     where?: Prisma.ProdutoWhereInput
     orderBy?: Prisma.ProdutoOrderByWithRelationInput
     include?: Prisma.ProdutoInclude
+    select?: Prisma.ProdutoSelect
   }
   ): Promise<Produto[]> {
     try {

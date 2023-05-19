@@ -2,7 +2,7 @@ import { Prisma, Admin } from "@prisma/client"
 import prisma from "../config/prisma"
 import prismaErros from "../utils/prismaErros.util"
 import { IsNotEmpty, Length, IsString, IsEmail, Matches, IsOptional } from "class-validator"
-import NAME_REGEX from "../utils/regex/nameRegex"
+import ALPHANUMERIC_REGEX from "../utils/regex/alphanumericRegex"
 import NUMBER_REGEX from "../utils/regex/numberRegex"
 
 export default class AdminModel implements Admin {
@@ -12,7 +12,7 @@ export default class AdminModel implements Admin {
   @IsNotEmpty({ message: 'O nome deve ser informado' })
   @IsString({ message: 'O nome deve ser uma string' })
   @Length(2, 255, { message: 'O nome deve conter entre 2 e 255 caracteres' })
-  @Matches(NAME_REGEX, { message: 'O nome deve conter apenas caracteres alfanuméricos' })
+  @Matches(ALPHANUMERIC_REGEX, { message: 'O nome deve conter apenas caracteres alfanuméricos' })
   nome!: string
 
 

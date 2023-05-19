@@ -1,18 +1,21 @@
-import { HttpStatus } from "../enums/httpStatus.enum";
-import CategoriaProdutoModel from "../models/categoriaProduto.model";
-import { NextFunction, Request, Response } from 'express';
-import { validate } from "class-validator";
+import { HttpStatus } from "../enums/httpStatus.enum"
+import CategoriaProdutoModel from "../models/categoriaProduto.model"
+import { NextFunction, Request, Response } from 'express'
+import { validate } from "class-validator"
 import classValidatorErros from "../utils/classValidatorErros.util"
 
+/**
+ * TODO: Validar os campos. quanto for atualizar. (não está validando)
+ */
 
 export default class CategoriaProdutoController {
- 
-  constructor(
+
+  constructor (
     private categoriaProdutoModel: CategoriaProdutoModel
-    ) { 
-    }
- 
-  async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
+  ) {
+  }
+
+  async getAll(_req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
 
       const categorias = await this.categoriaProdutoModel.getAll()
@@ -43,10 +46,10 @@ export default class CategoriaProdutoController {
       const errors = await validate(Object.assign(new CategoriaProdutoModel(), categoria))
 
       if (errors.length > 0) {
-        const newError = classValidatorErros(errors)        
-          return next(newError)
+        const newError = classValidatorErros(errors)
+        return next(newError)
       }
-      
+
       const idCategoria = await this.categoriaProdutoModel.create({
         ...categoria
       })
@@ -63,7 +66,7 @@ export default class CategoriaProdutoController {
 
   async update(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      
+
       const { id } = req.params
       const { categoria } = req.body
 
@@ -83,12 +86,12 @@ export default class CategoriaProdutoController {
       }
 
       const newCategoria = categoria.toString()
-      
+
       const updatedCategoria = await this.categoriaProdutoModel.update({
         where: { id: idCategoria },
         data: {
           categoria: {
-              set: newCategoria
+            set: newCategoria
           }
         }
       })
@@ -105,5 +108,5 @@ export default class CategoriaProdutoController {
     } catch (error: any) {
       return next(error.message)
     }
-  } 
+  }
 }
