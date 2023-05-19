@@ -5,12 +5,13 @@ import * as S from './styles'
 import { FontAwesome } from '@expo/vector-icons'
 import SelectDropdown from 'react-native-select-dropdown'
 import theme from '../../config/theme'
+import { StyleProp, ViewStyle } from 'react-native'
 /* import { StyleProp, TextStyle, ViewStyle } from 'react-native' */
 
 interface Props {
-  /* dropdownStyle?: StyleProp<ViewStyle>
+  dropdownStyle?: StyleProp<ViewStyle>
   buttonStyle?: StyleProp<ViewStyle>
-  buttonTextStyle?: StyleProp<TextStyle>
+  /*buttonTextStyle?: StyleProp<TextStyle>
   rowTextStyle?: StyleProp<TextStyle> */
   data: Array<any>
   /* onSelect: (selectedItem: any, index: number) => void */
@@ -22,9 +23,9 @@ interface Props {
 }
 
 const DropdownDefault: React.ElementType<Props> = ({
-  /* dropdownStyle,
+  dropdownStyle,
   buttonStyle,
-  buttonTextStyle,
+  /*buttonTextStyle,
   rowTextStyle, */
   data,
   /* onSelect, */
@@ -38,8 +39,8 @@ const DropdownDefault: React.ElementType<Props> = ({
   return (    
       <S.AdressContainer>
         <SelectDropdown
-          dropdownStyle={{ width: 300, borderRadius: 8 }}
-          buttonStyle={{ width: 300, borderRadius: 8, backgroundColor: theme.colors.noBackground, height: 15 }}
+          dropdownStyle={dropdownStyle}
+          buttonStyle={buttonStyle}
           buttonTextStyle={{ fontFamily: theme.fonts.regular, fontSize: theme.fontSizes.body.p3 }}
           rowTextStyle={{ fontFamily: theme.fonts.regular }}
           data={data}

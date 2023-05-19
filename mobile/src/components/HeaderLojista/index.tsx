@@ -6,6 +6,7 @@ import TextDefault from '../TextDefault'
 import { FontAwesome } from '@expo/vector-icons'
 import data from './data.json'
 import DropdownDefault from '../DropdownDefault'
+import theme from '../../config/theme'
 
 const userGhostIcon = require('../../../assets/Profile-PNG-File.png')
 
@@ -25,7 +26,7 @@ const HeaderLojista = () => {
         <FontAwesome name='bell' color='#000' size={25} />
       </S.IconsContainer>
       <S.AdressContainer>
-        <DropdownDefault data={data.enderecos} buttonTextAfterSelection={(selectedItem) => {
+        <DropdownDefault dropdownStyle={{ width: 300, borderRadius: 8 }} buttonStyle={{ width: 300, borderRadius: 8, backgroundColor: theme.colors.noBackground, height: 15 }} data={data.enderecos} buttonTextAfterSelection={(selectedItem) => {
             return `${selectedItem.rua}, ${selectedItem.numero}, ${selectedItem.cidade}, ${selectedItem.estado}`}} rowTextForSelection={(item) => {
               return `${item.rua}, ${item.numero}`
             }} defaultButtonText='Selecione o endereço de entrega'/>

@@ -1,10 +1,10 @@
 {
       "categorias": [
         {
-        "label": "Cervejas"
+          "label": "Cervejas"
         },
         {
-        "label": "Refrigerantes"
+          "label": "Refrigerantes"
         },
         {
           "label": "Destilados"
@@ -12,14 +12,25 @@
       ],
       "produtos": [
         {
-        "label": "Heineken"
+          "label": "Heineken"
         },
         {
-        "label": "Coca-cola"
+          "label": "Coca-cola"
         },
         {
           "label": "Absolut"
           }
+      ],
+      "unidades": [
+        {
+          "label": "Long neck"
+        },
+        {
+          "label": "Lata 350ml"
+        },
+        {
+          "label": "Garrafa 900ml"
+        }
       ]
 
 }

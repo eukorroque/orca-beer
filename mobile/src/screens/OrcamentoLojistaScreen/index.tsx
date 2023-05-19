@@ -10,6 +10,8 @@ import ContainerDefault from '../../components/ContainerDefault'
 import { RootStackParamList } from '../../types/RootStackParamList'
 import { FontAwesome } from '@expo/vector-icons'
 import data from './data.json'
+import theme from '../../config/theme'
+
 
 
 const OrcamentoLojistaScreen = () => {
@@ -19,7 +21,7 @@ const OrcamentoLojistaScreen = () => {
   return (
     <ContainerDefault>
       <S.AdressContainer>
-        <DropdownDefault data={data.enderecos} buttonTextAfterSelection={(selectedItem) => {
+        <DropdownDefault dropdownStyle={{ width: 300, borderRadius: 8 }} buttonStyle={{ width: 300, borderRadius: 8, backgroundColor: theme.colors.noBackground, height: 15 }} data={data.enderecos} buttonTextAfterSelection={(selectedItem) => {
               return `${selectedItem.rua}, ${selectedItem.numero}, ${selectedItem.cidade}, ${selectedItem.estado}`}} rowTextForSelection={(item) => {
                 return `${item.rua}, ${item.numero}`
               }} defaultButtonText='Selecione o endereço de entrega'/>

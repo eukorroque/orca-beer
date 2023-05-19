@@ -13,6 +13,7 @@ import HomeLogistaController from './src/controllers/HomeLojistaController'
 import OrcamentoLojistaScreen from './src/screens/OrcamentoLojistaScreen'
 import IncluirProdutoLojistaScreen from './src/screens/IncluirProdutoLojistaScreen'
 import { NativeBaseProvider } from "native-base"
+import HeaderOrcaBeer from './src/components/HeaderOrcaBeer'
 
 
 
@@ -73,7 +74,7 @@ const App = () => {
                       backgroundColor: theme.colors.primary,
                       height: 150,
                     },
-                    headerTitle: 'Novo orçamento'
+                    headerTitle: () => <HeaderOrcaBeer title='Novo Orçamento' />
                   }}
                 />
                 <Stack.Screen
@@ -84,7 +85,7 @@ const App = () => {
                       backgroundColor: theme.colors.primary,
                       height: 150,
                     },
-                    headerTitle: 'Incluir Produto'
+                    headerTitle: () => <HeaderOrcaBeer title='Incluir Produto' />
                   }}
                 />
               </Stack.Group>
