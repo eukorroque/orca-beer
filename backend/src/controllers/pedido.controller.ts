@@ -61,18 +61,24 @@ export default class PedidoController {
 
 
   /**
-   * Endpoint para o fornecedor aceitar um pedido
+   * Endpoint para o fornecedor aceitar ou recusar um pedido
+   * 
+   * bool: 1 para aceitar, 0 para recusar
    */
-  async aceitarPedido(req: Request, res: Response, next: NextFunction): Promise<void> {
+  async fornecedorFeedback(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { idPedido } = req.params
+      const { idPedido, bool } = req.params
       const userSession: IUserSession = req.body.userSession
 
       if (!idPedido || !Number.isInteger(parseInt(idPedido))) {
         return next('Informe o id do pedido que deseja aceitar.')
       }
 
-      const pedido = await this.pedidoService.aceitarPedido(parseInt(idPedido), userSession.id)
+      if (!bool || (bool !== '1' && bool !== '0')) {
+        return next('Informe se deseja aceitar ou não o pedido.')
+      }
+
+      const pedido = await this.pedidoService.fornecedorFeedback(parseInt(idPedido), userSession.id, parseInt(bool))
 
       if (!pedido) {
         return next('Não foi possível aceitar o pedido. Tente novamente mais tarde.')
@@ -80,7 +86,7 @@ export default class PedidoController {
 
       res.status(HttpStatus.OK).json({
         ok: true,
-        msg: 'Pedido aceito com sucesso'
+        msg: `Pedido ${bool === '1' ? 'aceito' : 'recusado'} com sucesso`
       })
 
     } catch (error: any) {
