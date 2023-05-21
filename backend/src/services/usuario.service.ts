@@ -70,6 +70,20 @@ export default class UsuarioService {
         case 2:
           //aprovado
           usuario.statusId = 8
+
+          const alreadyExistsCpf = await this.usuarioModel.getAll({
+            where: {
+              AND: [
+                { cpfResponsavel: usuario.cpfResponsavel },
+                { tpConta: 2 }
+              ]
+            }
+          })
+
+          if (alreadyExistsCpf.length > 0) {
+            throw new Error('Já existe um lojista usando esse CPF.')
+          }
+
           usuario.codigoConvite = await this.GenerateUniqueInviteCode()
 
           break
