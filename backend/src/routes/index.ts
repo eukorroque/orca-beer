@@ -8,6 +8,7 @@ import Admin from './admin.routes'
 import pedido from './pedido.routes'
 import errorInterceptor from '../middlewares/errors.midleware'
 import Proposta from './proposta.routes'
+import Comissao from './comissao.routes'
 
 const routes = (app: Application) => {
 
@@ -17,6 +18,7 @@ const routes = (app: Application) => {
     pedido,
     Usuario,
     Proposta,
+    Comissao,
     Produto,
     CategoriaProduto,
     UnidadeProduto,

@@ -26,6 +26,10 @@ export default class PedidoService {
       const produtosTemp: IProdutoInPedidoArray[] | undefined = pedido.produtosTemp as any
 
 
+      if (new Date(pedido.prazoEntrega) < new Date()) {
+        throw new Error('O prazo de entrega não pode ser menor que a data atual')
+      }
+
       const existsProdutos = await this.produtoModel.getAll({
         where: {
           id: {
@@ -160,11 +164,11 @@ export default class PedidoService {
         throw new Error('Esse fornecedor não faz parte dos fornecedores selecionados para esse pedido')
       }
 
-      if (hasFornecedor.aceitou && feedback) {
+      if (hasFornecedor.aceitou === true && feedback) {
         throw new Error('Esse fornecedor já aceitou esse pedido')
       }
 
-      if (!hasFornecedor.aceitou && !feedback) {
+      if (hasFornecedor.aceitou === false && !feedback) {
         throw new Error('Esse fornecedor já recusou esse pedido')
       }
 

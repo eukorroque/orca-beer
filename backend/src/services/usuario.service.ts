@@ -86,8 +86,6 @@ export default class UsuarioService {
       if (errors.length > 0) {
         const newError = classValidatorErros(errors)
 
-        console.log(newError)
-
         throw new Error(newError)
 
       }
@@ -102,8 +100,6 @@ export default class UsuarioService {
 
       if (errorsEndereco.length > 0) {
         const newError = classValidatorErros(errorsEndereco)
-
-        console.log(newError)
 
         throw new Error(newError)
       }
