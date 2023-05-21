@@ -12,10 +12,10 @@ export default class ProdutoTempModel implements ProdutoTemp {
   @Matches(NUMBER_REGEX, { message: 'O ID da categoria deve ser um número' })
   categoriaId!: number
 
-  @IsNotEmpty({ message: 'O nome do produto deve ser informado' })
-  @IsString({ message: 'O nome do produto está em um formato incorreto' })
-  @Length(3, 255, { message: 'O nome do produto deve conter entre 3 e 255 caracteres' })
   @Matches(ALPHANUMERIC_REGEX, { message: 'O nome do produto deve conter apenas caracteres alfanuméricos' })
+  @Length(3, 255, { message: 'O nome do produto deve conter entre 3 e 255 caracteres' })
+  @IsString({ message: 'O nome do produto está em um formato incorreto' })
+  @IsNotEmpty({ message: 'O nome do produto deve ser informado' })
   nome!: string
 
 

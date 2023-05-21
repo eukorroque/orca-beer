@@ -3,7 +3,7 @@ import prisma from "../config/prisma"
 import prismaErros from "../utils/prismaErros.util"
 import { IsNumber, IsNotEmpty, Length, IsString } from "class-validator"
 
-export default class ProdutoModel {
+export default class ProdutoModel implements Produto {
 
   id!: number
 
@@ -14,8 +14,8 @@ export default class ProdutoModel {
   unidadeId!: number
 
   @Length(3, 255, { message: 'O nome do produto deve conter entre 3 e 255 caracteres' })
-  @IsNotEmpty({ message: 'O nome do produto deve ser informado' })
   @IsString({ message: 'O nome do produto deve ser uma string' })
+  @IsNotEmpty({ message: 'O nome do produto deve ser informado' })
   nome!: string
 
   criadoEm!: Date

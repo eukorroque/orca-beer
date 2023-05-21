@@ -30,8 +30,8 @@ export default class PedidoModel implements Pedido {
   lojistaId!: number
 
 
-  @Min(1, { message: 'O id do status deve ser maior que 0' })
   @IsNumber({}, { message: 'O id do status deve ser um número válido' })
+  @Min(1, { message: 'O id do status deve ser maior que 0' })
   @IsNotEmpty({ message: 'O id do status deve ser informado' })
   statusId!: number
 

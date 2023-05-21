@@ -4,14 +4,14 @@ import prismaErros from "../utils/prismaErros.util"
 import { IsNotEmpty, Length, IsString, Matches } from "class-validator"
 import ALPHANUMERIC_REGEX from "../utils/regex/alphanumericRegex"
 
-export default class CategoriaProdutoModel {
+export default class CategoriaProdutoModel implements categoriaProduto {
 
   id!: number
 
-  @Length(3, 255, { message: 'A categoria deve conter entre 3 e 255 caracteres' })
   @Matches(ALPHANUMERIC_REGEX, { message: 'A categoria deve conter apenas caracteres alfanuméricos' })
-  @IsNotEmpty({ message: 'A categoria deve ser informada' })
   @IsString({ message: 'A categoria deve ser uma string' })
+  @Length(3, 255, { message: 'A categoria deve conter entre 3 e 255 caracteres' })
+  @IsNotEmpty({ message: 'A categoria deve ser informada' })
   categoria!: string
 
   criadoEm!: Date

@@ -2,7 +2,12 @@ import { StatusUsuario, Prisma } from "@prisma/client"
 import prisma from "../config/prisma"
 import prismaErros from "../utils/prismaErros.util"
 
-export default class StatusUsuarioModel {
+export default class StatusUsuarioModel implements StatusUsuario {
+
+  // TODO: passar as validações do class-validator
+
+  id!: number
+  status!: string
 
   async getAll(params?: {
     skip?: number
