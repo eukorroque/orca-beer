@@ -8,16 +8,6 @@ export const AdressContainer = styled.View`
 export const ButtonContainer = styled.View`
   width: 300px;
   margin: 0 auto;
-  /* padding: 19px 32px; */
-`
-
-export const Button = styled.TouchableOpacity`
-  background-color: ${theme.colors.primary};
-  border-radius: 32px;
-  width: 100%;
-  margin-bottom: 20px;
-  padding: 12px;
-  align-items: center;
 `
 
 export const ButtonLight = styled.TouchableOpacity`
@@ -25,9 +15,11 @@ export const ButtonLight = styled.TouchableOpacity`
   border: 1px solid ${theme.colors.primary};
   border-radius: 32px;
   width: 100%;
+  height: 45px;
   margin-bottom: 20px;
   padding: 12px;
   align-items: center;
+  justify-content: center;
 `
 
 export const FilterContainer = styled.View`

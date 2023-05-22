@@ -10,7 +10,8 @@ export default {
     inputBody: '#FBFBFB',
     inputBorder: '#D9D9D9',
     noBackground: 'rgba(255,255,255,0)',
-    success: '#009905'
+    success: '#009905',
+    error: '#FF6464'
   },
   fontSizes: {
     header: {

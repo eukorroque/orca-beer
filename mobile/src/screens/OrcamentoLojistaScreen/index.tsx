@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 // Arquivo criado: 16/05/2023 às 11:05
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import TextDefault from '../../components/TextDefault'
 import BoxProduto from '../../components/BoxProduto'
 import DropdownDefault from '../../components/DropdownDefault'
@@ -12,12 +12,37 @@ import { FontAwesome } from '@expo/vector-icons'
 import data from './data.json'
 import theme from '../../config/theme'
 import ModalDefault from '../../components/ModalDefaut'
+import { RefreshControl } from 'react-native'
 
 
 
 const OrcamentoLojistaScreen = () => {
 
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>()
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>() 
+
+
+  const initialValues = data.categorias
+  const [produtos, setProdutos] = useState(initialValues)
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, [])
+
+
+  const removeProduct = (index: number): Array<any>=> {
+    const newProdutos = produtos
+    newProdutos.splice(index, 1)
+    console.log(newProdutos)  
+    onRefresh()
+    return newProdutos
+
+  }
+
 
   return (
     <ContainerDefault>
@@ -36,25 +61,24 @@ const OrcamentoLojistaScreen = () => {
       </S.ButtonContainer>
       <S.ButtonContainer>
         <ModalDefault 
-          textInModal={'Em breve você receberrá propostas de diferentes fornecedores.'}
+          textInModal={'Em breve você receberá propostas de diferentes fornecedores.'}
           modalButtonText={'Voltar para tela principal'}
-          message={"Novo orçamento enviado com sucesso!"}
-          title={'Enviar orçamento'}/>
-        {/* <S.Button
-          onPress={() => navigation.navigate('HomeLojista')}
-        >
-          <TextDefault bold >Enviar orçamento</TextDefault>
-        </S.Button> */}
+          message={"Novo pedido de orçamento enviado com sucesso!"}
+          title={'Enviar orçamento'}
+          action={() => navigation.navigate('HomeLojista')}
+          color={{backgroundColor: theme.colors.success}}/>
       </S.ButtonContainer>
       <S.FilterContainer>
         <TextDefault marginHorizontal={6}>Filtrar lista</TextDefault>
         <FontAwesome name='filter' color='#000' size={20}/>
       </S.FilterContainer>
-      <S.ProdutosContainer>
-        <BoxProduto title={'Cerveja Skol Beats'} unity={'12 fardos com 6 unidades'} />
-        <BoxProduto title={'Cerveja Heineken'} unity={'15 fardos com 12 unidades'} />
-        <BoxProduto title={'Refrigerante Coca-cola'} unity={'10 fardos com 12 unidades'} />
-      </S.ProdutosContainer>
+        {produtos && (produtos.map((el, index) => (
+          <S.ProdutosContainer key={index}>
+            <BoxProduto title={`${el.label} ${el.produto}`} unity={`12 fardos com 6 ${el.unidade}`} action={() => setProdutos(removeProduct(index))}/>
+            <RefreshControl refreshing={refreshing} />
+          </S.ProdutosContainer>
+        )))
+        }
     </ContainerDefault>
   )
 

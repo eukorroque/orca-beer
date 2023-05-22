@@ -24,7 +24,8 @@ const TittleDefault: React.ElementType<Props> = ({
   return (
     <S.Text
       fontSize={fontSize}
-      style={{ color, marginHorizontal, marginVertical }}
+      color={color}
+      style={{ marginHorizontal, marginVertical }}
       {...props}
     >
       {children}

@@ -21,19 +21,27 @@ export const ModalView = styled.View`
   align-items: center;
 `
 export const ColorModalMessage = styled.View`
+  width: 90%;
   margin: 15px auto;
-  background-color: ${theme.colors.success};
+  margin-bottom: 30px;
   border-radius: 16px;
   padding: 35px;
+  align-items: center;
+`
+
+export const TextModalContainer = styled.View`
+  width: 75%;
+  margin-bottom: 30px;
   align-items: center;
 `
 
 export const Button = styled.TouchableOpacity`
   background-color: ${theme.colors.primary};
   border-radius: 32px;
-  height: 40px;
+  height: 45px;
   width: 100%;
   margin-bottom: 20px;
   padding: 12px;
   align-items: center;
+  justify-content: center;
 `
