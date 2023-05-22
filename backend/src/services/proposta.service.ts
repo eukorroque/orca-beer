@@ -4,11 +4,15 @@ import classValidatorErros from "../utils/classValidatorErros.util"
 import IProdutosInProposta from "../interfaces/IProdutosInProposta"
 import { Proposta } from "@prisma/client"
 import IUserSession from "../interfaces/IUserSession"
+import ComissaoModel from "../models/comissao.model"
+import PedidoModel from "../models/pedido.model"
 
 export default class PropostaService {
 
   constructor (
     private propostaModel: PropostaModel,
+    private comissaoModel: ComissaoModel,
+    private pedidoModel: PedidoModel
   ) { }
 
   async create(proposta: any): Promise<number> {
@@ -44,6 +48,10 @@ export default class PropostaService {
 
       if (!proposta) {
         throw new Error('Proposta não encontrada')
+      }
+
+      if (novoIndice.responsavelId !== proposta.fornecedorId && novoIndice.responsavelId !== proposta.lojistaId) {
+        throw new Error('Usuário não autorizado')
       }
 
       const produtos: IProdutosInProposta[] = proposta.produtos as any
@@ -89,7 +97,7 @@ export default class PropostaService {
   }
 
 
-  async finalizarProposta(idProposta: number, user: IUserSession): Promise<void> {
+  async finalizarProposta(idProposta: number, user: IUserSession): Promise<string> {
     try {
 
       const proposta = await this.propostaModel.getOne({ where: { id: idProposta } })
@@ -97,6 +105,10 @@ export default class PropostaService {
 
       if (!proposta) {
         throw new Error('Proposta não encontrada')
+      }
+
+      if (user.id !== proposta.fornecedorId && user.id !== proposta.lojistaId) {
+        throw new Error('Usuário não autorizado')
       }
 
 
@@ -108,16 +120,18 @@ export default class PropostaService {
         }
 
 
-        const atualizandoProposta = await this.propostaModel.update({
+        const newProposta = await this.propostaModel.update({
           where: { id: idProposta },
           data: {
             lojistaAceitou: true
           }
         })
 
-        if (!atualizandoProposta) {
+        if (!newProposta) {
           throw new Error('Erro ao atualizar produto')
         }
+
+        return 'Proposta aceita com sucesso. Aguarde a finalização do fornecedor'
 
       }
 
@@ -129,8 +143,59 @@ export default class PropostaService {
         throw new Error('O lojista ainda não aceitou a proposta. Aguarde a resposta do lojista')
       }
 
-      // criar a comissão aqui
+      const comissao = await this.comissaoModel.create({
+        valor: proposta.valor,
+        taxa: 0.1,
+        pago: false,
+        pedido: {
+          connect: {
+            id: proposta.pedidoId
+          }
+        },
+        lojista: {
+          connect: {
+            id: proposta.lojistaId
+          }
+        },
+        fornecedor: {
+          connect: {
+            id: proposta.fornecedorId
+          }
+        }
+      })
 
+      if (!comissao) {
+        throw new Error('Erro ao criar comissão')
+      }
+
+
+      // após gerar a comissão é sinal que ambas as partes aceitaram a proposta. Logo podemos concluir a proposta e o pedido.
+      await this.propostaModel.update({
+        where: { id: idProposta },
+        data: {
+          status: {
+            connect: {
+              // a principio o status 2 é o status "Finalizado"
+              id: 2
+            }
+          }
+        }
+      })
+
+      await this.pedidoModel.update({
+        where: { id: proposta.pedidoId },
+        data: {
+          status: {
+            connect: {
+              // a principio o status 2 é o status "Finalizado"
+              id: 2
+            }
+          }
+        }
+      })
+
+
+      return 'Proposta aceita com sucesso e comissão gerada.'
 
     } catch (error: any) {
       throw new Error(error.message)

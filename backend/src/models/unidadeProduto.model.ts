@@ -4,7 +4,7 @@ import prismaErros from "../utils/prismaErros.util"
 import { IsNotEmpty, Length, IsString, Matches } from "class-validator"
 import ALPHANUMERIC_REGEX from "../utils/regex/alphanumericRegex"
 
-export default class UnidadeProdutoModel {
+export default class UnidadeProdutoModel implements unidadeProduto {
 
   id!: number
 

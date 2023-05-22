@@ -34,18 +34,18 @@ export default class EnderecoUsuarioModel implements Endereco {
   complemento!: string | null
 
 
-  @Length(3, 100, { message: 'O bairro deve conter entre 3 e 100 caracteres', groups: ['1', '2'] })
   @Matches(ALPHANUMERIC_REGEX, { message: 'O bairro deve conter apenas caracteres alfanuméricos', groups: ['1', '2'] })
+  @Length(3, 100, { message: 'O bairro deve conter entre 3 e 100 caracteres', groups: ['1', '2'] })
   @IsNotEmpty({ message: 'O bairro deve ser informado', groups: ['1', '2'] })
   bairro!: string
 
-  @Length(3, 100, { message: 'A cidade deve conter entre 3 e 100 caracteres', groups: ['1', '2'] })
   @Matches(ALPHANUMERIC_REGEX, { message: 'A cidade deve conter apenas caracteres alfanuméricos', groups: ['1', '2'] })
+  @Length(3, 100, { message: 'A cidade deve conter entre 3 e 100 caracteres', groups: ['1', '2'] })
   @IsNotEmpty({ message: 'A cidade deve ser informada', groups: ['1', '2'] })
   cidade!: string
 
-  @Length(2, 2, { message: 'O estado deve conter 2 caracteres', groups: ['1', '2'] })
   @Matches(LETTERS_REGEX, { message: 'O estado deve conter apenas letras', groups: ['1', '2'] })
+  @Length(2, 2, { message: 'O estado deve conter 2 caracteres', groups: ['1', '2'] })
   @IsNotEmpty({ message: 'O estado deve ser informado', groups: ['1', '2'] })
   estado!: string
 

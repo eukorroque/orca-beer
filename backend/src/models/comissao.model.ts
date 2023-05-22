@@ -3,6 +3,9 @@ import prisma from "../config/prisma"
 import prismaErros from "../utils/prismaErros.util"
 
 export default class ComissaoModel implements Comissao {
+
+  // TODO: passar as validações do class-validator
+
   id!: number
   pedidoId!: number
   fornecedorId!: number

@@ -37,7 +37,7 @@ export default class UsuarioController {
       })
 
       if (usuarios.length <= 0) {
-        return next('Ainda não há usuários cadastrados')
+        return next(`Ainda não há ${newType === 1 ? 'fornecedores' : 'lojistas'} cadastrados`)
       }
 
       res.status(HttpStatus.OK).json({

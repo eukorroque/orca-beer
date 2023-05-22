@@ -2,7 +2,19 @@ import { SessoesUsuario, Prisma } from "@prisma/client"
 import prisma from "../config/prisma"
 import prismaErros from "../utils/prismaErros.util"
 
-export default class SessoesUsuarioModel {
+export default class SessoesUsuarioModel implements SessoesUsuario {
+
+  // TODO: passar as validações do class-validator
+
+  id!: number
+  token!: string
+  usuarioId!: number
+  interceptado!: boolean
+  adminId!: number | null
+  motivoInterceptacao!: string | null
+  interceptadoEm!: Date | null
+  expiraEm!: Date
+  criadoEm!: Date
 
   async getAll(params?: {
     skip?: number

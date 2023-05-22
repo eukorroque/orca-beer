@@ -52,10 +52,38 @@ export default class PropostaController {
       novoIndice.responsavelId = userSession.id
       const updated = await this.propostaService.updateProdutosArr(parseInt(idProposta), novoIndice)
 
+      if (!updated) {
+        return next('Proposta não encontrada')
+      }
+
       res.status(HttpStatus.OK).json({
         ok: true,
         msg: 'Proposta atualizada com sucesso',
-        updated: updated
+      })
+
+    } catch (error: any) {
+      return next(error.message)
+    }
+  }
+
+  /**
+   * Caso o lojista que chame esse endpoint. Ele aceitará a proposta. 
+   * Caso o fornecedor chame esse endpoint e o lojista ja tenha aceitado, a proposta é finalizada e a comissão é gerada.
+   */
+  async finalizarProposta(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { idProposta } = req.params
+      const userSession: IUserSession = req.body.userSession
+
+      if (!idProposta || !Number.isInteger(parseInt(idProposta))) {
+        return next('Informe o id da proposta')
+      }
+
+      const updatedMsg = await this.propostaService.finalizarProposta(parseInt(idProposta), userSession)
+
+      res.status(HttpStatus.OK).json({
+        ok: true,
+        msg: updatedMsg
       })
 
     } catch (error: any) {
