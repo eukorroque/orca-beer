@@ -12,7 +12,14 @@ export default class ProdutoController {
   async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
 
-      const produtos = await this.produtoModel.getAll()
+      const produtos = await this.produtoModel.getAll({
+        select: {
+          nome: true,
+          id: true,
+          categoria: true,
+          unidade: true
+        }
+      })
 
       if (produtos.length <= 0) {
         return next('Ainda não há produtos cadastrados')

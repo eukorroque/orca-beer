@@ -1,7 +1,6 @@
 import styled from "styled-components/native"
 import theme from "../../config/theme"
 
-
 export const ButtonContainer = styled.View`
   width: 300px;
   margin: 0 auto;
@@ -28,7 +27,7 @@ export const InputsContainer = styled.View`
   margin: 0 auto;
 
 `
-export const Container = styled.View`
+export const Container = styled.ScrollView`
 
 `
 

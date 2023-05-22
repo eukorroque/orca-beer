@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react'
 import * as S from './styles'
 import TextDefault from '../TextDefault'

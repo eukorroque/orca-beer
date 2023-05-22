@@ -40,7 +40,6 @@ const LoginScreen = ({ route }: Props) => {
         <S.FormContainer>
           {/* inputs provisórios enquanto ainda nn tem framework */}
           <TextDefault>Entre com seu CPF ou CNPJ</TextDefault>
-          {/* eslint-disable-next-line react-native/no-inline-styles */}
           <S.TextInput placeholder="Email" style={{ marginBottom: 20 }} />
 
           {/* inputs provisórios enquanto ainda nn tem framework */}
