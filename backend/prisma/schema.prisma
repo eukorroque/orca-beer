@@ -44,6 +44,8 @@ model Usuario {
   Pedido                  Pedido[]
   propostasFornecedor     Proposta[]       @relation(name: "FornecedorRel")
   propostasLojista        Proposta[]       @relation(name: "LojistaRel")
+  comissaoFornecedor      Comissao[]       @relation(name: "FornecedorRel")
+  comissaoLojista         Comissao[]       @relation(name: "LojistaRel")
 }
 
 model Admin {
@@ -167,6 +169,7 @@ model Pedido {
   criadoEm               DateTime     @default(now())
   atualizadoEm           DateTime     @updatedAt
   Proposta               Proposta[]
+  Comissao               Comissao[]
 }
 
 model StatusPedido {
@@ -177,18 +180,34 @@ model StatusPedido {
 }
 
 model Proposta {
-  id           Int          @id @default(autoincrement())
-  pedido       Pedido       @relation(fields: [pedidoId], references: [id])
+  id             Int          @id @default(autoincrement())
+  pedido         Pedido       @relation(fields: [pedidoId], references: [id])
+  pedidoId       Int
+  fornecedor     Usuario      @relation(name: "FornecedorRel", fields: [fornecedorId], references: [id])
+  fornecedorId   Int
+  lojista        Usuario      @relation(name: "LojistaRel", fields: [lojistaId], references: [id])
+  lojistaId      Int
+  lojistaAceitou Boolean? /// se null, o lojista ainda não respondeu a proposta. Se true, ele aceitou. Se false, ele recusou.
+  frete          Float?       @db.Float
+  valor          Float        @db.Float
+  status         StatusPedido @relation(fields: [statusId], references: [id])
+  statusId       Int
+  produtos       Json /// esse json é um array com todo o tramite do pedido. Cada alteração que algum usuário fizer será salvo como um novo item no array.
+  criadoEm       DateTime     @default(now())
+  atualizadoEm   DateTime     @updatedAt
+}
+
+model Comissao {
+  id           Int      @id @default(autoincrement())
+  pedido       Pedido   @relation(fields: [pedidoId], references: [id])
   pedidoId     Int
-  fornecedor   Usuario      @relation(name: "FornecedorRel", fields: [fornecedorId], references: [id])
+  fornecedor   Usuario  @relation(name: "FornecedorRel", fields: [fornecedorId], references: [id])
   fornecedorId Int
-  lojista      Usuario      @relation(name: "LojistaRel", fields: [lojistaId], references: [id])
+  lojista      Usuario  @relation(name: "LojistaRel", fields: [lojistaId], references: [id])
   lojistaId    Int
-  frete        Float?       @db.Float
-  valor        Float        @db.Float
-  status       StatusPedido @relation(fields: [statusId], references: [id])
-  statusId     Int
-  produtos     Json /// json com os produtos do pedido.
-  criadoEm     DateTime     @default(now())
-  atualizadoEm DateTime     @updatedAt
+  valor        Float    @db.Float
+  taxa         Float    @db.Float
+  pago         Boolean  @default(false)
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
 }

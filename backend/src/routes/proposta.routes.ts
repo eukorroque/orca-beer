@@ -12,5 +12,6 @@ const router = Router()
 
 router
   .post('/proposta', isLoggedInterceptor(), Controller.create.bind(Controller))
+  .put('/proposta/:idProposta/nova-alteracao-produtos', isLoggedInterceptor(['fornecedor', 'lojista']), Controller.updateProdutosArr.bind(Controller))
 
 export default router
