@@ -198,7 +198,7 @@ const IncluirProdutoScreen = () => {
         }
         <S.SmallInputContainer>
           <TextDefault>Quantidade</TextDefault>
-          <S.TextInput keyboardType='numeric' value={number} onChangeText={setNumber} onEndEditing={(e) => handleQuantidadeChange(e.nativeEvent.text)} onBlur={() => setProdutos(produtos)}/>
+          <S.TextInput keyboardType='numeric' value={number} onChangeText={setNumber} onEndEditing={(e) => handleQuantidadeChange(e.nativeEvent.text)}/>
         </S.SmallInputContainer>
         <S.LargeInputContainer>
           <TextDefault>Unidade</TextDefault>
