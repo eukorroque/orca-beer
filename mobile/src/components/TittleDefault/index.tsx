@@ -6,6 +6,7 @@ import theme from "../../config/theme"
 
 interface Props {
   children: string
+  color?: string
   fontSize?: number
   marginHorizontal?: number
   marginVertical?: number
@@ -13,6 +14,7 @@ interface Props {
 
 const TittleDefault: React.ElementType<Props> = ({
   children,
+  color,
   fontSize = theme.fontSizes.header.h3,
   marginHorizontal,
   marginVertical,
@@ -22,6 +24,7 @@ const TittleDefault: React.ElementType<Props> = ({
   return (
     <S.Text
       fontSize={fontSize}
+      color={color}
       style={{ marginHorizontal, marginVertical }}
       {...props}
     >

@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 // Arquivo criado: 17/05/2023 às 11:49
 import React from 'react'
 import * as S from './styles'

@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react'
 import * as S from './styles'
 import DropdownDefault from '../DropdownDefault'
@@ -26,6 +25,9 @@ const ProdutosDropdown = () => {
               buttonTextAfterSelection={selectedItem => selectedItem.label}
               rowTextForSelection={item => item.label}
               defaultButtonText=' '
+              onSelect={(selectedItem, index) => {
+                console.log
+              }}
             />
           </S.DropdownContainer>
           {
@@ -39,6 +41,9 @@ const ProdutosDropdown = () => {
                   buttonTextAfterSelection={selectedItem => selectedItem.label}
                   rowTextForSelection={item => item.label}
                   defaultButtonText=' '
+                  onSelect={(selectedItem, index) => {
+                    console.log(selectedItem, index)
+                  }}
                 />
               </S.DropdownContainer>
             )
@@ -65,6 +70,9 @@ const ProdutosDropdown = () => {
               buttonTextAfterSelection={selectedItem => selectedItem.label}
               rowTextForSelection={item => item.label}
               defaultButtonText=' '
+              onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index)
+              }}
             />
         </S.LargeInputContainer>
       </S.InputsContainer>

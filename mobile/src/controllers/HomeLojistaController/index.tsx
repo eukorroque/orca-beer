@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 // Arquivo criado: 16/05/2023 às 11:05
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import React from 'react'
