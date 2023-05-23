@@ -8,6 +8,7 @@ import { RootStackParamList } from '../../types/RootStackParamList'
 import DropdownDefault from '../../components/DropdownDefault'
 import { TouchableOpacity } from 'react-native'
 import theme from '../../config/theme'
+import ip from '../../config/vars'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const IncluirProdutoScreen = () => {
@@ -17,25 +18,12 @@ const IncluirProdutoScreen = () => {
   const [dataCategoria, setDataCategoria] = useState<any[]>([])
   const [dataProduto, setDataProduto] = useState<any[]>([])
   const [dataUnidade, setDataUnidade] = useState<any[]>([])
-  const [produtos, setProdutos] = useState<any[]>([
-    /* {
-      "categoriaId": 1, 
-      "produtoId": 1, 
-      "quantidade": " 10",
-      "unidadeId": 2
-    },
-    {
-      "categoriaId": 1, 
-      "produtoId": 1, 
-      "quantidade": " 20",
-      "unidadeId": 3
-    }, */
-  ])
+  const [produtos, setProdutos] = useState<any[]>([])
   const [number, setNumber] = useState(' ')
   
   useEffect(() => {
    
-    fetch(`http://192.168.1.8:3002/categorias/produtos`, {method: 'GET', headers: {
+    fetch(`http://${ip.host}:3002/categorias/produtos`, {method: 'GET', headers: {
       'X-Powered-By': 'Express',
       'Content-Type': 'application/json',
       'Connection': 'keep-alive',
@@ -44,11 +32,11 @@ const IncluirProdutoScreen = () => {
 })
       .then(response => response.json())
       .then(response => response.data)
-      .then(json => setDataCategoria(json) )
+      .then(json => setDataCategoria(json))
       .catch(error => console.error(error))
       .finally(() => setLoading(false)),
 
-    fetch(`http://192.168.1.8:3002/produtos`, {method: 'GET', headers: {
+    fetch(`http://${ip.host}:3002/produtos`, {method: 'GET', headers: {
       'X-Powered-By': 'Express',
       'Content-Type': 'application/json',
       'Connection': 'keep-alive',
@@ -61,7 +49,7 @@ const IncluirProdutoScreen = () => {
       .catch((error) => console.error(error))
       .finally(() => setLoading(false)),
 
-    fetch(`http://192.168.1.8:3002/unidades/produtos`, {method: 'GET', headers: {
+    fetch(`http://${ip.host}:3002/unidades/produtos`, {method: 'GET', headers: {
       'X-Powered-By': 'Express',
       'Content-Type': 'application/json',
       'Connection': 'keep-alive',
@@ -77,39 +65,6 @@ const IncluirProdutoScreen = () => {
   }, 
   
   [])
-
-  /* const postData = async(arr: Array<any>) => {
-    try {
-      let res = await fetch(`http://192.168.1.8:3002/pedido`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsInN0YXR1c0lkIjo4LCJ0cENvbnRhIjoyLCJub21lIjoiSm9obiBEb2UiLCJpYXQiOjE2ODQ3NzIwNzMsImV4cCI6MTY4NTM3Njg3M30.aoOxgWQIt2oxqpMomsQxE_Q9bXLZqtmZ8NzqqHfU7cg'
-        },
-        body: JSON.stringify(
-          {
-            "pedido": {
-                "prazoEntrega": "2023-05-26",
-                "observacoes": " ",
-                "produtos": {arr},
-                "produtosTemp": [
-                    {
-                        "produtoId": 4,
-                        "quantidade": 15,
-                        "unidadeId": 1,
-                        "categoriaId": 1
-                    }
-                ]
-            }
-        }
-      )})
-      res = await res.json();
-      console.log(res)
-    } catch (e) {
-      console.error(e);
-    }
-  } */
   
   const handleQuantidadeChange = (value: string) => {
     setProdutos(prev => ({ ...prev, quantidade: parseInt(value) }))
@@ -128,7 +83,7 @@ const IncluirProdutoScreen = () => {
       await AsyncStorage.setItem('produtosTest4', objJson)
       navigation.goBack()
     } catch (e) {
-      console.log(`meu erro ${e}`)
+      console.log(e)
     }
   }
 
@@ -140,7 +95,7 @@ const IncluirProdutoScreen = () => {
       }
       return null
     } catch(e) {
-      console.log(`outro erro ${e}`)
+      console.log(e)
     }
   }
   
@@ -162,10 +117,8 @@ const IncluirProdutoScreen = () => {
               defaultButtonText=' '
               onSelect={(selectedItem) => {
                 setProdutos(prev => ({ ...prev, categoriaId: selectedItem.id, categoria: selectedItem.categoria }))
-                console.log(produtos)
-
               }}
-            />
+              />
           </S.DropdownContainer>
           {
             existsProduto && (
@@ -179,9 +132,7 @@ const IncluirProdutoScreen = () => {
                   rowTextForSelection={item => item.nome}
                   defaultButtonText=' '
                   onSelect={(selectedItem) => {
-                    setProdutos(prev => ({ ...prev, produtoId: selectedItem.id, produto: selectedItem.nome }))
-                    console.log(produtos)
-    
+                    setProdutos(prev => ({ ...prev, produtoId: selectedItem.id, produto: selectedItem.nome }))    
                   }}
                 />
               </S.DropdownContainer>
@@ -211,8 +162,6 @@ const IncluirProdutoScreen = () => {
               defaultButtonText=' '
               onSelect={(selectedItem) => {
                 setProdutos(prev => ({ ...prev, unidadeId: selectedItem.id, unidade: selectedItem.unidade }))
-                console.log(produtos)
-
               }}
             />
         </S.LargeInputContainer>
@@ -236,7 +185,6 @@ const IncluirProdutoScreen = () => {
       </S.ButtonContainer>    
     </ContainerDefault>
   )
-
 }
 
 export default IncluirProdutoScreen

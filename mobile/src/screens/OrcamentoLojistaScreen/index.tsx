@@ -10,11 +10,11 @@ import { RootStackParamList } from '../../types/RootStackParamList'
 import { FontAwesome } from '@expo/vector-icons'
 import data from './data.json'
 import theme from '../../config/theme'
+import ip from '../../config/vars'
 import ModalDefault from '../../components/ModalDefaut'
 //import { RefreshControl } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 //importa a useCallback do react depois se necessário
-
 
 
 const OrcamentoLojistaScreen = () => {
@@ -23,7 +23,7 @@ const OrcamentoLojistaScreen = () => {
 
    const postData = async(arr: Array<any>) => {
     try {
-      let res = await fetch(`http://192.168.1.8:3002/pedido`, {
+      let res = await fetch(`http://${ip.host}:3002/pedido`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -53,25 +53,11 @@ const OrcamentoLojistaScreen = () => {
       console.error(e);
     }
   }
-
-  /* const getFirstData = async () => {
-    try {
-      const value = await AsyncStorage.getItem('produtosTest2')
-      if(value !== null) {
-        return JSON.parse(value)
-      }
-      return null
-    } catch(e) {
-      console.log(e)
-    }
-  }
-  const value = getFirstData() */
   
   const [produto, setProduto] = useState([])
 
   const updateValue = async () => {
       const value = await AsyncStorage.getItem('produtosTest4')
-      //navigation.navigate('IncluirProdutoLojista')
       if(value == null) {
         setProduto([])
       }
@@ -121,24 +107,22 @@ const OrcamentoLojistaScreen = () => {
     return newProduto
   } */
 
-  /* const removeValue = async () => {
+  const removeValue = async () => {
     try {
       await AsyncStorage.removeItem('produtosTest4')
     } catch(e) {
-      // remove error
+      console.error(e)
     }
-  
-    console.log('ítem removido')
-  } */
+  }
 
   const prepareToPost = (arr: any[]) => {
     const filtraProduto = arr.map(produto => ({produtoId: produto.produtoId, quantidade: produto.quantidade, unidadeId: produto.unidadeId, categoriaId: produto.categoriaId  }))
     postData(filtraProduto)
     console.log(filtraProduto)
+    removeValue()
     navigation.navigate('HomeLojista')
 
   }
-
 
   return (
     <ContainerDefault>
@@ -160,7 +144,7 @@ const OrcamentoLojistaScreen = () => {
       <S.ButtonContainer>
         <S.ButtonLight
           onPress={() => getData()}
-        >
+          >
           <TextDefault bold >Incluir produto</TextDefault>
         </S.ButtonLight>
       </S.ButtonContainer>
@@ -177,6 +161,7 @@ const OrcamentoLojistaScreen = () => {
         <TextDefault marginHorizontal={6}>Filtrar lista</TextDefault>
         <FontAwesome name='filter' color='#000' size={20}/>
       </S.FilterContainer>
+      <S.Container>
         {produto && (produto.map((el:any, index:number) => (
           <S.ProdutosContainer key={index}>
             {/* <BoxProduto title={`${el.categoria} ${el.produto}`} unity={`${el.quantidade} ${el.unidade}`} action={() => setProduto(removeProduct(index))}/> */}
@@ -185,6 +170,7 @@ const OrcamentoLojistaScreen = () => {
           </S.ProdutosContainer>
         )))
         }
+      </S.Container>
     </ContainerDefault>
   )
 
