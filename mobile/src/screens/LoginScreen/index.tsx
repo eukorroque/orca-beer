@@ -7,28 +7,19 @@ import ContainerDefault from '../../components/ContainerDefault'
 import TextDefault from '../../components/TextDefault'
 import ButtonDefault from '../../components/ButtonDefault'
 import TittleDefault from '../../components/TittleDefault'
-import { RouteProp } from '@react-navigation/native'
-import { RootStackParamList } from '../../types/RootStackParamList'
+import { useDispatch } from 'react-redux'
+import { setLoginUsuario } from '../../redux/actions/usuario.action'
 
 
 const logo = require('../../../assets/logo_vertical_fundo_branco.png')
 
 
+const LoginScreen = () => {
 
-type LoginScreenRouteProp = RouteProp<RootStackParamList, 'Login'>
-// type LoginScreenNavigationProp = NavigationProp<RootStackParamList, 'Login'>
-
-type Props = {
-  route: LoginScreenRouteProp
-  // navigation: LoginScreenNavigationProp
-}
-
-const LoginScreen = ({ route }: Props) => {
-
-  const { setIsLoggedIn } = route.params
+  const dispatch = useDispatch()
 
   const handleLogin = () => {
-    setIsLoggedIn(true)
+    dispatch(setLoginUsuario(true))
   }
 
   return (
