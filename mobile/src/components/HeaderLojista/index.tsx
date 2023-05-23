@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 // Arquivo criado: 17/05/2023 às 11:49
 import React from 'react'
 import * as S from './styles'
@@ -29,6 +28,9 @@ const HeaderLojista = () => {
       <S.AdressContainer>
         <DropdownDefault
           dropdownStyle={{ width: 300, borderRadius: 8 }}
+          onSelect={(selectedItem, index) => {
+            console.log(selectedItem, index)
+          }}
           buttonStyle={styles.buttonStyle}
           data={data.enderecos}
           buttonTextAfterSelection={(selectedItem) => {
