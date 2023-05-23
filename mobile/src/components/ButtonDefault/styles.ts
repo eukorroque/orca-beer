@@ -9,8 +9,8 @@ interface TouchableType extends TouchableOpacityProps {
 
 export const Touchable = styled.TouchableOpacity<TouchableType>`
   background-color: ${theme.colors.primary};
-  border-radius: 32px;
+  border-radius: 12px;
   width: 100%;
-  padding: 19px 32px;
+  padding: 10px;
   align-items: center;
 `

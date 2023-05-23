@@ -38,21 +38,11 @@ const LoginScreen = ({ route }: Props) => {
         <TittleDefault fontSize={20}>{data.title}</TittleDefault>
 
         <S.FormContainer>
-          {/* inputs provisórios enquanto ainda nn tem framework */}
-          <TextDefault>Entre com seu CPF ou CNPJ</TextDefault>
-          <S.TextInput placeholder="Email" style={{ marginBottom: 20 }} />
-
-          {/* inputs provisórios enquanto ainda nn tem framework */}
-          <TextDefault>Digite sua senha</TextDefault>
-          <S.TextInput placeholder="Senha" secureTextEntry={true}/>
+          <S.TextInput placeholder="Entre com seu CPF ou CNPJ" style={{ marginBottom: 7 }} />
+          <S.TextInput placeholder="Digite sua senha" secureTextEntry={true} />
         </S.FormContainer>
 
-        <S.ContainerForgotPassword>
-          <TextDefault bold >Esqueceu a senha? </TextDefault>
-          <TouchableOpacity>
-            <TextDefault bold linkStyle>Redefina aqui</TextDefault>
-          </TouchableOpacity>
-        </S.ContainerForgotPassword>
+
 
         <S.ButtonLoginContainer>
           <ButtonDefault
@@ -62,10 +52,17 @@ const LoginScreen = ({ route }: Props) => {
           </ButtonDefault>
         </S.ButtonLoginContainer>
 
-        <TextDefault bold marginVertical={24}>Ainda não tem uma conta?</TextDefault>
+        <S.ContainerForgotPassword>
+          <TextDefault bold >Esqueceu a senha? </TextDefault>
+          <TouchableOpacity>
+            <TextDefault bold linkStyle>Redefina aqui</TextDefault>
+          </TouchableOpacity>
+        </S.ContainerForgotPassword>
+
+        <TextDefault bold marginVertical={5}>ou</TextDefault>
 
         <TouchableOpacity>
-          <TextDefault bold linkStyle>Cadastre-se aqui!</TextDefault>
+          <TextDefault bold linkStyle>Cadastre-se</TextDefault>
         </TouchableOpacity>
 
       </S.Container>
