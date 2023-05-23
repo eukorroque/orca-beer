@@ -25,15 +25,15 @@ export default class PedidoService {
       const produtos: IProdutoInPedidoArray[] = pedido.produtos as any
       const produtosTemp: IProdutoInPedidoArray[] | undefined = pedido.produtosTemp as any
 
-
       if (new Date(pedido.prazoEntrega) < new Date()) {
         throw new Error('O prazo de entrega não pode ser menor que a data atual')
       }
 
+      const produtosToValidate = this.ignoreRepeatedValues(produtos, 'produtoId', true)
       const existsProdutos = await this.produtoModel.getAll({
         where: {
           id: {
-            in: produtos.map(produto => produto.produtoId)
+            in: produtosToValidate
           }
         },
         select: {
@@ -43,7 +43,7 @@ export default class PedidoService {
 
       })
 
-      if (existsProdutos.length !== produtos.length) {
+      if (existsProdutos.length !== produtosToValidate.length) {
         throw new Error('Um ou mais produtos inseridos como produto existente, não existem na base de dados de produtos. Ele não seria um produto temporário ?')
       }
 
@@ -51,10 +51,11 @@ export default class PedidoService {
       // analisar se o produto temporário existe, caso não. Cadastra-lo atraves da service de produtoTemp.
       if (produtosTemp && produtosTemp.length > 0) {
 
+        const produtosTempToValidate = this.ignoreRepeatedValues(produtosTemp, 'produtoId', true)
         const existsProdutosTemp = await this.produtoTempModel.getMany({
           where: {
             id: {
-              in: produtosTemp.map(produto => produto.produtoId)
+              in: produtosTempToValidate
             }
           },
           select: {
@@ -63,7 +64,7 @@ export default class PedidoService {
           }
         })
 
-        if (existsProdutosTemp.length !== produtosTemp.length) {
+        if (existsProdutosTemp.length !== produtosTempToValidate.length) {
           throw new Error('Um ou mais produtos inseridos como produto temporário, não existem na base de dados de produtos temporários. Ele não seria um produto existente ?')
         }
       }
@@ -231,6 +232,21 @@ export default class PedidoService {
     } catch (error: any) {
       throw new Error(error.message)
     }
+  }
+
+  /**
+   * Esse método vai ignorar os objetos que tiverem o mesmo valor da propriedade do objeto passado como segundo parametro
+   * 
+   * @param array Array de objetos que será filtrado
+   * @param propriety Propriedade que será usada para filtrar os objetos
+   * @param onlyProperties Se true, retorna apenas um array com os valores da propriedade passada como parametro
+   */
+  private ignoreRepeatedValues(array: any[], propriety: string, onlyProperties = false) {
+    const properties: any[] = []
+
+    const newArr = array.filter(item => !properties.includes(item[propriety]) && properties.push(item[propriety]))
+
+    return onlyProperties ? properties : newArr
   }
 
 }

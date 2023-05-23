@@ -13,6 +13,7 @@ import HomeLogistaController from './src/controllers/HomeLojistaController'
 import OrcamentoLojistaScreen from './src/screens/OrcamentoLojistaScreen'
 import IncluirProdutoLojistaScreen from './src/screens/IncluirProdutoLojistaScreen'
 import HeaderOrcaBeer from './src/components/HeaderOrcaBeer'
+import { LogBox } from 'react-native'
 
 
 
@@ -47,71 +48,74 @@ const App = () => {
     return null
   }
 
+  LogBox.ignoreAllLogs()
+
+
 
   return (
-      <NavigationContainer onReady={onLayoutRootView}>
-        <Stack.Navigator
-          initialRouteName="Welcome"
-          screenOptions={{
-            cardStyle: {
-              backgroundColor: theme.colors.background
-            }
-          }}
-        >
-          {
-            isLoggedIn ? (
-              <Stack.Group>
-                <Stack.Screen name='HomeLojista'
-                  component={HomeLogistaController}
-                  options={{ headerShown: false }} />
-                <Stack.Screen
-                  name='OrcamentoLojista'
-                  component={OrcamentoLojistaScreen}
-                  options={{
-                    headerStyle: {
-                      backgroundColor: theme.colors.primary,
-                      height: 150,
-                    },
-                    headerTitle: () => <HeaderOrcaBeer title='Novo Orçamento' />
-                  }}
-                />
-                <Stack.Screen
-                  name='IncluirProdutoLojista'
-                  component={IncluirProdutoLojistaScreen}
-                  options={{
-                    headerStyle: {
-                      backgroundColor: theme.colors.primary,
-                      height: 150,
-                    },
-                    headerTitle: () => <HeaderOrcaBeer title='Incluir Produto' />
-                  }}
-                />
-              </Stack.Group>
-            ) : (
-              <Stack.Group>
-                <Stack.Screen
-                  name="Login"
-                  component={LoginScreen}
-                  options={{
-                    headerTitle: ''
-                  }}
-                  initialParams={{
-                    setIsLoggedIn
-                  }}
-                />
-                <Stack.Screen
-                  name="Welcome"
-                  component={WelcomeScreen}
-                  options={{
-                    headerShown: false
-                  }}
-                />
-
-              </Stack.Group>
-            )
+    <NavigationContainer onReady={onLayoutRootView}>
+      <Stack.Navigator
+        initialRouteName="Welcome"
+        screenOptions={{
+          cardStyle: {
+            backgroundColor: theme.colors.background
           }
-        </Stack.Navigator>
-      </NavigationContainer>
+        }}
+      >
+        {
+          isLoggedIn ? (
+            <Stack.Group>
+              <Stack.Screen name='HomeLojista'
+                component={HomeLogistaController}
+                options={{ headerShown: false }} />
+              <Stack.Screen
+                name='OrcamentoLojista'
+                component={OrcamentoLojistaScreen}
+                options={{
+                  headerStyle: {
+                    backgroundColor: theme.colors.primary,
+                    height: 150,
+                  },
+                  headerTitle: () => <HeaderOrcaBeer title='Novo Orçamento' />
+                }}
+              />
+              <Stack.Screen
+                name='IncluirProdutoLojista'
+                component={IncluirProdutoLojistaScreen}
+                options={{
+                  headerStyle: {
+                    backgroundColor: theme.colors.primary,
+                    height: 150,
+                  },
+                  headerTitle: () => <HeaderOrcaBeer title='Incluir Produto' />
+                }}
+              />
+            </Stack.Group>
+          ) : (
+            <Stack.Group>
+              <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{
+                  headerTitle: ''
+                }}
+                initialParams={{
+                  setIsLoggedIn
+                }}
+              />
+              <Stack.Screen
+                name="Welcome"
+                component={WelcomeScreen}
+                options={{
+                  headerShown: false
+                }}
+              />
+
+            </Stack.Group>
+          )
+        }
+      </Stack.Navigator>
+    </NavigationContainer>
   )
 }
 

@@ -19,83 +19,84 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const OrcamentoLojistaScreen = () => {
 
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>() 
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>()
 
-   const postData = async(arr: Array<any>) => {
+  const postData = async (arr: Array<any>) => {
     try {
       let res = await fetch(`http://${ip.host}:3002/pedido`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsInN0YXR1c0lkIjo4LCJ0cENvbnRhIjoyLCJub21lIjoiSm9obiBEb2UiLCJpYXQiOjE2ODQ3NzIwNzMsImV4cCI6MTY4NTM3Njg3M30.aoOxgWQIt2oxqpMomsQxE_Q9bXLZqtmZ8NzqqHfU7cg'
+          'Authorization': `Bearer ${ip.token}`
         },
         body: JSON.stringify(
           {
             "pedido": {
-                "prazoEntrega": "2023-05-26",
-                "observacoes": " ",
-                "produtos": arr,
-                "produtosTemp": [
-                    {
-                        "produtoId": 4,
-                        "quantidade": 15,
-                        "unidadeId": 1,
-                        "categoriaId": 1
-                    }
-                ]
+              "prazoEntrega": "2023-05-26",
+              "observacoes": " ",
+              "produtos": arr,
+              "produtosTemp": [
+                {
+                  "produtoId": 4,
+                  "quantidade": 15,
+                  "unidadeId": 1,
+                  "categoriaId": 1
+                }
+              ]
             }
-        }
-      )})
-      res = await res.json();
+          }
+        )
+      })
+      res = await res.json()
       console.log(res)
     } catch (e) {
-      console.error(e);
+      console.error(e)
     }
   }
-  
+
   const [produto, setProduto] = useState([])
 
   const updateValue = async () => {
-      const value = await AsyncStorage.getItem('produtosTest4')
-      if(value == null) {
-        setProduto([])
-      }
-      if(value !== null) {
-        setProduto(JSON.parse(value) || [])
-      }
+    const value = await AsyncStorage.getItem('produtosTest4')
+    if (value == null) {
+      setProduto([])
     }
+    if (value !== null) {
+      setProduto(JSON.parse(value) || [])
+    }
+  }
 
-    updateValue()
+  updateValue()
 
   //const [refreshing, setRefreshing] = useState(false);
 
- /*  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 1000);
-  }, []) */
+  /*  const onRefresh = useCallback(() => {
+     setRefreshing(true);
+     setTimeout(() => {
+       setRefreshing(false);
+     }, 1000);
+   }, []) */
 
-  
-  
+
+
   const getData = async () => {
     try {
       const value = await AsyncStorage.getItem('produtosTest4')
       //navigation.navigate('IncluirProdutoLojista')
-      if(value == null) {
+      if (value == null) {
         navigation.navigate('IncluirProdutoLojista')
       }
-      if(value !== null) {
+      if (value !== null) {
         console.log(JSON.parse(value))
         setProduto(JSON.parse(value) || [])
         navigation.navigate('IncluirProdutoLojista')
       }
-    } catch(e) {
+    } catch (e) {
       console.log(e)
     }
   }
-  
+
   /* const removeProduct = (index: number): Array<any>=> {
     produto.splice(index, 1)
     const newProduto = produto
@@ -110,13 +111,13 @@ const OrcamentoLojistaScreen = () => {
   const removeValue = async () => {
     try {
       await AsyncStorage.removeItem('produtosTest4')
-    } catch(e) {
+    } catch (e) {
       console.error(e)
     }
   }
 
   const prepareToPost = (arr: any[]) => {
-    const filtraProduto = arr.map(produto => ({produtoId: produto.produtoId, quantidade: produto.quantidade, unidadeId: produto.unidadeId, categoriaId: produto.categoriaId  }))
+    const filtraProduto = arr.map(produto => ({ produtoId: produto.produtoId, quantidade: produto.quantidade, unidadeId: produto.unidadeId, categoriaId: produto.categoriaId }))
     postData(filtraProduto)
     console.log(filtraProduto)
     removeValue()
@@ -127,46 +128,47 @@ const OrcamentoLojistaScreen = () => {
   return (
     <ContainerDefault>
       <S.AdressContainer>
-        <DropdownDefault 
-        dropdownStyle={{ width: 300, borderRadius: 8 }} 
-        buttonStyle={{ width: 300, borderRadius: 8, backgroundColor: theme.colors.noBackground, height: 15 }} 
-        data={data.enderecos} 
-        buttonTextAfterSelection={(selectedItem) => {
-              return `${selectedItem.rua}, ${selectedItem.numero}, ${selectedItem.cidade}, ${selectedItem.estado}`}} 
-              rowTextForSelection={(item) => {
-                return `${item.rua}, ${item.numero}`
-              }} 
-              defaultButtonText='Selecione o endereço de entrega'
-              onSelect={(selectedItem, index) => {
-                console.log(selectedItem, index)
-              }}/>
+        <DropdownDefault
+          dropdownStyle={{ width: 300, borderRadius: 8 }}
+          buttonStyle={{ width: 300, borderRadius: 8, backgroundColor: theme.colors.noBackground, height: 15 }}
+          data={data.enderecos}
+          buttonTextAfterSelection={(selectedItem) => {
+            return `${selectedItem.rua}, ${selectedItem.numero}, ${selectedItem.cidade}, ${selectedItem.estado}`
+          }}
+          rowTextForSelection={(item) => {
+            return `${item.rua}, ${item.numero}`
+          }}
+          defaultButtonText='Selecione o endereço de entrega'
+          onSelect={(selectedItem, index) => {
+            console.log(selectedItem, index)
+          }} />
       </S.AdressContainer>
       <S.ButtonContainer>
         <S.ButtonLight
           onPress={() => getData()}
-          >
+        >
           <TextDefault bold >Incluir produto</TextDefault>
         </S.ButtonLight>
       </S.ButtonContainer>
       <S.ButtonContainer>
-        <ModalDefault 
+        <ModalDefault
           textInModal={'Em breve você receberá propostas de diferentes fornecedores.'}
           modalButtonText={'Voltar para tela principal'}
           message={"Novo pedido de orçamento enviado com sucesso!"}
           title={'Enviar orçamento'}
           action={() => [prepareToPost(produto), navigation.navigate('HomeLojista')]}
-          color={{backgroundColor: theme.colors.success}}/>
+          color={{ backgroundColor: theme.colors.success }} />
       </S.ButtonContainer>
       <S.FilterContainer>
         <TextDefault marginHorizontal={6}>Filtrar lista</TextDefault>
-        <FontAwesome name='filter' color='#000' size={20}/>
+        <FontAwesome name='filter' color='#000' size={20} />
       </S.FilterContainer>
       <S.Container>
-        {produto && (produto.map((el:any, index:number) => (
+        {produto && (produto.map((el: any, index: number) => (
           <S.ProdutosContainer key={index}>
             {/* <BoxProduto title={`${el.categoria} ${el.produto}`} unity={`${el.quantidade} ${el.unidade}`} action={() => setProduto(removeProduct(index))}/> */}
             {/* <RefreshControl refreshing={refreshing} /> */}
-            <BoxProduto title={`${el.categoria} ${el.produto}`} unity={`${el.quantidade} ${el.unidade}`}/>
+            <BoxProduto title={`${el.categoria} ${el.produto}`} unity={`${el.quantidade} ${el.unidade}`} />
           </S.ProdutosContainer>
         )))
         }
