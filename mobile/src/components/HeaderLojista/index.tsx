@@ -55,7 +55,7 @@ const HeaderLojista = () => {
           <S.Image source={userGhostIcon} />
         </TouchableOpacity>
         <S.ProfileContainer>
-          <TextDefault bold>{user.perfil.nome}</TextDefault>
+          {/* <TextDefault bold>{user.perfil.nome}</TextDefault> */}
         </S.ProfileContainer>
       </S.ProfileContainer>
       <S.IconsContainer>
