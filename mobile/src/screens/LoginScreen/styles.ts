@@ -23,11 +23,11 @@ export const FormContainer = styled.View`
 
 export const ContainerForgotPassword = styled.View`
   flex-direction: row;
-  margin-top: 20px;
+  margin-top: 25px;
 `
 
 export const ButtonLoginContainer = styled.View`
-  margin-top: 20px;
+  margin-top: 14px;
   width: 60%;
 `
 
