@@ -5,7 +5,7 @@ import * as S from './styles'
 import theme from "../../config/theme"
 
 interface Props {
-  children: string
+  children: string | React.ReactNode
   fontSize?: number
   color?: string
   marginHorizontal?: number

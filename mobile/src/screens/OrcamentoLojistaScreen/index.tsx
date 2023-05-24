@@ -22,6 +22,7 @@ import ButtonDefault from '../../components/ButtonDefault'
 const OrcamentoLojistaScreen = () => {
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>()
+  const [showModal, setShowModal] = useState(false)
 
   const postData = async (arr: Array<any>) => {
     try {
@@ -156,13 +157,15 @@ const OrcamentoLojistaScreen = () => {
         </S.ButtonLight> */}
       </S.ButtonContainer>
       <S.ButtonContainer>
+        <ButtonDefault onPress={() => [prepareToPost(produto), setShowModal(true)]}>Enviar orçamento</ButtonDefault>
         <ModalDefault
           textInModal={'Em breve você receberá propostas de diferentes fornecedores.'}
-          modalButtonText={'Voltar para tela principal'}
+          modalButtonText={'Fechar'}
           message={"Novo pedido de orçamento enviado com sucesso!"}
-          title={'Enviar orçamento'}
-          action={() => [prepareToPost(produto), navigation.navigate('HomeLojista')]}
-          color={{ backgroundColor: theme.colors.success }} />
+          action={() => navigation.navigate('HomeLojista')}
+          color={{ backgroundColor: theme.colors.success }} 
+          show={showModal} 
+          setShow={setShowModal} />
       </S.ButtonContainer>
       <S.FilterContainer>
         <TextDefault marginHorizontal={6}>Filtrar lista</TextDefault>

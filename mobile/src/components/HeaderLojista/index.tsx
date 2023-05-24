@@ -1,14 +1,17 @@
 // Arquivo criado: 17/05/2023 às 11:49
-import React from 'react'
+import React, { useEffect } from 'react'
 import * as S from './styles'
 import TextDefault from '../TextDefault'
 import { FontAwesome } from '@expo/vector-icons'
-import data from './data.json'
 import DropdownDefault from '../DropdownDefault'
 import theme from '../../config/theme'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { useDispatch } from 'react-redux'
 import { setLoginUsuario } from '../../redux/actions/usuario.action'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/store'
+import getUsuarioById from '../../services/getUsuarioById.service'
+import { setEnderecosAction } from '../../redux/actions/enderecoUsuario.action'
 
 const userGhostIcon = require('../../../assets/Profile-PNG-File.png')
 
@@ -16,11 +19,34 @@ const userGhostIcon = require('../../../assets/Profile-PNG-File.png')
 const HeaderLojista = () => {
 
   const dispatch = useDispatch()
+  const state = useSelector((state: RootState) => state)
+  const user = state.usuario
+  const enderecos = state.enderecoUsuario.endereco
 
   // temporário. Apenas para testes
   const loggout = () => {
-    dispatch(setLoginUsuario(false))
+    dispatch(setLoginUsuario({
+      isLogged: false,
+      token: null
+    }))
   }
+
+
+  useEffect(() => {
+    const getEnderecos = async () => {
+      if (enderecos.length <= 0 && user.perfil.id) {
+        const usuario = await getUsuarioById(user.perfil.id, user.token)
+
+        if (usuario.ok && usuario.data) {
+          dispatch(setEnderecosAction(usuario.data.Endereco))
+        }
+      }
+
+    }
+
+    getEnderecos()
+  }, [enderecos])
+
 
   return (
     <S.HeaderContainer>
@@ -29,7 +55,7 @@ const HeaderLojista = () => {
           <S.Image source={userGhostIcon} />
         </TouchableOpacity>
         <S.ProfileContainer>
-          <TextDefault bold>Hello World! Fine Drinks by Debora Almeida!</TextDefault>
+          {/* <TextDefault bold>{user.perfil.nome}</TextDefault> */}
         </S.ProfileContainer>
       </S.ProfileContainer>
       <S.IconsContainer>
@@ -43,7 +69,7 @@ const HeaderLojista = () => {
             console.log(selectedItem, index)
           }}
           buttonStyle={styles.buttonStyle}
-          data={data.enderecos}
+          data={enderecos}
           buttonTextAfterSelection={(selectedItem) => {
             return `${selectedItem.rua}, ${selectedItem.numero}, ${selectedItem.cidade}, ${selectedItem.estado}`
           }}
