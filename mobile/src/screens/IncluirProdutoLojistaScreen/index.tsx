@@ -24,7 +24,7 @@ const IncluirProdutoScreen = () => {
   
   useEffect(() => {
    
-    fetch(`http://${ip.host}:3002/categorias/produtos`, {method: 'GET', headers: {
+    fetch(`http://${ip.host}/categorias/produtos`, {method: 'GET', headers: {
       'X-Powered-By': 'Express',
       'Content-Type': 'application/json',
       'Connection': 'keep-alive',
@@ -37,7 +37,7 @@ const IncluirProdutoScreen = () => {
       .catch(error => console.error(error))
       .finally(() => setLoading(false)),
 
-    fetch(`http://${ip.host}:3002/produtos`, {method: 'GET', headers: {
+    fetch(`http://${ip.host}/produtos`, {method: 'GET', headers: {
       'X-Powered-By': 'Express',
       'Content-Type': 'application/json',
       'Connection': 'keep-alive',
@@ -50,7 +50,7 @@ const IncluirProdutoScreen = () => {
       .catch((error) => console.error(error))
       .finally(() => setLoading(false)),
 
-    fetch(`http://${ip.host}:3002/unidades/produtos`, {method: 'GET', headers: {
+    fetch(`http://${ip.host}/unidades/produtos`, {method: 'GET', headers: {
       'X-Powered-By': 'Express',
       'Content-Type': 'application/json',
       'Connection': 'keep-alive',

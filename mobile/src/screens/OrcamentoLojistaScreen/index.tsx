@@ -124,7 +124,7 @@ const OrcamentoLojistaScreen = () => {
     postData(filtraProduto)
     console.log(filtraProduto)
     removeValue()
-    navigation.navigate('HomeLojista')
+    //navigation.navigate('HomeLojista')
 
   }
 
@@ -165,7 +165,8 @@ const OrcamentoLojistaScreen = () => {
           action={() => navigation.navigate('HomeLojista')}
           color={{ backgroundColor: theme.colors.success }} 
           show={showModal} 
-          setShow={setShowModal} />
+          setShow={setShowModal} 
+          />
       </S.ButtonContainer>
       <S.FilterContainer>
         <TextDefault marginHorizontal={6}>Filtrar lista</TextDefault>
