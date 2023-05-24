@@ -1,35 +1,35 @@
 // Arquivo criado: 08/05/2023 às 19:08
-import React from 'react'
+import React, { useState } from 'react'
 import * as S from './styles'
 import data from './data.json'
-import { TouchableOpacity } from 'react-native'
+import { KeyboardTypeOptions, TouchableOpacity } from 'react-native'
 import ContainerDefault from '../../components/ContainerDefault'
 import TextDefault from '../../components/TextDefault'
 import ButtonDefault from '../../components/ButtonDefault'
 import TittleDefault from '../../components/TittleDefault'
-import { RouteProp } from '@react-navigation/native'
-import { RootStackParamList } from '../../types/RootStackParamList'
+import { useDispatch } from 'react-redux'
+import { setLoginUsuario } from '../../redux/actions/usuario.action'
+import { TextInput } from 'react-native-paper'
+import theme from '../../config/theme'
+import MaskInput, { Masks } from 'react-native-mask-input'
+import { Checkbox } from 'react-native-paper'
 
 
 const logo = require('../../../assets/logo_vertical_fundo_branco.png')
 
 
+const LoginScreen = () => {
 
-type LoginScreenRouteProp = RouteProp<RootStackParamList, 'Login'>
-// type LoginScreenNavigationProp = NavigationProp<RootStackParamList, 'Login'>
+  const [cpfOrCnpj, setCpfOrCnpj] = useState('')
+  // const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
-type Props = {
-  route: LoginScreenRouteProp
-  // navigation: LoginScreenNavigationProp
-}
-
-const LoginScreen = ({ route }: Props) => {
-
-  const { setIsLoggedIn } = route.params
+  const dispatch = useDispatch()
 
   const handleLogin = () => {
-    setIsLoggedIn(true)
+    dispatch(setLoginUsuario(true))
   }
+
 
   return (
     <ContainerDefault>
@@ -38,21 +38,65 @@ const LoginScreen = ({ route }: Props) => {
         <TittleDefault fontSize={20}>{data.title}</TittleDefault>
 
         <S.FormContainer>
-          {/* inputs provisórios enquanto ainda nn tem framework */}
-          <TextDefault>Entre com seu CPF ou CNPJ</TextDefault>
-          <S.TextInput placeholder="Email" style={{ marginBottom: 20 }} />
+          {/* <S.TextInput placeholder="Entre com seu CPF ou CNPJ" style={{ marginBottom: 7 }} /> */}
 
-          {/* inputs provisórios enquanto ainda nn tem framework */}
-          <TextDefault>Digite sua senha</TextDefault>
-          <S.TextInput placeholder="Senha" secureTextEntry={true}/>
+          {
+            [
+              {
+                label: 'Entre com seu CPF ou CNPJ',
+                keyboardType: 'numeric' as KeyboardTypeOptions,
+                style: { marginBottom: 7, backgroundColor: theme.colors.inputBody },
+                render: (props: any) => (
+                  <MaskInput
+                    value={cpfOrCnpj}
+                    onChangeText={(text: string) => setCpfOrCnpj(text)}
+                    {...props}
+                    mask={text => {
+                      if (text) {
+                        if (text.replace(/\D+/g, "").length <= 11) {
+                          return Masks.BRL_CPF
+                        } else {
+                          return Masks.BRL_CNPJ
+                        }
+                      }
+                      return ''
+                    }}
+                  />
+                )
+              },
+              {
+                label: 'Digite sua senha',
+                keyboardType: 'default' as KeyboardTypeOptions,
+                style: { marginBottom: 7, backgroundColor: theme.colors.inputBody },
+                secureTextEntry: !showPassword
+              }
+            ].map((val, key) => (
+              <TextInput
+                key={key}
+                {...val}
+                mode='outlined'
+                outlineColor={theme.colors.inputBorder}
+                dense={true}
+              />
+            ))
+          }
+
+          <TouchableOpacity
+            onPress={() => setShowPassword(!showPassword)}
+            style={{ flexDirection: 'row', alignItems: 'center', }}
+          >
+            <Checkbox
+              status={showPassword ? 'checked' : 'unchecked'}
+              onPress={() => {
+                setShowPassword(!showPassword)
+              }}
+            />
+            <TextDefault fontSize={17}>Ver senha</TextDefault>
+          </TouchableOpacity>
+
         </S.FormContainer>
 
-        <S.ContainerForgotPassword>
-          <TextDefault bold >Esqueceu a senha? </TextDefault>
-          <TouchableOpacity>
-            <TextDefault bold linkStyle>Redefina aqui</TextDefault>
-          </TouchableOpacity>
-        </S.ContainerForgotPassword>
+
 
         <S.ButtonLoginContainer>
           <ButtonDefault
@@ -62,10 +106,17 @@ const LoginScreen = ({ route }: Props) => {
           </ButtonDefault>
         </S.ButtonLoginContainer>
 
-        <TextDefault bold marginVertical={24}>Ainda não tem uma conta?</TextDefault>
+        <S.ContainerForgotPassword>
+          <TextDefault bold >Esqueceu a senha? </TextDefault>
+          <TouchableOpacity>
+            <TextDefault bold linkStyle>Redefina aqui</TextDefault>
+          </TouchableOpacity>
+        </S.ContainerForgotPassword>
+
+        <TextDefault bold marginVertical={5}>ou</TextDefault>
 
         <TouchableOpacity>
-          <TextDefault bold linkStyle>Cadastre-se aqui!</TextDefault>
+          <TextDefault bold linkStyle>Cadastre-se</TextDefault>
         </TouchableOpacity>
 
       </S.Container>

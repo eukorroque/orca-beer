@@ -6,17 +6,28 @@ import { FontAwesome } from '@expo/vector-icons'
 import data from './data.json'
 import DropdownDefault from '../DropdownDefault'
 import theme from '../../config/theme'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
+import { useDispatch } from 'react-redux'
+import { setLoginUsuario } from '../../redux/actions/usuario.action'
 
 const userGhostIcon = require('../../../assets/Profile-PNG-File.png')
 
 
 const HeaderLojista = () => {
 
+  const dispatch = useDispatch()
+
+  // temporário. Apenas para testes
+  const loggout = () => {
+    dispatch(setLoginUsuario(false))
+  }
+
   return (
     <S.HeaderContainer>
       <S.ProfileContainer>
-        <S.Image source={userGhostIcon} />
+        <TouchableOpacity onPress={loggout}>
+          <S.Image source={userGhostIcon} />
+        </TouchableOpacity>
         <S.ProfileContainer>
           <TextDefault bold>Hello World! Fine Drinks by Debora Almeida!</TextDefault>
         </S.ProfileContainer>
