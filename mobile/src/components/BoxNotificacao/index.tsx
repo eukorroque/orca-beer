@@ -5,23 +5,23 @@ import theme from "../../config/theme"
 import ButtonDefault from '../ButtonDefault'
 
 interface Props {
-  title: string
-  subTitle: string
-  msg: string
-  notification: string
-  subNotification: string
-  buttonText: string
-  action: (params?: any) => any
+  title?: string
+  subTitle?: string
+  msg?: string
+  notification?: string
+  subNotification?: string
+  buttonText?: string
+  action?: (params?: any) => any
 }
 
 const BoxNotificacao: React.ElementType<Props> = ({
-  title,
-  subTitle,
-  msg,
-  notification,
-  subNotification,
-  buttonText,
-  action
+  title = '',
+  subTitle = '',
+  msg = '',
+  notification = '',
+  subNotification = '',
+  buttonText = '',
+  action = () => { }
   //action
 }: Props) => {
 

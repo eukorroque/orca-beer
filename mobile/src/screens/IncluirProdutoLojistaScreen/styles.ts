@@ -24,7 +24,7 @@ export const InputsContainer = styled.View`
   align-items: center;
   width: 300px;
   margin: 0 auto;
-
+  margin-top: 20px;
 `
 export const Container = styled.ScrollView`
 
@@ -49,10 +49,6 @@ export const TextInput = styled.TextInput`
 margin: 20px 0;
 margin-top: 1px;
 padding: 5px 10px;
-background: #FBFBFB;
-border: 1px solid #D9D9D9;
-border-radius: 8px;
-//height: 40px;
 `
 
 export const LargeInputContainer = styled.View`

@@ -91,4 +91,20 @@ export default class PropostaController {
     }
   }
 
+  async getByLojistaId(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const userSession: IUserSession = req.body.userSession
+
+      const propostas = await this.propostaService.getByLojistaId(userSession)
+
+      res.status(HttpStatus.OK).json({
+        ok: true,
+        propostas
+      })
+
+    } catch (error: any) {
+      return next(error.message)
+    }
+  }
+
 }

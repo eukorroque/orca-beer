@@ -13,7 +13,7 @@ export default class EnderecoUsuarioModel implements Endereco {
   id!: number
 
   @IsOptional({ groups: ['1', '2'] })
-  @Matches(NUMBER_REGEX, { message: 'O numero deve conter apenas caracteres numéricos', groups: ['1', '2'] })
+  @IsNumber({}, { message: 'O numero deve conter apenas caracteres numéricos', groups: ['1', '2'] })
   numero!: number | null
 
 

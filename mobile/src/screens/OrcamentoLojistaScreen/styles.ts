@@ -6,6 +6,7 @@ export const Container = styled.ScrollView`
 `
 
 export const AdressContainer = styled.View`
+margin-top: 30px;
   margin-bottom: 20px;
 `
 
