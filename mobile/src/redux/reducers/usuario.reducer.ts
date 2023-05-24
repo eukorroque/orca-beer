@@ -4,15 +4,17 @@ import IUsuario from "../../interfaces/IUsuario"
 import { LoginUsuarioAction, SetUsuarioAction } from "../actions/usuario.action"
 
 interface State {
-  usuario: IUsuario
+  data: IUsuario
   isLogged: boolean
+  token: string | null
 }
 
 const initialState: State = {
-  usuario: {
+  data: {
     nome: null
   },
-  isLogged: false
+  isLogged: false,
+  token: null
 }
 
 const usuarioReducer = (
@@ -23,12 +25,13 @@ const usuarioReducer = (
     case 'SET_USUARIO':
       return {
         ...state,
-        usuario: action.payload
+        data: action.payload
       }
     case 'LOGIN_USUARIO':
       return {
         ...state,
-        isLogged: action.payload
+        isLogged: action.payload.isLogged,
+        token: action.payload.token
       }
     default:
       return state

@@ -11,6 +11,7 @@ import HeaderOrcaBeer from '../../components/HeaderOrcaBeer'
 import IncluirProdutoLojistaScreen from '../../screens/IncluirProdutoLojistaScreen'
 import LoginScreen from '../../screens/LoginScreen'
 import WelcomeScreen from '../../screens/WelcomeScreen'
+import { RootState } from '../../redux/store'
 
 interface Props {
   onLayoutRootView: () => void
@@ -21,13 +22,13 @@ const Stack = createStackNavigator<RootStackParamList>()
 
 const AppController = ({ onLayoutRootView }: Props) => {
 
-  const isLogged = useSelector((state: any) => state.usuario.isLogged)
+  const user = useSelector((state: RootState) => state.usuario)
 
-  const [isLoggedIn, setIsLoggedIn] = useState(isLogged)
+  const [isLoggedIn, setIsLoggedIn] = useState(user.isLogged)
 
   useEffect(() => {
-    setIsLoggedIn(isLogged)
-  }, [isLogged])
+    setIsLoggedIn(user.isLogged)
+  }, [user.isLogged])
 
 
   return (

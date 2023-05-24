@@ -11,6 +11,8 @@ const persistConfig = {
   whitelist: ['usuario'], // Aqui você pode definir quais partes do estado serão persistidas
 }
 
+export type RootState = ReturnType<typeof rootReducer>
+
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 const store = createStore(persistedReducer)

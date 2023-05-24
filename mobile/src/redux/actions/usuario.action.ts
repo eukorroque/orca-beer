@@ -11,7 +11,10 @@ export interface SetUsuarioAction extends Action<typeof SET_USUARIO> {
 }
 
 export interface LoginUsuarioAction extends Action<typeof LOGIN_USUARIO> {
-  payload: boolean
+  payload: {
+    isLogged: boolean
+    token: string | null
+  }
 }
 
 export const setUsuario = (usuario: IUsuario): SetUsuarioAction => ({
@@ -21,6 +24,9 @@ export const setUsuario = (usuario: IUsuario): SetUsuarioAction => ({
 
 export const setLoginUsuario = (isLogged: boolean): LoginUsuarioAction => ({
   type: LOGIN_USUARIO,
-  payload: isLogged
+  payload: {
+    isLogged,
+    token: isLogged ? 'token' : null
+  }
 })
 
