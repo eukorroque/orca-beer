@@ -1,30 +1,34 @@
 
 // import encrypt from "./encrypt"
-// import getIdToken from "./getIdToken"
-
-// const backEnd = async (route: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE', needAuthentication: false | 'admin' | 'user', bodyInfo?: any): Promise<any> => {
-//   const url = process.env.NODE_ENV === 'development'
-//     ? 'http://localhost:3002'
-//     : 'http://localhost:3002'
+import vars from "../config/vars"
 
 
-//   const token = needAuthentication !== false ? getIdToken(needAuthentication) : null
 
-//   return await fetch(`${url}${route}`, {
-//     method,
-//     body: bodyInfo ? JSON.stringify({ body: bodyInfo }) : undefined,
-//     headers: {
-//       'Content-Type': 'application/json',
-//       ...token ? { 'Authorization': `Bearer ${token}` } : {}
-//     }
-//   }).then(async r => await r.json())
-//     .then(res => {
-//       return res
-//     })
-//     .catch(error => {
-//       return error
-//     })
+const backEnd = async (method: 'GET' | 'POST' | 'PUT' | 'DELETE', route: string, token: string | null, bodyInfo?: any): Promise<any> => {
 
-// }
+  try {
+    const url = vars.host
+    const isLogin = route === 'usuario/login'
 
-// export default backEnd
+    if (!token && !isLogin) throw new Error('Token não encontrado')
+
+    const response = await fetch(`${url}/${route}`, {
+      method,
+      body: bodyInfo ? JSON.stringify(bodyInfo) : undefined,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+
+    const data = await response.json()
+
+    return data
+
+  } catch (error) {
+    return error
+  }
+
+}
+
+export default backEnd

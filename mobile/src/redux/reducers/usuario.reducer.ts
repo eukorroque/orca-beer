@@ -1,17 +1,21 @@
 // Arquivo criado: 23/05/2023 às 19:13
 
 import IUsuario from "../../interfaces/IUsuario"
-import { LoginUsuarioAction, SetUsuarioAction } from "../actions/usuario.action"
+import { setLoginUsuario, SetUsuarioAction } from "../actions/usuario.action"
 
 interface State {
-  data: IUsuario
+  perfil: IUsuario
   isLogged: boolean
   token: string | null
 }
 
 const initialState: State = {
-  data: {
-    nome: null
+  perfil: {
+    nome: null,
+    statusId: null,
+    tpConta: null,
+    id: null,
+    imgPerfil: null
   },
   isLogged: false,
   token: null
@@ -19,13 +23,13 @@ const initialState: State = {
 
 const usuarioReducer = (
   state = initialState,
-  action: SetUsuarioAction | LoginUsuarioAction
+  action: SetUsuarioAction | setLoginUsuario
 ): State => {
   switch (action.type) {
     case 'SET_USUARIO':
       return {
         ...state,
-        data: action.payload
+        perfil: action.payload
       }
     case 'LOGIN_USUARIO':
       return {

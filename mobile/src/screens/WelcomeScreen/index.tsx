@@ -31,7 +31,7 @@ const WelcomeScreen = ({ navigation }: Props) => {
           {
             data.boxs.map((box, index) => (
               // @ts-expect-error ignorando o erro do typescript aqui pois ele implica dizendo que box.navigation pode nn ter a rota mas a gente sabe q tem :)
-              <S.BoxOptions key={index} onPress={() => box.navigation && navigation.navigate(box.navigation)}>
+              <S.BoxOptions key={index} onPress={() => box.navigation && navigation.navigate(box.navigation, { tpConta: index + 1 })}>
                 <TittleDefault marginVertical={5} fontSize={20}>{box.title}</TittleDefault>
                 <TextDefault marginVertical={5}>{box.mensagem}</TextDefault>
               </S.BoxOptions>
