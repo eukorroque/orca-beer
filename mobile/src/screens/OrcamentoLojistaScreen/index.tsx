@@ -162,7 +162,11 @@ const OrcamentoLojistaScreen = () => {
           message={"Novo pedido de orçamento enviado com sucesso!"}
           title={'Enviar orçamento'}
           action={() => [prepareToPost(produto), navigation.navigate('HomeLojista')]}
-          color={{ backgroundColor: theme.colors.success }} />
+          color={{ backgroundColor: theme.colors.success }} 
+          show={false} 
+          setShow={function (show: boolean): void {
+            throw new Error('Function not implemented.')
+          } } />
       </S.ButtonContainer>
       <S.FilterContainer>
         <TextDefault marginHorizontal={6}>Filtrar lista</TextDefault>

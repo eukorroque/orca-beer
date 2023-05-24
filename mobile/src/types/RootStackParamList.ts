@@ -1,6 +1,6 @@
 
 export type RootStackParamList = {
-  Login: { setIsLoggedIn: (isLogged: boolean) => void }
+  Login: undefined
   Welcome: undefined
   HomeLojista: undefined
   OrcamentoLojista: undefined
