@@ -16,25 +16,31 @@ const HomeLogistaScreen = () => {
   return (
     <ContainerDefault>
       <S.Container>
-        <BoxNotificacao 
-          title='Orçamento 001' 
-          subTitle='3 propostas' 
+
+        <BoxNotificacao
+          title='Orçamento 001'
+          subTitle='3 propostas'
           msg='Aguardando as propostas dos fornecedores'
           notification='Total de 3 propostas recebidas'
           subNotification='0 lidas'
           buttonText='Visualizar'
-          action={() => navigation.navigate('HomeLojista')} />
+          action={() => navigation.navigate('HomeLojista')}
+        />
+
         <S.ButtonContainer>
           <ButtonDefault onPress={() => navigation.navigate('OrcamentoLojista')}>
             Novo Orçamento
           </ButtonDefault>
         </S.ButtonContainer>
+
         <S.SimpleContainer>
           <TextDefault fontSize={25} bold>Ofertas</TextDefault>
         </S.SimpleContainer>
+
         <S.SimpleContainer>
           <TextDefault fontSize={25} bold>Ranking</TextDefault>
         </S.SimpleContainer>
+
       </S.Container>
     </ContainerDefault>
   )

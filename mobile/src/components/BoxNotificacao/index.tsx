@@ -13,7 +13,7 @@ interface Props {
   buttonText: string
   action: (params?: any) => any
 }
-  
+
 const BoxNotificacao: React.ElementType<Props> = ({
   title,
   subTitle,
@@ -26,30 +26,30 @@ const BoxNotificacao: React.ElementType<Props> = ({
 }: Props) => {
 
   return (
-   
-        <S.NotificationContainer> 
-          <S.NotificationBar>
-            <TextDefault color={theme.colors.background}>{title}</TextDefault>
-            <TextDefault color={theme.colors.background}>{subTitle}</TextDefault>
-          </S.NotificationBar>
-          <S.NotificationBody>
-            <S.Container>
-              <S.NotificationHeaderBox>
-                <TextDefault bold>{msg}</TextDefault>
-              </S.NotificationHeaderBox>
-              <S.ButtonContainer>
-                <ButtonDefault onPress={action}>
-                  {buttonText}
-                </ButtonDefault>
-              </S.ButtonContainer>
-            </S.Container>
-            <S.NotificationTextBox>
-              <TextDefault>{notification}</TextDefault>
-              <TextDefault>{subNotification}</TextDefault>
-            </S.NotificationTextBox>
-          </S.NotificationBody>
-        </S.NotificationContainer>
-      
+
+    <S.NotificationContainer>
+      <S.NotificationBar>
+        <TextDefault color={theme.colors.background}>{title}</TextDefault>
+        <TextDefault color={theme.colors.background}>{subTitle}</TextDefault>
+      </S.NotificationBar>
+      <S.NotificationBody>
+        <S.Container>
+          <S.NotificationHeaderBox>
+            <TextDefault bold>{msg}</TextDefault>
+          </S.NotificationHeaderBox>
+          <S.ButtonContainer>
+            <ButtonDefault onPress={action}>
+              {buttonText}
+            </ButtonDefault>
+          </S.ButtonContainer>
+        </S.Container>
+        <S.NotificationTextBox>
+          <TextDefault>{notification}</TextDefault>
+          <TextDefault>{subNotification}</TextDefault>
+        </S.NotificationTextBox>
+      </S.NotificationBody>
+    </S.NotificationContainer>
+
   )
 
 }

@@ -15,8 +15,9 @@ export const ButtonContainer = styled.View`
 `
 
 export const NotificationContainer = styled.View`
-  width: 300px;
+  width: 100%;
   margin: 0 auto;
+  margin-top: 20px;
   align-items: center;
 `
 
@@ -25,7 +26,7 @@ export const NotificationBar = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 300px;
+  width: 85%;
   background-color: #000;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
@@ -38,7 +39,7 @@ export const NotificationBody = styled.View`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  width: 300px;
+   width: 85%;
   background-color: #fff;
   border: 1px solid ${theme.colors.inputBorder};
   border-bottom-left-radius: 16px;
