@@ -34,7 +34,7 @@ export const IconsContainer = styled.View`
   flex-wrap: nowrap;  
   justify-content: space-around;
   align-items: center;
-  width: 25%;
+  width: 10%; //era 25% qdo tinha 2 ícones
 `
 
 export const AdressContainer = styled.View`

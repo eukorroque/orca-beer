@@ -1,5 +1,6 @@
 // Arquivo criado: 16/05/2023 às 11:05
 import React, { useState } from 'react'
+import { StyleSheet } from 'react-native'
 import TextDefault from '../../components/TextDefault'
 import BoxProduto from '../../components/BoxProduto'
 import DropdownDefault from '../../components/DropdownDefault'
@@ -14,6 +15,7 @@ import ip from '../../config/vars'
 import ModalDefault from '../../components/ModalDefaut'
 //import { RefreshControl } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import ButtonDefault from '../../components/ButtonDefault'
 //importa a useCallback do react depois se necessário
 
 
@@ -144,11 +146,14 @@ const OrcamentoLojistaScreen = () => {
           }} />
       </S.AdressContainer>
       <S.ButtonContainer>
-        <S.ButtonLight
+        <ButtonDefault style={styles.buttonStyle} onPress={() => getData()}>
+          Incluir produto
+        </ButtonDefault>
+        {/* <S.ButtonLight
           onPress={() => getData()}
         >
           <TextDefault bold >Incluir produto</TextDefault>
-        </S.ButtonLight>
+        </S.ButtonLight> */}
       </S.ButtonContainer>
       <S.ButtonContainer>
         <ModalDefault
@@ -177,5 +182,15 @@ const OrcamentoLojistaScreen = () => {
   )
 
 }
+
+const styles = StyleSheet.create({
+  buttonStyle: {
+    backgroundColor: theme.colors.noBackground,
+    borderColor: theme.colors.primary,
+    borderWidth: 1,
+    marginBottom: 20,
+    marginTop: 10,
+  }
+})
 
 export default OrcamentoLojistaScreen

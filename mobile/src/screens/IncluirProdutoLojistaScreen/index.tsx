@@ -10,6 +10,7 @@ import { TouchableOpacity } from 'react-native'
 import theme from '../../config/theme'
 import ip from '../../config/vars'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ButtonDefault from '../../components/ButtonDefault'
 
 const IncluirProdutoScreen = () => {
 
@@ -104,7 +105,7 @@ const IncluirProdutoScreen = () => {
     <ContainerDefault>
       <S.InputsContainer>
       <S.Container>
-      <S.InputsContainer style={{ marginBottom: existsProduto ? 10 : 80 }}>
+      <S.InputsContainer style={{ marginBottom: existsProduto ? 10 : 15 }}>
         <S.SelectsContainer>
           <S.DropdownContainer>
             <TextDefault>Categoria</TextDefault>
@@ -119,9 +120,7 @@ const IncluirProdutoScreen = () => {
                 setProdutos(prev => ({ ...prev, categoriaId: selectedItem.id, categoria: selectedItem.categoria }))
               }}
               />
-          </S.DropdownContainer>
-          {
-            existsProduto && (
+          </S.DropdownContainer>          
               <S.DropdownContainer style={{ display: 'flex' }}>
                 <TextDefault>Produto</TextDefault>
                 <DropdownDefault 
@@ -136,17 +135,7 @@ const IncluirProdutoScreen = () => {
                   }}
                 />
               </S.DropdownContainer>
-            )
-          }
         </S.SelectsContainer>
-        {
-          !existsProduto && (
-            <S.DefaultInputContainer style={{ display: 'flex' }}>
-              <TextDefault>Outro</TextDefault>
-              <S.TextInput style={{ paddingHorizontal: 5 }} />
-            </S.DefaultInputContainer>
-          )
-        }
         <S.SmallInputContainer>
           <TextDefault>Quantidade</TextDefault>
           <S.TextInput keyboardType='numeric' value={number} onChangeText={setNumber} onEndEditing={(e) => handleQuantidadeChange(e.nativeEvent.text)}/>
@@ -165,23 +154,34 @@ const IncluirProdutoScreen = () => {
               }}
             />
         </S.LargeInputContainer>
-      </S.InputsContainer>
-      <S.TextContainer style={(!existsProduto ? { display: 'none' } : { display: 'flex' })}>
-        <TextDefault>Não encontrou o que procura?</TextDefault>
-        <TouchableOpacity
-          onPress={() => setExistsProduto(false)}
-        >
-          <TextDefault bold linkStyle>Clique aqui!</TextDefault>
-        </TouchableOpacity>
-      </S.TextContainer>
+        {
+            !existsProduto && (
+              <S.DefaultInputContainer style={{ display: 'flex' }}>
+                <TextDefault>Outro</TextDefault>
+                <S.TextInput placeholder='Digite o produto desejado' style={{ paddingHorizontal: 5 }} />
+              </S.DefaultInputContainer>
+            )
+          }      
+        
+      </S.InputsContainer>    
+      {
+        existsProduto && (
+        <S.TextContainer>
+          <TextDefault>Não encontrou o que procura?</TextDefault>
+          <TouchableOpacity
+            onPress={() => setExistsProduto(false)}
+          >
+            <TextDefault bold linkStyle>Clique aqui!</TextDefault>
+          </TouchableOpacity>
+        </S.TextContainer>
+        )
+      }
     </S.Container>      
       </S.InputsContainer>     
       <S.ButtonContainer>
-        <S.Button
-          onPress={() => storeData()}
-        >
-          <TextDefault bold >Adicionar produto</TextDefault>
-        </S.Button>
+        <ButtonDefault onPress={() => existsProduto ? storeData() : console.log('fazer requisição produtoTemp')}>
+          Adicionar produto
+        </ButtonDefault>
       </S.ButtonContainer>    
     </ContainerDefault>
   )

@@ -22,7 +22,7 @@ const HeaderLojista = () => {
         </S.ProfileContainer>
       </S.ProfileContainer>
       <S.IconsContainer>
-        <FontAwesome name='comments' color='#000' size={25} />
+        {/* <FontAwesome name='comments' color='#000' size={25} /> */}
         <FontAwesome name='bell' color='#000' size={25} />
       </S.IconsContainer>
       <S.AdressContainer>

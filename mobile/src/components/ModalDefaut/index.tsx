@@ -4,6 +4,7 @@ import TextDefault from '../TextDefault'
 import { Modal, StyleProp, StyleSheet, ViewStyle } from 'react-native'
 //import { useNavigation } from '@react-navigation/native'
 import TittleDefault from '../TittleDefault'
+import ButtonDefault from '../ButtonDefault'
 
 
 interface Props {
@@ -51,19 +52,17 @@ const ModalDefault: React.ElementType<Props> = ({
           <S.TextModalContainer>
             <TextDefault color='#9FA5C0' style={{textAlign: 'center'}}>{textInModal}</TextDefault>
           </S.TextModalContainer>
-          <S.Button style={styles.button} onPress={action}>
-            <TextDefault bold>
-              {modalButtonText}
-            </TextDefault>
-          </S.Button>
+          <ButtonDefault style={styles.button} onPress={action}>
+            {modalButtonText}
+          </ButtonDefault>
         </S.ModalView>
       </S.Container>
 
       </S.CoverContainer>
       </Modal>
-      <S.Button onPress={() => setModalVisible(true)}>
-        <TextDefault bold>{title}</TextDefault>
-      </S.Button>
+      <ButtonDefault onPress={() => setModalVisible(true)}>
+        {title}
+      </ButtonDefault>
     </S.Container>
   )
 
