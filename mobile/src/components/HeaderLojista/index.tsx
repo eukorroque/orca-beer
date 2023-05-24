@@ -12,7 +12,7 @@ import { setLoginUsuario } from '../../redux/actions/usuario.action'
 
 const userGhostIcon = require('../../../assets/Profile-PNG-File.png')
 
-
+// TODO seleção do endereço default no celular do user ou puxando do banco
 const HeaderLojista = () => {
 
   const dispatch = useDispatch()

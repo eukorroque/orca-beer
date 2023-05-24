@@ -25,13 +25,9 @@ const HomeLogistaScreen = () => {
           buttonText='Visualizar'
           action={() => navigation.navigate('HomeLojista')} />
         <S.ButtonContainer>
-          {/* <S.Button
-            onPress={() => navigation.navigate('OrcamentoLojista')}
-          > */}
           <ButtonDefault onPress={() => navigation.navigate('OrcamentoLojista')}>
             Novo Orçamento
           </ButtonDefault>
-          {/* </S.Button> */}
         </S.ButtonContainer>
         <S.SimpleContainer>
           <TextDefault fontSize={25} bold>Ofertas</TextDefault>

@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons'
 import HeaderLojista from '../../components/HeaderLojista'
 import PreferenciasLojistaScreen from '../../screens/PreferenciasLojistaScreen'
 import HomeLogistaScreen from '../../screens/HomeLojistaScreen'
+import ButtonOrca from '../../components/ButtonOrca'
 
 const Tab = createBottomTabNavigator<HomeLogistaControllerParamList>()
 
@@ -55,6 +56,16 @@ const HomeLogistaController = () => {
       <Tab.Screen
         name='Home'
         component={HomeLogistaScreen}
+      />
+
+      <Tab.Screen
+        name='Orçamentos'
+        component={HomeLogistaScreen}
+        options={{ 
+          tabBarIcon: () => (
+            <ButtonOrca />
+          )
+        }}
       />
 
       <Tab.Screen

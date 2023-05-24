@@ -37,9 +37,6 @@ const BoxNotificacao: React.ElementType<Props> = ({
               <S.NotificationHeaderBox>
                 <TextDefault bold>{msg}</TextDefault>
               </S.NotificationHeaderBox>
-              {/* <S.NotificationButton onPress={action}>
-                <TextDefault bold>{buttonText}</TextDefault>
-              </S.NotificationButton> */}
               <S.ButtonContainer>
                 <ButtonDefault onPress={action}>
                   {buttonText}
