@@ -4,7 +4,6 @@ import theme from "../../config/theme"
 export const ButtonContainer = styled.View`
   width: 300px;
   margin: 0 auto;
-  /* padding: 19px 32px; */
 `
 
 export const Button = styled.TouchableOpacity`
@@ -31,8 +30,6 @@ export const Container = styled.ScrollView`
 
 `
 
-
-
 export const TextContainer = styled.View`
   width: 80%;
   margin: 50px auto;
@@ -41,7 +38,6 @@ export const TextContainer = styled.View`
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  ;
 `
 
 export const DefaultInputContainer = styled.View`
@@ -56,7 +52,7 @@ padding: 5px 10px;
 background: #FBFBFB;
 border: 1px solid #D9D9D9;
 border-radius: 8px;
-height: 50px;
+//height: 40px;
 `
 
 export const LargeInputContainer = styled.View`

@@ -1,5 +1,6 @@
 // Arquivo criado: 16/05/2023 às 11:05
 import React, { useState } from 'react'
+import { StyleSheet } from 'react-native'
 import TextDefault from '../../components/TextDefault'
 import BoxProduto from '../../components/BoxProduto'
 import DropdownDefault from '../../components/DropdownDefault'
@@ -14,12 +15,14 @@ import ip from '../../config/vars'
 import ModalDefault from '../../components/ModalDefaut'
 //import { RefreshControl } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import ButtonDefault from '../../components/ButtonDefault'
 //importa a useCallback do react depois se necessário
 
 
 const OrcamentoLojistaScreen = () => {
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>()
+  const [showModal, setShowModal] = useState(false)
 
   const postData = async (arr: Array<any>) => {
     try {
@@ -121,7 +124,7 @@ const OrcamentoLojistaScreen = () => {
     postData(filtraProduto)
     console.log(filtraProduto)
     removeValue()
-    navigation.navigate('HomeLojista')
+    //navigation.navigate('HomeLojista')
 
   }
 
@@ -144,20 +147,26 @@ const OrcamentoLojistaScreen = () => {
           }} />
       </S.AdressContainer>
       <S.ButtonContainer>
-        <S.ButtonLight
+        <ButtonDefault style={styles.buttonStyle} onPress={() => getData()}>
+          Incluir produto
+        </ButtonDefault>
+        {/* <S.ButtonLight
           onPress={() => getData()}
         >
           <TextDefault bold >Incluir produto</TextDefault>
-        </S.ButtonLight>
+        </S.ButtonLight> */}
       </S.ButtonContainer>
       <S.ButtonContainer>
+        <ButtonDefault onPress={() => [prepareToPost(produto), setShowModal(true)]}>Enviar orçamento</ButtonDefault>
         <ModalDefault
           textInModal={'Em breve você receberá propostas de diferentes fornecedores.'}
-          modalButtonText={'Voltar para tela principal'}
+          modalButtonText={'Fechar'}
           message={"Novo pedido de orçamento enviado com sucesso!"}
-          title={'Enviar orçamento'}
-          action={() => [prepareToPost(produto), navigation.navigate('HomeLojista')]}
-          color={{ backgroundColor: theme.colors.success }} />
+          action={() => navigation.navigate('HomeLojista')}
+          color={{ backgroundColor: theme.colors.success }} 
+          show={showModal} 
+          setShow={setShowModal} 
+          />
       </S.ButtonContainer>
       <S.FilterContainer>
         <TextDefault marginHorizontal={6}>Filtrar lista</TextDefault>
@@ -177,5 +186,15 @@ const OrcamentoLojistaScreen = () => {
   )
 
 }
+
+const styles = StyleSheet.create({
+  buttonStyle: {
+    backgroundColor: theme.colors.noBackground,
+    borderColor: theme.colors.primary,
+    borderWidth: 1,
+    marginBottom: 20,
+    marginTop: 10,
+  }
+})
 
 export default OrcamentoLojistaScreen

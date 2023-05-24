@@ -8,7 +8,7 @@ export const Container = styled.ScrollView`
 
 export const ButtonContainer = styled.View`
   width: 300px;
-  margin: 0 auto;
+  margin: 10px auto;
   /* padding: 19px 32px; */
 `
 

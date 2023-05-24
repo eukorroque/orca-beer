@@ -31,7 +31,7 @@ export const ColorModalMessage = styled.View`
 
 export const TextModalContainer = styled.View`
   width: 75%;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   align-items: center;
 `
 

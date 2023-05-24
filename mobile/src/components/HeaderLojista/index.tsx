@@ -15,7 +15,7 @@ import { setEnderecosAction } from '../../redux/actions/enderecoUsuario.action'
 
 const userGhostIcon = require('../../../assets/Profile-PNG-File.png')
 
-
+// TODO seleção do endereço default no celular do user ou puxando do banco
 const HeaderLojista = () => {
 
   const dispatch = useDispatch()
@@ -55,11 +55,11 @@ const HeaderLojista = () => {
           <S.Image source={userGhostIcon} />
         </TouchableOpacity>
         <S.ProfileContainer>
-          <TextDefault bold>{user.perfil.nome}</TextDefault>
+          {/* <TextDefault bold>{user.perfil.nome}</TextDefault> */}
         </S.ProfileContainer>
       </S.ProfileContainer>
       <S.IconsContainer>
-        <FontAwesome name='comments' color='#000' size={25} />
+        {/* <FontAwesome name='comments' color='#000' size={25} /> */}
         <FontAwesome name='bell' color='#000' size={25} />
       </S.IconsContainer>
       <S.AdressContainer>

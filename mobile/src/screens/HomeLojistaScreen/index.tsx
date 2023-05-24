@@ -1,11 +1,12 @@
 // Arquivo criado: 16/05/2023 às 11:05
 import React from 'react'
 import ContainerDefault from '../../components/ContainerDefault'
+import BoxNotificacao from '../../components/BoxNotificacao'
 import * as S from './styles'
 import TextDefault from '../../components/TextDefault'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 import { RootStackParamList } from '../../types/RootStackParamList'
-import theme from "../../config/theme"
+import ButtonDefault from '../../components/ButtonDefault'
 
 
 const HomeLogistaScreen = () => {
@@ -15,30 +16,18 @@ const HomeLogistaScreen = () => {
   return (
     <ContainerDefault>
       <S.Container>
-        <S.NotificationContainer> 
-          <S.NotificationBar>
-            <TextDefault color={theme.colors.background}>Orçamento 001</TextDefault>
-            <TextDefault color={theme.colors.background}>1 proposta</TextDefault>
-          </S.NotificationBar>
-          <S.NotificationBody>
-            <S.NotificationTextBox>
-              <TextDefault bold>Você recebeu 1 nova proposta!</TextDefault>
-            </S.NotificationTextBox>
-            <S.NotificationButton>
-              <TextDefault bold>Visualizar</TextDefault>
-            </S.NotificationButton>
-            <S.NotificationTextBox>
-              <TextDefault>Total de 1 proposta recebida</TextDefault>
-              <TextDefault>0 lidas</TextDefault>
-            </S.NotificationTextBox>
-          </S.NotificationBody>
-        </S.NotificationContainer>
+        <BoxNotificacao 
+          title='Orçamento 001' 
+          subTitle='3 propostas' 
+          msg='Aguardando as propostas dos fornecedores'
+          notification='Total de 3 propostas recebidas'
+          subNotification='0 lidas'
+          buttonText='Visualizar'
+          action={() => navigation.navigate('HomeLojista')} />
         <S.ButtonContainer>
-          <S.Button
-            onPress={() => navigation.navigate('OrcamentoLojista')}
-          >
-            <TextDefault bold >Novo Orçamento</TextDefault>
-          </S.Button>
+          <ButtonDefault onPress={() => navigation.navigate('OrcamentoLojista')}>
+            Novo Orçamento
+          </ButtonDefault>
         </S.ButtonContainer>
         <S.SimpleContainer>
           <TextDefault fontSize={25} bold>Ofertas</TextDefault>
