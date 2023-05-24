@@ -50,6 +50,42 @@ export default class UsuarioController {
     }
   }
 
+  async getOne(req: Request, res: Response, next: NextFunction): Promise<void> {
+
+    // TODO: validar se o usuario que está vindo aqui é o mesmo que está logado, Caso não seja, retornar um erro
+    try {
+
+      const { id } = req.params
+
+      if (!id || !Number.isInteger(parseInt(id))) {
+        return next('Informe o tipo de usuário que deseja ver')
+      }
+
+      const newId = parseInt(id)
+
+      const usuario = await this.usuarioModel.getOne({
+        where: {
+          id: newId
+        },
+        include: {
+          Endereco: true
+        }
+      })
+
+      if (!usuario) {
+        return next('Não existe usuário com o id informado')
+      }
+
+      res.status(HttpStatus.OK).json({
+        ok: true,
+        data: usuario
+      })
+
+    } catch (error) {
+      return next('Ocorreu um erro ao tentar listar os dados do usuário selecionado')
+    }
+  }
+
   async create(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { type } = req.params
@@ -232,7 +268,10 @@ export default class UsuarioController {
         ok: true,
         data: {
           id: user.id,
-          nome: user.nomeFantasia || user.nomeResponsavel
+          nome: user.nomeFantasia || user.nomeResponsavel,
+          statusId: user.statusId,
+          tpConta: user.tpConta,
+          token // por hora passarei o token aqui no body
         }
       })
 

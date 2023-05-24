@@ -4,6 +4,7 @@ import UsuarioController from '../controllers/usuario.controller'
 import StatusUsuarioModel from '../models/statusUsuario.model'
 import UsuarioService from '../services/usuario.service'
 import SessionModel from '../models/session.model'
+import isLoggedInterceptor from '../middlewares/isLogged.middleware'
 
 
 const usuarioModel = new UsuarioModel
@@ -18,6 +19,7 @@ const router = Router()
 router
   .post('/usuario/login', controller.login.bind(controller))
   .get('/usuarios/:type', controller.getAll.bind(controller))
+  .get('/usuario/:id', isLoggedInterceptor(['lojista', 'fornecedor']), controller.getOne.bind(controller))
   .post('/usuario/:type', controller.create.bind(controller))
   .put('/usuario/:id/alterar-status/:status', controller.updateStatus.bind(controller))
 
