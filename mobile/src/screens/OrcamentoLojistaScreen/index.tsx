@@ -9,132 +9,88 @@ import * as S from './styles'
 import ContainerDefault from '../../components/ContainerDefault'
 import { RootStackParamList } from '../../types/RootStackParamList'
 import { FontAwesome } from '@expo/vector-icons'
-import data from './data.json'
 import theme from '../../config/theme'
-import ip from '../../config/vars'
 import ModalDefault from '../../components/ModalDefaut'
-//import { RefreshControl } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import ButtonDefault from '../../components/ButtonDefault'
-//importa a useCallback do react depois se necessário
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/store'
+import createPedido from '../../services/createPedido'
+import IProdutos from '../../interfaces/IProduto'
+import { useDispatch } from 'react-redux'
+import { SetNovoOrcamentoAction } from '../../redux/actions/orcamento.action'
 
-
+// esse arquivo precisa ser refatorado. Principalmente na tipagem e na experiencia de usuário.
 const OrcamentoLojistaScreen = () => {
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>()
+
+  const dispatch = useDispatch()
+  const state = useSelector((state: RootState) => state)
+  const enderecos = state.enderecoUsuario.endereco
+  const novoOrcamento = state.orcamento.novoOrcamento
+  const token = state.usuario.token
+
+
   const [showModal, setShowModal] = useState(false)
-
-  const postData = async (arr: Array<any>) => {
-    try {
-      let res = await fetch(`http://${ip.host}:3002/pedido`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${ip.token}`
-        },
-        body: JSON.stringify(
-          {
-            "pedido": {
-              "prazoEntrega": "2023-05-26",
-              "observacoes": " ",
-              "produtos": arr,
-              "produtosTemp": [
-                {
-                  "produtoId": 4,
-                  "quantidade": 15,
-                  "unidadeId": 1,
-                  "categoriaId": 1
-                }
-              ]
-            }
-          }
-        )
-      })
-      res = await res.json()
-      console.log(res)
-    } catch (e) {
-      console.error(e)
-    }
-  }
-
-  const [produto, setProduto] = useState([])
-
-  const updateValue = async () => {
-    const value = await AsyncStorage.getItem('produtosTest4')
-    if (value == null) {
-      setProduto([])
-    }
-    if (value !== null) {
-      setProduto(JSON.parse(value) || [])
-    }
-  }
-
-  updateValue()
-
-  //const [refreshing, setRefreshing] = useState(false);
-
-  /*  const onRefresh = useCallback(() => {
-     setRefreshing(true);
-     setTimeout(() => {
-       setRefreshing(false);
-     }, 1000);
-   }, []) */
+  const [isLoading, setIsLoading] = useState(false)
 
 
+  const postData = async () => {
+    // eu poderia a principio colocar todo o objeto da requisiçao no redux pois certamente precisarei disso em breve. Porém não farei isso agora devido o prazo da sprint.
+    if (!novoOrcamento?.produtos) return
 
-  const getData = async () => {
-    try {
-      const value = await AsyncStorage.getItem('produtosTest4')
-      //navigation.navigate('IncluirProdutoLojista')
-      if (value == null) {
-        navigation.navigate('IncluirProdutoLojista')
+    const produtos: IProdutos[] = []
+    const produtosTemp: IProdutos[] = []
+
+    novoOrcamento.produtos.map(val => {
+      if (val.isTemp) {
+        produtosTemp.push(val.toBack)
+        return
       }
-      if (value !== null) {
-        console.log(JSON.parse(value))
-        setProduto(JSON.parse(value) || [])
-        navigation.navigate('IncluirProdutoLojista')
-      }
-    } catch (e) {
-      console.log(e)
+
+      produtos.push(val.toBack)
+    })
+
+    if (produtos.length <= 0) {
+
+      // TODO: colocar um modal pelo redux e refatorar o codigo para usar o modal do redux
+      alert('Para criar um orçamento é necessário ter pelo menos um de nossos produtos em sua lista')
+      return
     }
+
+    const body = {
+      prazoEntrega: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
+      observacoes: null,
+      produtos,
+      produtosTemp
+    }
+
+    setIsLoading(true)
+    const newPedido = await createPedido(body, token)
+    setIsLoading(false)
+
+    if (newPedido.ok === false) {
+      console.log(newPedido)
+      return
+    }
+
+    setShowModal(true)
   }
 
-  /* const removeProduct = (index: number): Array<any>=> {
-    produto.splice(index, 1)
-    const newProduto = produto
-    //console.log('isso q retorna:')
-    //console.log(newProduto)
-    removeValue()      
-    //updateValue()
-    //onRefresh()    
-    return newProduto
-  } */
-
-  const removeValue = async () => {
-    try {
-      await AsyncStorage.removeItem('produtosTest4')
-    } catch (e) {
-      console.error(e)
-    }
-  }
-
-  const prepareToPost = (arr: any[]) => {
-    const filtraProduto = arr.map(produto => ({ produtoId: produto.produtoId, quantidade: produto.quantidade, unidadeId: produto.unidadeId, categoriaId: produto.categoriaId }))
-    postData(filtraProduto)
-    console.log(filtraProduto)
-    removeValue()
-    //navigation.navigate('HomeLojista')
-
+  const handleCloseModal = () => {
+    setShowModal(false)
+    dispatch(SetNovoOrcamentoAction(null))
+    navigation.navigate('HomeLojista', { getPedidosAgain: true })
   }
 
   return (
     <ContainerDefault>
       <S.AdressContainer>
         <DropdownDefault
+          disabled={isLoading}
           dropdownStyle={{ width: 300, borderRadius: 8 }}
           buttonStyle={{ width: 300, borderRadius: 8, backgroundColor: theme.colors.noBackground, height: 15 }}
-          data={data.enderecos}
+          data={enderecos}
           buttonTextAfterSelection={(selectedItem) => {
             return `${selectedItem.rua}, ${selectedItem.numero}, ${selectedItem.cidade}, ${selectedItem.estado}`
           }}
@@ -147,7 +103,7 @@ const OrcamentoLojistaScreen = () => {
           }} />
       </S.AdressContainer>
       <S.ButtonContainer>
-        <ButtonDefault style={styles.buttonStyle} onPress={() => getData()}>
+        <ButtonDefault disabled={isLoading} style={styles.buttonStyle} onPress={() => navigation.navigate('IncluirProdutoLojista')}>
           Incluir produto
         </ButtonDefault>
         {/* <S.ButtonLight
@@ -157,27 +113,27 @@ const OrcamentoLojistaScreen = () => {
         </S.ButtonLight> */}
       </S.ButtonContainer>
       <S.ButtonContainer>
-        <ButtonDefault onPress={() => [prepareToPost(produto), setShowModal(true)]}>Enviar orçamento</ButtonDefault>
+        <ButtonDefault disabled={isLoading} onPress={postData}>
+          {isLoading ? 'Enviando...' : 'Enviar orçamento'}
+        </ButtonDefault>
         <ModalDefault
           textInModal={'Em breve você receberá propostas de diferentes fornecedores.'}
           modalButtonText={'Fechar'}
-          message={"Novo pedido de orçamento enviado com sucesso!"}
-          action={() => navigation.navigate('HomeLojista')}
-          color={{ backgroundColor: theme.colors.success }} 
-          show={showModal} 
-          setShow={setShowModal} 
-          />
+          message={"Novo orçamento enviado com sucesso!"}
+          action={handleCloseModal}
+          color={{ backgroundColor: theme.colors.success }}
+          show={showModal}
+          setShow={setShowModal}
+        />
       </S.ButtonContainer>
       <S.FilterContainer>
         <TextDefault marginHorizontal={6}>Filtrar lista</TextDefault>
         <FontAwesome name='filter' color='#000' size={20} />
       </S.FilterContainer>
       <S.Container>
-        {produto && (produto.map((el: any, index: number) => (
+        {novoOrcamento?.produtos && (novoOrcamento.produtos.map((el: any, index: number) => (
           <S.ProdutosContainer key={index}>
-            {/* <BoxProduto title={`${el.categoria} ${el.produto}`} unity={`${el.quantidade} ${el.unidade}`} action={() => setProduto(removeProduct(index))}/> */}
-            {/* <RefreshControl refreshing={refreshing} /> */}
-            <BoxProduto title={`${el.categoria} ${el.produto}`} unity={`${el.quantidade} ${el.unidade}`} />
+            <BoxProduto disableButtons={isLoading} indiceArr={index} title={`${el.categoria} ${el.produto}`} unity={`${el.quantidade} ${el.unidade}`} />
           </S.ProdutosContainer>
         )))
         }

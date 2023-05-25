@@ -55,18 +55,18 @@ const HeaderLojista = () => {
           <S.Image source={userGhostIcon} />
         </TouchableOpacity>
         <S.ProfileContainer>
-          {/* <TextDefault bold>{user.perfil.nome}</TextDefault> */}
+          <TextDefault bold>{user.perfil.nome}</TextDefault>
         </S.ProfileContainer>
       </S.ProfileContainer>
       <S.IconsContainer>
-        {/* <FontAwesome name='comments' color='#000' size={25} /> */}
         <FontAwesome name='bell' color='#000' size={25} />
       </S.IconsContainer>
       <S.AdressContainer>
         <DropdownDefault
           dropdownStyle={{ width: 300, borderRadius: 8 }}
-          onSelect={(selectedItem, index) => {
-            console.log(selectedItem, index)
+          onSelect={() => {
+            // console.log(selectedItem, index)
+            return
           }}
           buttonStyle={styles.buttonStyle}
           data={enderecos}

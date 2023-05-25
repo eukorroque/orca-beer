@@ -7,11 +7,13 @@
     "watch": "tsc --watch",
     "nodemon": "nodemon ./dist/index.js",
     "lint": "eslint . --ext .ts",
+    "build": "tsc",
     "prisma:generate": "prisma generate",
     "prisma:db-push": "prisma db push",
     "prisma:studio": "prisma studio",
     "prisma:db-migrate": "prisma migrate dev",
-    "start": "npm-run-all --parallel watch nodemon"
+    "start": "npm-run-all --parallel watch nodemon",
+    "start:prod": "npm run lint && npm run build && node dist/index.js"
   },
   "author": "",
   "license": "ISC",

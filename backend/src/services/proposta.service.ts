@@ -202,4 +202,27 @@ export default class PropostaService {
     }
   }
 
+  async getByLojistaId(user: IUserSession): Promise<Proposta[]> {
+    try {
+
+      if (user.tpConta !== 2) {
+        throw new Error('Você não é um lojista')
+      }
+
+      const propostas = await this.propostaModel.getAll({
+        where: {
+          AND: [
+            { lojistaId: user.id },
+            { status: { id: 1 } }
+          ]
+        }
+      })
+
+      return propostas
+
+    } catch (error: any) {
+      throw new Error(error.message)
+    }
+  }
+
 }

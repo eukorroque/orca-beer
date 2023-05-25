@@ -3,7 +3,6 @@ import React from 'react'
 import { useFonts, GemunuLibre_500Medium, GemunuLibre_700Bold } from '@expo-google-fonts/gemunu-libre'
 import * as SplashScreen from 'expo-splash-screen'
 import { useCallback } from 'react'
-import { LogBox } from 'react-native'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, store } from './src/redux/store'
@@ -39,7 +38,7 @@ const App = () => {
     return null
   }
 
-  LogBox.ignoreAllLogs()
+  // LogBox.ignoreAllLogs()
 
 
 

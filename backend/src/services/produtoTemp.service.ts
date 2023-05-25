@@ -3,13 +3,11 @@ import { validate } from "class-validator"
 import ProdutoTempModel from "../models/produtoTemp.model"
 import CategoriaProdutoModel from "../models/categoriaProduto.model"
 import ProdutoModel from "../models/produto.model"
-import { ProdutoTemp } from "@prisma/client"
 
 interface IResponse {
   ok: boolean
-  data?: ProdutoTemp | null
   id?: number
-
+  updated?: boolean
 }
 
 
@@ -76,7 +74,8 @@ export default class ProdutoTempService {
 
         return {
           ok: true,
-          data: updateProdutoTemp
+          id: updateProdutoTemp.id,
+          updated: true
         }
       }
 
@@ -89,7 +88,8 @@ export default class ProdutoTempService {
 
       return {
         ok: true,
-        id: idProdutoTemp
+        id: idProdutoTemp,
+        updated: false
       }
 
     } catch (error: any) {

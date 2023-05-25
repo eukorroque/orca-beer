@@ -26,6 +26,7 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 'off',
     'react-native/no-raw-text': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    'react-native/no-inline-styles': 'off'
+    'react-native/no-inline-styles': 'off',
+    '@typescript-eslint/no-empty-function': 'off'
   }
 }

@@ -174,9 +174,7 @@ export default class UsuarioController {
         statusId: true,
         tpConta: true,
         senha: true,
-        ...isCnpj ?
-          { nomeFantasia: true } :
-          { nomeResponsavel: true }
+        nomeFantasia: true
       }
 
       // se for cpf, é necessário buscar pelo cpf do responsável.
@@ -268,7 +266,7 @@ export default class UsuarioController {
         ok: true,
         data: {
           id: user.id,
-          nome: user.nomeFantasia || user.nomeResponsavel,
+          nome: user.nomeFantasia,
           statusId: user.statusId,
           tpConta: user.tpConta,
           token // por hora passarei o token aqui no body

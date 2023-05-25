@@ -15,6 +15,7 @@ interface Props {
   rowTextForSelection: (item: any, index: number) => string
   defaultButtonText: string
   onSelect: (selectedItem: any, index: number) => any
+  disabled?: boolean
 }
 
 const DropdownDefault: React.ElementType<Props> = ({
@@ -24,27 +25,29 @@ const DropdownDefault: React.ElementType<Props> = ({
   buttonTextAfterSelection,
   rowTextForSelection,
   defaultButtonText,
-  onSelect
+  onSelect,
+  disabled = false
 }: Props) => {
 
-  return (    
-      <S.AdressContainer>
-        <SelectDropdown
-          dropdownStyle={dropdownStyle}
-          buttonStyle={buttonStyle}
-          buttonTextStyle={{ fontFamily: theme.fonts.regular, fontSize: theme.fontSizes.body.p3 }}
-          rowTextStyle={{ fontFamily: theme.fonts.regular }}
-          data={data}
-          onSelect={onSelect}
-          buttonTextAfterSelection={buttonTextAfterSelection}
-          rowTextForSelection={rowTextForSelection}
-          showsVerticalScrollIndicator={true}
-          renderDropdownIcon={isOpened => {
-            return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#000'} size={14} />
-          }}
-          defaultButtonText={defaultButtonText}
-        />
-      </S.AdressContainer>
+  return (
+    <S.AdressContainer>
+      <SelectDropdown
+        disabled={disabled}
+        dropdownStyle={dropdownStyle}
+        buttonStyle={buttonStyle}
+        buttonTextStyle={{ fontFamily: theme.fonts.regular, fontSize: theme.fontSizes.body.p3 }}
+        rowTextStyle={{ fontFamily: theme.fonts.regular }}
+        data={data}
+        onSelect={onSelect}
+        buttonTextAfterSelection={buttonTextAfterSelection}
+        rowTextForSelection={rowTextForSelection}
+        showsVerticalScrollIndicator={true}
+        renderDropdownIcon={isOpened => {
+          return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#000'} size={14} />
+        }}
+        defaultButtonText={defaultButtonText}
+      />
+    </S.AdressContainer>
   )
 }
 

@@ -18,5 +18,6 @@ router
   .post('/proposta', isLoggedInterceptor(), Controller.create.bind(Controller))
   .put('/proposta/:idProposta/nova-alteracao-produtos', isLoggedInterceptor(['fornecedor', 'lojista']), Controller.updateProdutosArr.bind(Controller))
   .put('/proposta/:idProposta/finalizar', isLoggedInterceptor(['fornecedor', 'lojista']), Controller.finalizarProposta.bind(Controller))
+  .get('/proposta-by-lojista-id', isLoggedInterceptor(['lojista']), Controller.getByLojistaId.bind(Controller))
 
 export default router

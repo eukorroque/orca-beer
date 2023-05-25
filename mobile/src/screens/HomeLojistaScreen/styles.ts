@@ -2,12 +2,10 @@ import styled from "styled-components/native"
 import theme from "../../config/theme"
 
 export const Container = styled.ScrollView`
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
 `
 
 export const ButtonContainer = styled.View`
-  width: 300px;
+  width: 85%;
   margin: 10px auto;
   /* padding: 19px 32px; */
 `
@@ -22,7 +20,7 @@ export const Button = styled.TouchableOpacity`
 `
 
 export const NotificationContainer = styled.View`
-  width: 300px;
+  width: 100%;
   margin: 0 auto;
   align-items: center;
 `
@@ -81,7 +79,7 @@ export const SimpleContainer = styled.View`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 300px;
+  width: 85%;
   height: 200px;
   background-color: #FFFFFF;
   border: 1px solid #D9D9D9;

@@ -60,7 +60,7 @@ export default class ProdutoTempController {
       //   id: idProdutoTemp
       // })
 
-      const status = resultProdutoTemp.id ? HttpStatus.CREATED : HttpStatus.OK
+      const status = resultProdutoTemp.updated ? HttpStatus.CREATED : HttpStatus.OK
 
       res.status(status).json({
         msg: 'Produto temporário incluído com sucesso!',

@@ -11,7 +11,6 @@ import { useDispatch } from 'react-redux'
 import { TextInput } from 'react-native-paper'
 import theme from '../../config/theme'
 import MaskInput, { Masks } from 'react-native-mask-input'
-import { Checkbox } from 'react-native-paper'
 import ModalDefault from '../../components/ModalDefaut'
 import loginService from '../../services/login.service'
 import { setLoginUsuario, setUsuario } from '../../redux/actions/usuario.action'
@@ -129,6 +128,7 @@ const LoginScreen = () => {
                   onChangeText: (text: string) => setPassword(text),
                   keyboardType: 'default' as KeyboardTypeOptions,
                   style: { marginBottom: 7, backgroundColor: theme.colors.inputBody },
+                  right: <TextInput.Icon onPress={() => setShowPassword(!showPassword)} icon={`eye${showPassword ? '-off' : ''}`} />,
                   secureTextEntry: !showPassword
                 }
               ].map((val, key) => (
@@ -141,19 +141,6 @@ const LoginScreen = () => {
                 />
               ))
             }
-
-            <TouchableOpacity
-              onPress={() => setShowPassword(!showPassword)}
-              style={{ flexDirection: 'row', alignItems: 'center', }}
-            >
-              <Checkbox
-                status={showPassword ? 'checked' : 'unchecked'}
-                onPress={() => {
-                  setShowPassword(!showPassword)
-                }}
-              />
-              <TextDefault fontSize={17}>Ver senha</TextDefault>
-            </TouchableOpacity>
 
           </S.FormContainer>
 
