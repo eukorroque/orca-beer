@@ -12,10 +12,7 @@ import ButtonDefault from '../../components/ButtonDefault'
 const HomeLogistaScreen = () => {
   const [box, setBox] = useState(1)
   const navigation = useNavigation<NavigationProp<RootStackParamList>>()
-  const nextScreen = () => {
-    setTimeout(() => setBox(2), 500)
-    navigation.navigate('OrcamentoLojista')
-  }
+  
 
   return (
     <ContainerDefault>
@@ -50,19 +47,21 @@ const HomeLogistaScreen = () => {
           )}     
           {/* remover até aqui*/}     
         <S.ButtonContainer>
-          <ButtonDefault onPress={() => nextScreen()}>
+          <ButtonDefault onPress={() => navigation.navigate('OrcamentoLojista')}>
             Novo Orçamento
           </ButtonDefault>
         </S.ButtonContainer>
 
         <S.SimpleContainer>
-          <S.Button onPress={() => setBox(3)}>
+          <S.Button onPress={() => setBox(2)}>
             <TextDefault fontSize={25} bold>Ofertas</TextDefault>
           </S.Button>
         </S.SimpleContainer>
 
         <S.SimpleContainer>         
-           <TextDefault fontSize={25} bold>Ranking</TextDefault>          
+        <S.Button onPress={() => setBox(3)}>
+            <TextDefault fontSize={25} bold>Ranking</TextDefault>
+          </S.Button>          
         </S.SimpleContainer>
 
       </S.Container>
