@@ -12,9 +12,7 @@ const createProdutoTemp = async (produtoTemp: IProdutoTemp, token: string | null
   const body = { produtoTemp }
 
   try {
-    const data = await backEnd('POST', `produto-temp`, token, body)
-
-    return data
+    return await backEnd('POST', `produto-temp`, token, body)
 
   } catch (error: any) {
     throw new Error(error)

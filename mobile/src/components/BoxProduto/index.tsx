@@ -12,6 +12,7 @@ import { SetNovoOrcamentoAction } from '../../redux/actions/orcamento.action'
 
 interface Props {
   title: string
+  disableButtons?: boolean
   unity: string
   indiceArr: number
 }
@@ -19,6 +20,7 @@ interface Props {
 const BoxProduto: React.ElementType<Props> = ({
   title,
   unity,
+  disableButtons = false,
   indiceArr
 }: Props) => {
 
@@ -43,7 +45,7 @@ const BoxProduto: React.ElementType<Props> = ({
       </S.TextContainer>
       <S.IconsContainer>
         <FontAwesome name='pencil' color='white' size={22} />
-        <TouchableOpacity onPress={removeFromArray}>
+        <TouchableOpacity onPress={removeFromArray} disabled={disableButtons}>
           <FontAwesome name='trash' color='#000' size={22} />
         </TouchableOpacity>
       </S.IconsContainer>

@@ -1,5 +1,6 @@
 import { Action } from "redux"
-import IProdutos from "../../interfaces/IProduto"
+import IProdutoOrcamento from "../../interfaces/IProdutoOrcamento"
+
 
 
 export const SET_NOVO_ORCAMENTO = 'SET_NOVO_ORCAMENTO'
@@ -7,11 +8,11 @@ export const SET_NOVO_ORCAMENTO = 'SET_NOVO_ORCAMENTO'
 
 export interface SetNovoOrcamentoAction extends Action<typeof SET_NOVO_ORCAMENTO> {
   payload: {
-    produtos: IProdutos[]
-  }
+    produtos: IProdutoOrcamento[]
+  } | null
 }
 
-export const SetNovoOrcamentoAction = (payload: { produtos: IProdutos[] }): SetNovoOrcamentoAction => ({
+export const SetNovoOrcamentoAction = (payload: { produtos: IProdutoOrcamento[] } | null): SetNovoOrcamentoAction => ({
   type: SET_NOVO_ORCAMENTO,
   payload
 })

@@ -33,6 +33,7 @@ const IncluirProdutoScreen = () => {
   const [dataUnidade, setDataUnidade] = useState<any[]>([])
   const [showModal, setShowModal] = useState(false)
   const [modalInfo, setModalInfo] = useState({ title: ' ', msg: ' ' })
+  const [isLoading, setIsLoading] = useState(false)
 
 
 
@@ -128,12 +129,34 @@ const IncluirProdutoScreen = () => {
       return
     }
 
+
+
+
+    if (!existsProduto) {
+      setIsLoading(true)
+      const dataNewProdutoTemp = await createProdutoTemp({
+        // @ts-expect-error não vou passar validações de tipagem por agora pois isso ja é uma demanda futura. Logo vou deixar o comentário para o typescript ignorar o erro.
+        categoriaId: categoria.id.toString(),
+        nome: produto.val
+      }, token)
+
+      if (dataNewProdutoTemp.ok === false) {
+        setModalInfo({ title: 'Ops...', msg: dataNewProdutoTemp.msg })
+        setShowModal(true)
+        setIsLoading(false)
+        return
+      }
+
+
+      produto.id = dataNewProdutoTemp.id
+    }
+
     const produtoData = {
       categoria: categoria.val,
       produto: produto.val,
       unidade: unidade.val,
       quantidade: quantidade.val,
-      isTemp: produto.id ? false : true,
+      isTemp: !existsProduto,
       toBack: {
         categoriaId: categoria.id,
         produtoId: produto.id,
@@ -148,15 +171,6 @@ const IncluirProdutoScreen = () => {
 
     dispatch(SetNovoOrcamentoAction({ ...novoOrcamento, produtos: newArrProdutos }))
 
-    if (!existsProduto) {
-      const saveProduto = await createProdutoTemp({
-        // @ts-expect-error não vou passar validações de tipagem por agora pois isso ja é uma demanda futura. Logo vou deixar o comentário para o typescript ignorar o erro.
-        categoriaId: categoria.id.toString(),
-        nome: produto.val
-      }, token)
-
-      console.log(saveProduto)
-    }
 
     navigation.goBack()
   }
@@ -171,6 +185,7 @@ const IncluirProdutoScreen = () => {
                 <S.DropdownContainer>
                   <TextDefault>Categoria</TextDefault>
                   <DropdownDefault
+                    disabled={isLoading}
                     dropdownStyle={{ width: 300, borderRadius: 8 }}
                     buttonStyle={{ width: 300, borderRadius: 8, backgroundColor: theme.colors.inputBody, borderWidth: 1, borderStyle: 'solid', borderColor: categoria.border, marginTop: 1, marginBottom: 20 }}
                     data={dataCategoria}
@@ -187,6 +202,7 @@ const IncluirProdutoScreen = () => {
                     <S.DropdownContainer style={{ display: 'flex' }}>
                       <TextDefault>Produto</TextDefault>
                       <DropdownDefault
+                        disabled={isLoading}
                         dropdownStyle={{ width: 300, borderRadius: 8 }}
                         buttonStyle={{ width: 300, borderRadius: 8, backgroundColor: theme.colors.inputBody, borderWidth: 1, borderStyle: 'solid', borderColor: produto.border, marginTop: 1, marginBottom: 20 }}
                         data={dataProduto}
@@ -203,11 +219,12 @@ const IncluirProdutoScreen = () => {
               </S.SelectsContainer>
               <S.SmallInputContainer>
                 <TextDefault>Quantidade</TextDefault>
-                <S.TextInput keyboardType='numeric' onChangeText={handleQuantidadeChange} style={{ borderRadius: 8, backgroundColor: theme.colors.inputBody, borderWidth: 1, borderStyle: 'solid', borderColor: quantidade.border, height: 49 }} />
+                <S.TextInput editable={!isLoading} keyboardType='numeric' onChangeText={handleQuantidadeChange} style={{ borderRadius: 8, backgroundColor: theme.colors.inputBody, borderWidth: 1, borderStyle: 'solid', borderColor: quantidade.border, height: 49 }} />
               </S.SmallInputContainer>
               <S.LargeInputContainer>
                 <TextDefault>Unidade</TextDefault>
                 <DropdownDefault
+                  disabled={isLoading}
                   dropdownStyle={{ width: 195, borderRadius: 8 }}
                   buttonStyle={{ width: 195, borderRadius: 8, backgroundColor: theme.colors.inputBody, borderWidth: 1, borderStyle: 'solid', borderColor: unidade.border, marginTop: 1, marginBottom: 20 }}
                   data={dataUnidade}
@@ -223,7 +240,7 @@ const IncluirProdutoScreen = () => {
                 !existsProduto && (
                   <S.DefaultInputContainer style={{ display: 'flex' }}>
                     <TextDefault>Digite o produto desejado</TextDefault>
-                    <S.TextInput onChangeText={(val: any) => setProduto({ border: theme.colors.inputBorder, val, id: null })} autoFocus style={{ borderRadius: 8, backgroundColor: theme.colors.inputBody, borderWidth: 1, borderStyle: 'solid', borderColor: produto.border, height: 49 }} />
+                    <S.TextInput editable={!isLoading} onChangeText={(val: any) => setProduto({ border: theme.colors.inputBorder, val, id: null })} autoFocus style={{ borderRadius: 8, backgroundColor: theme.colors.inputBody, borderWidth: 1, borderStyle: 'solid', borderColor: produto.border, height: 49 }} />
                   </S.DefaultInputContainer>
                 )
               }
@@ -234,6 +251,7 @@ const IncluirProdutoScreen = () => {
                 <S.TextContainer>
                   <TextDefault>Não encontrou o que procura?</TextDefault>
                   <TouchableOpacity
+                    disabled={isLoading}
                     onPress={() => setExistsProduto(false)}
                   >
                     <TextDefault bold linkStyle>Clique aqui!</TextDefault>
@@ -244,8 +262,8 @@ const IncluirProdutoScreen = () => {
           </S.Container>
         </S.InputsContainer>
         <S.ButtonContainer>
-          <ButtonDefault onPress={storeData}>
-            Adicionar produto
+          <ButtonDefault disabled={isLoading} onPress={storeData}>
+            {isLoading ? 'Enviando...' : 'Adicionar produto'}
           </ButtonDefault>
         </S.ButtonContainer>
       </ContainerDefault>

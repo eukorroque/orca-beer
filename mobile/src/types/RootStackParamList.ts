@@ -2,7 +2,7 @@
 export type RootStackParamList = {
   Login: undefined
   Welcome: undefined
-  HomeLojista: undefined
+  HomeLojista?: { getPedidosAgain?: boolean }
   OrcamentoLojista: undefined
   IncluirProdutoLojista: undefined
 }

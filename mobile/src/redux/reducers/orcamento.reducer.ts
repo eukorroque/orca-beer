@@ -1,12 +1,12 @@
 // Arquivo criado: 24/05/2023 às 00:30
 
-import IProdutos from "../../interfaces/IProduto"
+import IProdutoOrcamento from "../../interfaces/IProdutoOrcamento"
 import { SetNovoOrcamentoAction } from "../actions/orcamento.action"
 
 
 interface State {
   novoOrcamento: {
-    produtos: IProdutos[]
+    produtos: IProdutoOrcamento[]
   } | null
 }
 
@@ -25,9 +25,7 @@ const orcamentoReducer = (
     case 'SET_NOVO_ORCAMENTO':
       return {
         ...state,
-        novoOrcamento: {
-          produtos: action.payload.produtos
-        }
+        novoOrcamento: action.payload
       }
     default:
       return state
