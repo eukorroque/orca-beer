@@ -1,0 +1,213 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum tdContasEnum {
+  FORNECEDOR
+  LOJISTA
+}
+
+model Usuario {
+  id                      Int              @id @default(autoincrement())
+  cnpj                    String?          @unique @db.VarChar(14)
+  nomeFantasia            String           @db.VarChar(255)
+  razaoSocial             String           @db.VarChar(255)
+  email                   String           @unique @db.VarChar(50) /// o e-mail é único entre os usuários.
+  cpfResponsavel          String           @db.VarChar(11)
+  nomeResponsavel         String           @db.VarChar(255)
+  senha                   String           @db.VarChar(255)
+  telefone                String           @db.VarChar(15)
+  ultimaValidacaoTelefone DateTime         @default(now()) /// data da ultima validação que foi feita para verificar o telefone do usuario. 
+  avaliacao               Int?             @db.SmallInt /// avaliação do usuario, Se null, ele ainda não foi avaliado.
+  cashback                Float?           @db.Float /// cashback acumulado pelo usuario. Se null, ele ainda não tem cashback acumulado.
+  alcance                 Int?             @db.Int /// alcance do usuario. Se null, ele ainda não tem alcance definido.
+  vezesIndicou            Int              @default(0) /// vezes que o usuario indicou o app para alguem. (Apenas para lojistas)
+  qtdPedidosRestantes     Int?             @db.SmallInt /// se null, a conta é nova ou ele não é lojista
+  codigoConvite           String?          @unique @db.VarChar(6) /// se null, ele não é lojista
+  status                  StatusUsuario    @relation(fields: [statusId], references: [id])
+  statusId                Int
+  Conta                   tpContas         @relation(fields: [tpConta], references: [id])
+  tpConta                 Int
+  Endereco                Endereco[]
+  SessoesUsuario          SessoesUsuario[]
+  ultimoLogin             DateTime         @default(now())
+  criadoEm                DateTime         @default(now())
+  atualizadoEm            DateTime         @updatedAt
+  Pedido                  Pedido[]
+  propostasFornecedor     Proposta[]       @relation(name: "FornecedorRel")
+  propostasLojista        Proposta[]       @relation(name: "LojistaRel")
+  comissaoFornecedor      Comissao[]       @relation(name: "FornecedorRel")
+  comissaoLojista         Comissao[]       @relation(name: "LojistaRel")
+}
+
+model Admin {
+  id             Int              @id @default(autoincrement())
+  nome           String           @db.VarChar(255)
+  email          String           @unique @db.VarChar(50)
+  senha          String           @db.VarChar(255)
+  telefone       String?          @unique @db.VarChar(15)
+  cpf            String?          @unique @db.VarChar(11)
+  Conta          tpAdmins         @relation(fields: [tpAdmin], references: [id])
+  tpAdmin        Int
+  criadoEm       DateTime         @default(now())
+  atualizadoEm   DateTime         @updatedAt
+  SessoesUsuario SessoesUsuario[]
+}
+
+model Endereco {
+  id            Int      @id @default(autoincrement())
+  numero        Int?     @db.SmallInt
+  cep           String   @db.VarChar(8)
+  rua           String   @db.VarChar(255)
+  complemento   String?  @db.VarChar(255)
+  bairro        String   @db.VarChar(255)
+  cidade        String   @db.VarChar(255)
+  estado        String   @db.VarChar(2)
+  responsavel   Usuario  @relation(fields: [responsavelId], references: [id])
+  responsavelId Int
+  deletado      Boolean  @default(false)
+  criadoEm      DateTime @default(now())
+  atualizadoEm  DateTime @updatedAt
+  label         String?  @db.VarChar(255)
+}
+
+model SessoesUsuario {
+  id                  Int       @id @default(autoincrement())
+  token               String    @unique @db.VarChar(255)
+  usuario             Usuario   @relation(fields: [usuarioId], references: [id])
+  usuarioId           Int
+  interceptado        Boolean   @default(false) /// se true, o usuario teve sua sessão derrubada por um admin.
+  Admin               Admin?    @relation(fields: [adminId], references: [id])
+  adminId             Int? /// id do admin que derrubou a sessão do usuario (Caso seja diferente de null)
+  motivoInterceptacao String?   @db.VarChar(255)
+  interceptadoEm      DateTime?
+  expiraEm            DateTime
+  criadoEm            DateTime  @default(now())
+}
+
+model Produto {
+  id           Int              @id @default(autoincrement())
+  categoria    categoriaProduto @relation(fields: [categoriaId], references: [id])
+  categoriaId  Int
+  unidade      unidadeProduto   @relation(fields: [unidadeId], references: [id])
+  unidadeId    Int
+  nome         String           @unique @db.VarChar(255)
+  criadoEm     DateTime         @default(now())
+  atualizadoEm DateTime         @updatedAt
+  //quantidade  Int              @db.SmallInt
+  // ranking - posição no ranking de produtos.
+  ProdutoTemp  ProdutoTemp[]
+}
+
+model ProdutoTemp {
+  id           Int              @id @default(autoincrement())
+  categoria    categoriaProduto @relation(fields: [categoriaId], references: [id])
+  categoriaId  Int
+  nome         String           @unique @db.VarChar(255)
+  qtdInclusao  Int              @db.SmallInt
+  criadoEm     DateTime         @default(now())
+  atualizadoEm DateTime         @updatedAt
+  produto      Produto?         @relation(fields: [produtoId], references: [id])
+  produtoId    Int? ///  ele vai ser null, caso não seja. sinal que o produtoTemp ja está vinculado a um produto oficial.
+  // ranking - posição no ranking de produtos.
+}
+
+model categoriaProduto {
+  id           Int           @id @default(autoincrement())
+  categoria    String        @unique @db.VarChar(255)
+  Produto      Produto[]
+  ProdutoTemp  ProdutoTemp[]
+  criadoEm     DateTime      @default(now())
+  atualizadoEm DateTime      @updatedAt
+}
+
+model unidadeProduto {
+  id           Int       @id @default(autoincrement())
+  unidade      String    @unique @db.VarChar(255)
+  Produto      Produto[]
+  criadoEm     DateTime  @default(now())
+  atualizadoEm DateTime  @updatedAt
+}
+
+model StatusUsuario {
+  id      Int       @id @default(autoincrement())
+  status  String    @unique @db.VarChar(255)
+  Usuario Usuario[]
+}
+
+model tpContas {
+  id      Int          @id @default(autoincrement())
+  tipo    tdContasEnum @unique
+  Usuario Usuario[]
+}
+
+model tpAdmins {
+  id    Int     @id @default(autoincrement())
+  tipo  String  @unique @db.VarChar(255)
+  Admin Admin[]
+}
+
+model Pedido {
+  id                     Int          @id @default(autoincrement())
+  produtosTemp           Json? /// json com os produtos temporários do pedido.
+  produtos               Json /// json com os produtos do pedido.
+  prazoEntrega           DateTime
+  lojista                Usuario      @relation(fields: [lojistaId], references: [id])
+  lojistaId              Int
+  status                 StatusPedido @relation(fields: [statusId], references: [id])
+  statusId               Int
+  observacoes            String?      @db.VarChar(255)
+  fornecedoresAlcancados Json /// json com os fornecedores que receberam o pedido e um bool para saber se ele aceitou ou não.
+  criadoEm               DateTime     @default(now())
+  atualizadoEm           DateTime     @updatedAt
+  Proposta               Proposta[]
+  Comissao               Comissao[]
+}
+
+model StatusPedido {
+  id       Int        @id @default(autoincrement())
+  status   String     @unique @db.VarChar(255)
+  Pedido   Pedido[]
+  Proposta Proposta[]
+}
+
+model Proposta {
+  id             Int          @id @default(autoincrement())
+  pedido         Pedido       @relation(fields: [pedidoId], references: [id])
+  pedidoId       Int
+  fornecedor     Usuario      @relation(name: "FornecedorRel", fields: [fornecedorId], references: [id])
+  fornecedorId   Int
+  lojista        Usuario      @relation(name: "LojistaRel", fields: [lojistaId], references: [id])
+  lojistaId      Int
+  lojistaAceitou Boolean? /// se null, o lojista ainda não respondeu a proposta. Se true, ele aceitou. Se false, ele recusou.
+  frete          Float?       @db.Float
+  valor          Float        @db.Float
+  status         StatusPedido @relation(fields: [statusId], references: [id])
+  statusId       Int
+  produtos       Json /// esse json é um array com todo o tramite do pedido. Cada alteração que algum usuário fizer será salvo como um novo item no array.
+  criadoEm       DateTime     @default(now())
+  atualizadoEm   DateTime     @updatedAt
+}
+
+model Comissao {
+  id           Int      @id @default(autoincrement())
+  pedido       Pedido   @relation(fields: [pedidoId], references: [id])
+  pedidoId     Int
+  fornecedor   Usuario  @relation(name: "FornecedorRel", fields: [fornecedorId], references: [id])
+  fornecedorId Int
+  lojista      Usuario  @relation(name: "LojistaRel", fields: [lojistaId], references: [id])
+  lojistaId    Int
+  valor        Float    @db.Float
+  taxa         Float    @db.Float
+  pago         Boolean  @default(false)
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+}
