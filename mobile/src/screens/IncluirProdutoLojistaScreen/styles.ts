@@ -49,6 +49,7 @@ export const TextInput = styled.TextInput`
 margin: 20px 0;
 margin-top: 1px;
 padding: 5px 10px;
+font-family: ${theme.fonts.regular};
 `
 
 export const LargeInputContainer = styled.View`
