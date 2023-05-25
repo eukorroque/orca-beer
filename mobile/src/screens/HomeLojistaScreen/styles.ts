@@ -10,13 +10,15 @@ export const ButtonContainer = styled.View`
   /* padding: 19px 32px; */
 `
 
-export const Button = styled.TouchableOpacity`
-  background-color: ${theme.colors.primary};
+export const Button = styled.Pressable`
+  background-color: ${theme.colors.noBackground};
   border-radius: 32px;
   width: 100%;
+  height: 100%;
   margin-bottom: 20px;
   padding: 12px;
   align-items: center;
+  justify-content: center;
 `
 
 export const NotificationContainer = styled.View`
@@ -75,7 +77,6 @@ export const NotificationButton = styled.TouchableOpacity`
 `
 
 export const SimpleContainer = styled.View`
-  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -86,3 +87,19 @@ export const SimpleContainer = styled.View`
   border-radius: 16px;
   margin: 10px auto;
 `
+
+export const FirstContainer = styled.View`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: ${theme.colors.noBackground};
+  margin: 30px auto;
+`
+
+/* export const Button = styled.Button`
+  width: 100%;
+  
+  align-items: center;
+  
+` */
